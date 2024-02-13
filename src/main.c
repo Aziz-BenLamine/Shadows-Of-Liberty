@@ -113,6 +113,11 @@ int main(int argc, char** argv) {
                 	}
         	}
         	break;
+       	    case SDL_MOUSEBUTTONDOWN:
+       	    	if(event.button.button == SDL_BUTTON_LEFT && point_in_rect(event.button.x, event.button.y, button_rects[3])){
+       	    	playing = 0;
+       	    	}
+       	    	break;
     	}
     	SDL_Flip(ecran);
     }
