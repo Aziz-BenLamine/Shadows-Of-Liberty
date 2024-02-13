@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
+#include <SDL/SDL_mixer.h>
 
 #define SCREEN_HEIGHT 700
 #define SCREEN_WIDTH 1200
@@ -18,18 +19,26 @@ int main(int argc, char** argv) {
     //Initilazing the Menu buttons state to 0:(Normal)
     int button_state[MENU_BUTTONS_COUNT] = {0, 0, 0, 0}; // 0: Normal, 1: Hovered
 
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
         printf("Echec d'initialisation de SDL : %s\n", SDL_GetError());
         return 1;
     }
-
+    
+    //INIT MUSIC
+    if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) == -1){
+    	printf("Audio Error:%s",Mix_GetError());
+    }
+    Mix_Music *backgroundMusic;
+    backgroundMusic = Mix_LoadMUS("../audio/dark-background-sound.wav");
+    Mix_PlayMusic(backgroundMusic, -1);
+    
     ecran = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
 
     if (ecran == NULL) {
         fprintf(stderr, "ERROR CREATING THE WINDOW %d*%d: %s.\n", SCREEN_HEIGHT, SCREEN_WIDTH, SDL_GetError());
         return 1;
     }
-
+    
     SDL_Surface *backgroundImage = IMG_Load("../assets/menuBackground.png");
 
     if (backgroundImage == NULL) {
@@ -115,6 +124,7 @@ int main(int argc, char** argv) {
     	SDL_FreeSurface(button_images[i][0]);
     	SDL_FreeSurface(button_images[i][1]);
     }
+    Mix_FreeMusic(backgroundMusic);
     SDL_Quit();
     return 0;
 }
