@@ -6,6 +6,8 @@
 #define SCREEN_HEIGHT 700
 #define SCREEN_WIDTH 1200
 
+#define MENU_BUTTONS_COUNT 4
+
 int point_in_rect(int x, int y, SDL_Rect rect) {
     return (x >= rect.x && x < rect.x + rect.w && y >= rect.y && y < rect.y + rect.h);
 }
@@ -13,7 +15,8 @@ int point_in_rect(int x, int y, SDL_Rect rect) {
 int main(int argc, char** argv) {
     SDL_Surface *ecran;
     int playing = 1;
-    int button_state = 0; // 0: Normal, 1: Hovered
+    //Initilazing the Menu buttons state to 0:(Normal)
+    int button_state[MENU_BUTTONS_COUNT] = {0, 0, 0, 0}; // 0: Normal, 1: Hovered
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("Echec d'initialisation de SDL : %s\n", SDL_GetError());
@@ -41,66 +44,77 @@ int main(int argc, char** argv) {
         .h = backgroundImage->h
     };
     
-    //INIT BUTTONS
-    SDL_Surface *button_image_normal = IMG_Load("../assets/newGameButton.png");
-    SDL_Surface *button_image_hovered = IMG_Load("../assets/newGameButtonClicked.png");
-
-    if (button_image_normal == NULL || button_image_hovered == NULL ) {
-        printf("ERROR LOADING BUTTON IMAGE: %s\n", IMG_GetError());
-        return 3;
+    //Load Buttons assets
+    SDL_Surface *button_images[MENU_BUTTONS_COUNT][2];
+    
+    //newGameButton
+    button_images[0][0] = IMG_Load("../assets/newGameButton.png");
+    button_images[0][1] = IMG_Load("../assets/newGameButtonHovered.png");
+    
+    //loadGameButton
+    button_images[1][0] = IMG_Load("../assets/loadGameButton.png");
+    button_images[1][1] = IMG_Load("../assets/loadGameButtonHovered.png");
+    
+    //settingsButton
+    button_images[2][0] = IMG_Load("../assets/settingButton.png");
+    button_images[2][1] = IMG_Load("../assets/settingButtonHovered.png");
+    
+    //quitGameButton
+    button_images[3][0] = IMG_Load("../assets/quitButton.png");
+    button_images[3][1] = IMG_Load("../assets/quitButtonHovered.png");
+    
+    if(button_images[0][0] == NULL || button_images[0][1] == NULL ||
+       button_images[1][0] == NULL || button_images[1][1] == NULL ||
+       button_images[2][0] == NULL || button_images[2][1] == NULL ||
+       button_images[3][0] == NULL || button_images[3][1] == NULL){
+          printf("ERROR LOADING BUTTON IMAGES: %s\n", IMG_GetError());
+          return 3;
+       }
+    SDL_Rect button_rects[MENU_BUTTONS_COUNT];
+    for(int i = 0; i < 4; i++){
+    	button_rects[i] = (SDL_Rect){438 , 187 + i * 112, button_images[i][0]->w, button_images[i][0]->h};
     }
-
-    SDL_Rect button_rect = {438, 187, button_image_normal->w, button_image_normal->h};
-
+    
+ /*   SDL_Rect newGamebutton_rect = {438, 187, newGameButton_image_normal->w, newGameButton_image_hovered->h};
+    SDL_Rect loadGamebutton_rect = {488, 187, loadGameButton_image_normal->w, loadGameButton_image_hovered->h};*/
+    
     SDL_Event event;
     while (playing) {
+    	//Blitting the background
         SDL_BlitSurface(backgroundImage, NULL, ecran, &posecranimg);
-
-        // Determine which button image to blit based on button state
-        switch (button_state) {
-            case 0:
-                SDL_BlitSurface(button_image_normal, NULL, ecran, &button_rect);
-                break;
-            case 1:
-                SDL_BlitSurface(button_image_hovered, NULL, ecran, &button_rect);
-                break;
-        }
-
+	
+	//Blitting the buttons
+	for(int i = 0; i < MENU_BUTTONS_COUNT; i++){
+		SDL_BlitSurface(button_images[i][button_state[i]], NULL, ecran, &button_rects[i]);
+	}
+	
         SDL_PollEvent(&event);
         switch (event.type) {
             case SDL_QUIT:
                 playing = 0;
                 break;
             case SDL_MOUSEMOTION:
-                // Check if the mouse is hovering over the button
-                if (point_in_rect(event.motion.x, event.motion.y, button_rect)) {
-                    button_state = 1; // Set button state to hovered
-                } else {
-                    button_state = 0; // Set button state to normal
-                }
-                break;
-            case SDL_MOUSEBUTTONDOWN:
-                // Check if the mouse click is inside the button rectangle
-                if (event.button.button == SDL_BUTTON_LEFT &&
-                    point_in_rect(event.button.x, event.button.y, button_rect)) {
-                    button_state = 2; // Set button state to clicked
-                    printf("Button clicked!\n");
-                }
-                break;
-            case SDL_MOUSEBUTTONUP:
-                if (button_state == 2) {
-                    button_state = 1; // Reset button state to hovered after click
-                }
-                break;
-        }
-
-        SDL_Flip(ecran);
+                // Check if the mouse is hovering over any button
+                for(int i = 0; i < MENU_BUTTONS_COUNT; i++){
+                	if (point_in_rect(event.motion.x, event.motion.y, button_rects[i])) {
+                    		button_state[i] = 1; // Set button state to hovered if so
+                	} 
+                	else {
+                    		button_state[i] = 0; // Set button state to normal else
+                	}
+        	}
+        	break;
+    	}
+    	SDL_Flip(ecran);
     }
-
+    
+    
     SDL_FreeSurface(backgroundImage);
-    SDL_FreeSurface(button_image_normal);
-    SDL_FreeSurface(button_image_hovered);
+    //Freeing all the buttonImages
+    for(int i = 0; i < MENU_BUTTONS_COUNT; i++){
+    	SDL_FreeSurface(button_images[i][0]);
+    	SDL_FreeSurface(button_images[i][1]);
+    }
     SDL_Quit();
     return 0;
 }
-
