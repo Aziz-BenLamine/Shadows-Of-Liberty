@@ -72,7 +72,7 @@ int main(int argc, char** argv) {
        }
     SDL_Rect button_rects[MENU_BUTTONS_COUNT];
     for(int i = 0; i < 4; i++){
-    	button_rects[i] = (SDL_Rect){438 , 187 + i * 112, button_images[i][0]->w, button_images[i][0]->h};
+    	button_rects[i] = (SDL_Rect){475 , 230 + i * 50, button_images[i][0]->w, button_images[i][0]->h};
     }
     
  /*   SDL_Rect newGamebutton_rect = {438, 187, newGameButton_image_normal->w, newGameButton_image_hovered->h};
