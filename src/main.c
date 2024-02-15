@@ -105,7 +105,9 @@ int main(int argc, char** argv) {
 	
 	//Blitting the buttons
 	for(int i = 0; i < MENU_BUTTONS_COUNT; i++){
-		SDL_BlitSurface(button_images[i][button_state[i]], NULL, ecran, &button_rects[i]);
+		/*SDL_BlitSurface(button_images[i][button_state[i]], NULL, ecran, &button_rects[i]);*/
+		SDL_Surface *buttonImage = button_images[i][button_state[i]];
+    		SDL_BlitSurface(buttonImage, NULL, ecran, &button_rects[i]);
 	}
 	
         SDL_PollEvent(&event);
@@ -135,6 +137,10 @@ int main(int argc, char** argv) {
        	    		playing = 0;
        	    	}
        	    	break;
+       	    case SDL_KEYDOWN:
+       	    	if(event.key.keysym.sym == SDLK_q){
+       	    		playing = 0;
+       	    	}
     	}
     	
         menuHoverSoundPlayed = 0;
