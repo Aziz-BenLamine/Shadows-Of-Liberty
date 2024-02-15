@@ -16,7 +16,8 @@ int point_in_rect(int x, int y, SDL_Rect rect) {
 int main(int argc, char** argv) {
     SDL_Surface *ecran;
     int playing = 1;
-    //Initilazing the Menu buttons state to 0:(Normal)
+    int menuHoverSoundPlayed = 0;
+    //INIT MENU BUTTONS TO NORMAL STATE
     int button_state[MENU_BUTTONS_COUNT] = {0, 0, 0, 0}; // 0: Normal, 1: Hovered
 
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
@@ -31,6 +32,13 @@ int main(int argc, char** argv) {
     Mix_Music *backgroundMusic;
     backgroundMusic = Mix_LoadMUS("../audio/dark-background-sound.wav");
     Mix_PlayMusic(backgroundMusic, -1);
+    
+    //INIT MENU HOVER SOUND
+    Mix_Chunk *menuHoverSound;
+    menuHoverSound = Mix_LoadWAV("../audio/menuHoverSound.wav");
+    
+    //To REDUCE THE SOUND TO HALF
+    Mix_VolumeChunk(menuHoverSound, MIX_MAX_VOLUME / 2);
     
     ecran = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
 
@@ -80,9 +88,12 @@ int main(int argc, char** argv) {
           return 3;
        }
     SDL_Rect button_rects[MENU_BUTTONS_COUNT];
-    for(int i = 0; i < 4; i++){
+    for(int i = 0; i < 3; i++){
     	button_rects[i] = (SDL_Rect){475 , 230 + i * 50, button_images[i][0]->w, button_images[i][0]->h};
     }
+    
+    //Place the Quit Button at the bottom of the menu
+    button_rects[3] = (SDL_Rect){475 , 450, button_images[3][0]->w, button_images[3][0]->h};
     
  /*   SDL_Rect newGamebutton_rect = {438, 187, newGameButton_image_normal->w, newGameButton_image_hovered->h};
     SDL_Rect loadGamebutton_rect = {488, 187, loadGameButton_image_normal->w, loadGameButton_image_hovered->h};*/
@@ -106,8 +117,14 @@ int main(int argc, char** argv) {
                 // Check if the mouse is hovering over any button
                 for(int i = 0; i < MENU_BUTTONS_COUNT; i++){
                 	if (point_in_rect(event.motion.x, event.motion.y, button_rects[i])) {
-                    		button_state[i] = 1; // Set button state to hovered if so
-                	} 
+                		if(button_state[i] == 0){
+                    			button_state[i] = 1; // Set button state to hovered if so
+                    			if(!menuHoverSoundPlayed){
+                    				Mix_PlayChannel(-1,menuHoverSound,0);
+                    				menuHoverSoundPlayed = 1;
+                    			}
+                    		}
+                	}
                 	else {
                     		button_state[i] = 0; // Set button state to normal else
                 	}
@@ -115,10 +132,13 @@ int main(int argc, char** argv) {
         	break;
        	    case SDL_MOUSEBUTTONDOWN:
        	    	if(event.button.button == SDL_BUTTON_LEFT && point_in_rect(event.button.x, event.button.y, button_rects[3])){
-       	    	playing = 0;
+       	    		playing = 0;
        	    	}
        	    	break;
     	}
+    	
+        menuHoverSoundPlayed = 0;
+        
     	SDL_Flip(ecran);
     }
     
@@ -130,6 +150,7 @@ int main(int argc, char** argv) {
     	SDL_FreeSurface(button_images[i][1]);
     }
     Mix_FreeMusic(backgroundMusic);
+    Mix_FreeChunk(menuHoverSound);
     SDL_Quit();
     return 0;
 }
