@@ -49,6 +49,16 @@ void AfficherBouton(button b[], SDL_Surface *ecran, int niveau) {
     }
 }
 
+void AfficherBoutonActif(button b[], SDL_Surface *ecran) {
+    for(int i = 0; i < 4; i++) {
+        if (b[i].actif) {
+            SDL_Surface *buttonImage = b[i].button_images[b[i].actif];
+            SDL_BlitSurface(buttonImage, NULL, ecran, &b[i].button_rect);
+        }
+    }
+}
+
+
 void FreeBouton(button b[]) {
     for(int i = 0; i < 4; i++) {
         SDL_FreeSurface(b[i].button_images[0]);

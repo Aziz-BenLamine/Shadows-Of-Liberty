@@ -37,7 +37,7 @@ int main(int argc, char** argv) {
     menuHoverSound = Mix_LoadWAV("../audio/menuHoverSound.wav");
     Mix_VolumeChunk(menuHoverSound, MIX_MAX_VOLUME / 2);
 
-    ecran = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+    ecran = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, SDL_HWSURFACE | SDL_DOUBLEBUF| SDL_HWACCEL);
     if (ecran == NULL) {
         fprintf(stderr, "ERROR CREATING THE WINDOW %d*%d: %s.\n", SCREEN_HEIGHT, SCREEN_WIDTH, SDL_GetError());
         return 1;
@@ -90,6 +90,7 @@ int main(int argc, char** argv) {
                     playing = 0;
                 }
         }
+        AfficherBoutonActif(menuButtons, ecran);
         menuHoverSoundPlayed = 0;
         SDL_Flip(ecran);
     }
