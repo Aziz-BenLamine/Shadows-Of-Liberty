@@ -4,14 +4,11 @@
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_mixer.h>
 #include "bouton.h"
+#include "background.h"
 
 #define SCREEN_HEIGHT 700
 #define SCREEN_WIDTH 1200
 #define MENU_BUTTONS_COUNT 4
-
-int point_in_rect(int x, int y, SDL_Rect rect) {
-    return (x >= rect.x && x < rect.x + rect.w && y >= rect.y && y < rect.y + rect.h);
-}
 
 int main(int argc, char** argv) {
     SDL_Surface *ecran;
@@ -28,9 +25,7 @@ int main(int argc, char** argv) {
         printf("Audio Error:%s",Mix_GetError());
     }
 
-    Mix_Music *backgroundMusic;
-    backgroundMusic = Mix_LoadMUS("../audio/dark-background-sound.wav");
-    Mix_PlayMusic(backgroundMusic, -1);
+
 
     // INIT MENU HOVER SOUND
     Mix_Chunk *menuHoverSound;
@@ -42,12 +37,10 @@ int main(int argc, char** argv) {
         fprintf(stderr, "ERROR CREATING THE WINDOW %d*%d: %s.\n", SCREEN_HEIGHT, SCREEN_WIDTH, SDL_GetError());
         return 1;
     }
-
-    SDL_Surface *backgroundImage = IMG_Load("../assets/menuBackground.png");
-    if (backgroundImage == NULL) {
-        printf("ERROR LOADING BACKGROUND IMAGE: %s\n", IMG_GetError());
-        return 2;
-    }
+    
+    // INIT BACKGROUND
+    Background background;
+    InitBackground(&background);
 
     button menuButtons[MENU_BUTTONS_COUNT];
     if (InitBouton(menuButtons) != 0) {
@@ -55,9 +48,11 @@ int main(int argc, char** argv) {
         return 3;
     }
 
+
+    
     SDL_Event event;
     while (playing) {
-        SDL_BlitSurface(backgroundImage, NULL, ecran, NULL);
+        AfficherBackground(background, ecran);
         AfficherBouton(menuButtons, ecran, 0);
 
         SDL_PollEvent(&event);
@@ -94,10 +89,9 @@ int main(int argc, char** argv) {
         menuHoverSoundPlayed = 0;
         SDL_Flip(ecran);
     }
-
-    SDL_FreeSurface(backgroundImage);
+    
+    FreeBackground(&background);
     FreeBouton(menuButtons);
-    Mix_FreeMusic(backgroundMusic);
     Mix_FreeChunk(menuHoverSound);
     SDL_Quit();
     return 0;

@@ -4,6 +4,10 @@
 #include <SDL/SDL_image.h>
 #include "bouton.h"
 
+int point_in_rect(int x, int y, SDL_Rect rect) {
+    return (x >= rect.x && x < rect.x + rect.w && y >= rect.y && y < rect.y + rect.h);
+}
+
 int InitBouton(button b[]) {
     //INIT newGameButton
     b[0].button_images[0] = IMG_Load("../assets/newGameButton.png");
