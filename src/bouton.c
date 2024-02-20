@@ -4,6 +4,9 @@
 #include <SDL/SDL_image.h>
 #include "bouton.h"
 
+#define MENU_BUTTONS_COUNT 4
+#define SETTING_BUTTONS_COUNT 3
+
 int point_in_rect(int x, int y, SDL_Rect rect) {
     return (x >= rect.x && x < rect.x + rect.w && y >= rect.y && y < rect.y + rect.h);
 }
@@ -46,8 +49,46 @@ int InitBouton(button b[]) {
     return 0;
 }
 
+int InitSettingsButtons(button b[]){
+    //INIT FULL SCREEN BUTTON
+    b[0].button_images[0] = IMG_Load("../assets/fullScreenButton.png");
+    b[0].button_images[1] = IMG_Load("../assets/fullScreenHoveredButton.png");
+    b[0].actif = 0;
+
+    //INIT WINDOWED SCREEN BUTTON
+    b[1].button_images[0] = IMG_Load("../assets/windowedButton.png");
+    b[1].button_images[1] = IMG_Load("../assets/windowedHoveredButton.png");
+    b[1].actif = 0;
+
+    //INIT RETURN BUTTON 
+    b[2].button_images[0] = IMG_Load("../assets/returnButton.png");
+    b[2].button_images[1] = IMG_Load("../assets/returnHoveredButton.png");
+    b[2].actif = 0;
+
+    if(b[0].button_images[0] == NULL || b[0].button_images[1] == NULL ||
+       b[1].button_images[0] == NULL || b[1].button_images[1] == NULL ||
+       b[2].button_images[0] == NULL || b[2].button_images[1] == NULL) {
+        printf("ERROR LOADING BUTTON IMAGES: %s\n", IMG_GetError());
+        return 4;
+    }
+
+    for(int i = 0; i < 2; i++) {
+        b[i].button_rect = (SDL_Rect){475 , 230 + i * 80, b[i].button_images[0]->w, b[i].button_images[0]->h};
+    }
+
+    b[2].button_rect = (SDL_Rect){475 , 530, b[2].button_images[0]->w, b[2].button_images[0]->h};
+
+    return 0;
+}
+
 void AfficherBouton(button b[], SDL_Surface *ecran, int niveau) {
-    for(int i = 0; i < 4; i++) {
+    int buttonsCount;
+    if(niveau == 0){
+    	buttonsCount = MENU_BUTTONS_COUNT;
+    }else if (niveau == 1){
+    	buttonsCount = SETTING_BUTTONS_COUNT;
+    }
+    for(int i = 0; i < buttonsCount; i++) {
         SDL_Surface *buttonImage = b[i].button_images[b[i].actif];
         SDL_BlitSurface(buttonImage, NULL, ecran, &b[i].button_rect);
     }
@@ -63,7 +104,7 @@ void AfficherBoutonActif(button b[], SDL_Surface *ecran) {
 }
 
 
-void FreeBouton(button b[]) {
+void FreeBouton(button b[], int nb) {
     for(int i = 0; i < 4; i++) {
         SDL_FreeSurface(b[i].button_images[0]);
         SDL_FreeSurface(b[i].button_images[1]);

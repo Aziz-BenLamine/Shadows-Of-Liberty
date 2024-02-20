@@ -9,6 +9,7 @@
 #define SCREEN_HEIGHT 700
 #define SCREEN_WIDTH 1200
 #define MENU_BUTTONS_COUNT 4
+#define SETTING_BUTTONS_COUNT 3
 
 int main(int argc, char** argv) {
     SDL_Surface *ecran;
@@ -47,8 +48,12 @@ int main(int argc, char** argv) {
         printf("ERROR INITIALIZING MENU BUTTONS.\n");
         return 3;
     }
-
-
+    
+    button settingButtons[SETTING_BUTTONS_COUNT];
+    if(InitSettingsButtons(settingButtons) != 0){
+    	printf("ERROR INITIALIZING MENU BUTTONS \n");
+    	return 4;
+    }
     
     SDL_Event event;
     while (playing) {
@@ -111,13 +116,39 @@ int main(int argc, char** argv) {
                 }
         }
       }
+      else if(background.niveau == 1){
+      		AfficherBouton(settingButtons, ecran, 1);
+     		SDL_PollEvent(&event);
+                switch (event.type) {
+                  case SDL_QUIT:
+                    playing = 0;
+                    break;
+                  case SDL_MOUSEMOTION:
+                	for (int i = 0; i < SETTING_BUTTONS_COUNT; i++) {
+                    		if (point_in_rect(event.motion.x, event.motion.y, settingButtons[i].button_rect)) {
+                        		if (settingButtons[i].actif == 0) {
+                            			settingButtons[i].actif = 1;
+                            			if (!menuHoverSoundPlayed) {
+                                			Mix_PlayChannel(-1, menuHoverSound, 0);
+                                			menuHoverSoundPlayed = 1;
+                            			}
+                        		}
+                    		} else {
+                     		   settingButtons[i].actif = 0;
+                   		 }
+               		 }
+                break;
+            }
+      
+      }
         AfficherBoutonActif(menuButtons, ecran);
         menuHoverSoundPlayed = 0;
         SDL_Flip(ecran);
     }
     
     FreeBackground(&background);
-    FreeBouton(menuButtons);
+    FreeBouton(menuButtons, MENU_BUTTONS_COUNT);
+    FreeBouton(settingButtons, SETTING_BUTTONS_COUNT);
     Mix_FreeChunk(menuHoverSound);
     SDL_Quit();
     return 0;

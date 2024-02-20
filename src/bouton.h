@@ -10,9 +10,10 @@ typedef struct{
 } button;
 
 int InitBouton(button b[]);
+int InitSettingsButtons(button b[]);
 void AfficherBouton(button b[], SDL_Surface *ecran, int niveau);
 void AfficherBoutonActif(button b[], SDL_Surface *ecran);
-void FreeBouton(button b[]);
+void FreeBouton(button b[], int nb);
 int point_in_rect(int x, int y, SDL_Rect rect);
 #endif // BOUTON_H
 
