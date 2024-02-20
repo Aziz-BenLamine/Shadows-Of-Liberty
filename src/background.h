@@ -17,6 +17,7 @@ typedef struct{
 
 void InitBackground(Background *b);
 void AfficherBackground(Background b, SDL_Surface *ecran);
+void toggleFullScreen(int *fullscreen);
 void FreeBackground(Background *b);
 
 #endif // BACKGROUND_H
