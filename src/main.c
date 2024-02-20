@@ -53,8 +53,18 @@ int main(int argc, char** argv) {
     SDL_Event event;
     while (playing) {
         AfficherBackground(background, ecran);
+        
+        SDL_PollEvent(&event);
+        switch (event.type) {
+            case SDL_QUIT:
+                playing = 0;
+                break;
+            }
+            
+            
+        if(background.niveau == 0){
         AfficherBouton(menuButtons, ecran, 0);
-
+	
         SDL_PollEvent(&event);
         switch (event.type) {
             case SDL_QUIT:
@@ -76,15 +86,31 @@ int main(int argc, char** argv) {
                 }
                 break;
             case SDL_MOUSEBUTTONDOWN:
-                if (event.button.button == SDL_BUTTON_LEFT && point_in_rect(event.button.x, event.button.y, menuButtons[3].button_rect)) {
-                    playing = 0;
-                }
-                break;
+                        if (event.button.button == SDL_BUTTON_LEFT) {
+                            if (point_in_rect(event.button.x, event.button.y, menuButtons[0].button_rect)) {
+                                background.niveau = 2;
+                                for (int i = 0; i < MENU_BUTTONS_COUNT; i++) {
+                                    menuButtons[i].actif = 0;
+                                }
+                            } else if (point_in_rect(event.button.x, event.button.y, menuButtons[2].button_rect)) {
+                                background.niveau = 1;
+                                for (int i = 0; i < MENU_BUTTONS_COUNT; i++) {
+                                    menuButtons[i].actif = 0;
+                                }
+                            } else if (point_in_rect(event.button.x, event.button.y, menuButtons[3].button_rect)) {
+                                playing = 0;
+                                for (int i = 0; i < MENU_BUTTONS_COUNT; i++) {
+                                    menuButtons[i].actif = 0;
+                                }
+                            }
+                        }
+                        break;
             case SDL_KEYDOWN:
                 if (event.key.keysym.sym == SDLK_q) {
                     playing = 0;
                 }
         }
+      }
         AfficherBoutonActif(menuButtons, ecran);
         menuHoverSoundPlayed = 0;
         SDL_Flip(ecran);
