@@ -30,9 +30,12 @@ void AfficherBackground(Background b, SDL_Surface *ecran){
  SDL_BlitSurface(b.image[b.niveau], NULL, ecran, &b.pos);
 }
 
-void toggleFullScreen(int *fullscreen){
-	*fullscreen = !(*fullscreen);
-	SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 0, *fullscreen ? SDL_FULLSCREEN : 0);
+void toggleFullScreen(){
+	SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 0, SDL_FULLSCREEN);
+}
+
+void toggleWindowedScreen(){
+	SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0);
 }
 
 void FreeBackground(Background *b) {

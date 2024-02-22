@@ -15,7 +15,6 @@ int main(int argc, char** argv) {
     SDL_Surface *ecran;
     int playing = 1;
     int menuHoverSoundPlayed = 0;
-    int fullscreen = 0;
 
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
         printf("Echec d'initialisation de SDL : %s\n", SDL_GetError());
@@ -144,7 +143,9 @@ int main(int argc, char** argv) {
                         	if (point_in_rect(event.button.x, event.button.y, settingButtons[2].button_rect)){
                         		background.niveau = 0;
                         	}else if(point_in_rect(event.button.x, event.button.y, settingButtons[0].button_rect)){
-                        		toggleFullScreen(&fullscreen);
+                        		toggleFullScreen();
+                        	}else if(point_in_rect(event.button.x, event.button.y, settingButtons[1].button_rect)){
+                        		toggleWindowedScreen();
                         	}
                         }
                   break;
