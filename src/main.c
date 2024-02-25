@@ -9,7 +9,7 @@
 #define SCREEN_HEIGHT 700
 #define SCREEN_WIDTH 1200
 #define MENU_BUTTONS_COUNT 4
-#define SETTING_BUTTONS_COUNT 3
+#define SETTING_BUTTONS_COUNT 5
 
 int main(int argc, char** argv) {
     SDL_Surface *ecran;
