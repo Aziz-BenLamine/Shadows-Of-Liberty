@@ -14,7 +14,9 @@
 int main(int argc, char** argv) {
     SDL_Surface *ecran;
     int playing = 1;
+    int buttonClicked = 0;
     int menuHoverSoundPlayed = 0;
+    int delay = 0;
 
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
         printf("Echec d'initialisation de SDL : %s\n", SDL_GetError());
@@ -25,7 +27,9 @@ int main(int argc, char** argv) {
     if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) == -1) {
         printf("Audio Error:%s",Mix_GetError());
     }
-
+    //INIT MENU BACKGROUND SOUND
+    backgroundSound BS;
+    InitBackgroundSound(&BS);
 
 
     // INIT MENU HOVER SOUND
@@ -118,6 +122,7 @@ int main(int argc, char** argv) {
       }
       else if(background.niveau == 1){
       		AfficherBouton(settingButtons, ecran, 1);
+        	AfficherSoundSlider(&BS, ecran);
      		SDL_PollEvent(&event);
                 switch (event.type) {
                   case SDL_QUIT:
@@ -147,11 +152,30 @@ int main(int argc, char** argv) {
                         	}else if(point_in_rect(event.button.x, event.button.y, settingButtons[1].button_rect)){
                         		toggleWindowedScreen();
                         	}
+                        	//SOUNDBUTTONS
+                        	
+                        	if(!buttonClicked){
+                        		//VOLUME DOWN
+                        		if(point_in_rect(event.button.x, event.button.y, settingButtons[3].button_rect) && BS.soundLevel != 0){
+                        			changeBackgroundSoundLevel(&BS, 0);
+                        		}
+                        		//VOLUME UP
+                        		else if(point_in_rect(event.button.x, event.button.y, settingButtons[4].button_rect) && BS.soundLevel != 4){
+                        			changeBackgroundSoundLevel(&BS, 1);
+                        		}
+                        		buttonClicked = 1;
+                        		delay = 0;
+                        	}
+                        	
                         }
                   break;
             }
       
       }
+      if(delay > 50){
+      	buttonClicked = 0;
+      }
+      	delay++;
         AfficherBoutonActif(menuButtons, ecran);
         menuHoverSoundPlayed = 0;
         SDL_Flip(ecran);
@@ -161,6 +185,7 @@ int main(int argc, char** argv) {
     FreeBouton(menuButtons, MENU_BUTTONS_COUNT);
     FreeBouton(settingButtons, SETTING_BUTTONS_COUNT);
     Mix_FreeChunk(menuHoverSound);
+    Mix_FreeMusic(BS.music);
     SDL_Quit();
     return 0;
 }
