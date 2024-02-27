@@ -87,19 +87,19 @@ void changeBackgroundSoundLevel(backgroundSound *sound, int action) {
 
     switch(sound->soundLevel) {
         case 0:
-            Mix_Volume(-1, MIX_MAX_VOLUME * 0);
+            Mix_VolumeMusic(0);
             break;
         case 1: 
-            Mix_Volume(-1, MIX_MAX_VOLUME * 0.25);
+            Mix_VolumeMusic(MIX_MAX_VOLUME * 0.25);
             break;
         case 2: 
-            Mix_Volume(-1, MIX_MAX_VOLUME * 0.5);
+            Mix_VolumeMusic(MIX_MAX_VOLUME * 0.5);
             break;
         case 3: 
-            Mix_Volume(-1, MIX_MAX_VOLUME * 0.75);
+            Mix_VolumeMusic(MIX_MAX_VOLUME * 0.75);
             break;
         case 4: 
-            Mix_Volume(-1, MIX_MAX_VOLUME * 1);
+            Mix_VolumeMusic(MIX_MAX_VOLUME);
             break;
     }
 }

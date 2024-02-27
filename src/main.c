@@ -24,7 +24,7 @@ int main(int argc, char** argv) {
     }
 
     // INIT MUSIC
-    if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) == -1) {
+    if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 2048 ) == -1) {
         printf("Audio Error:%s",Mix_GetError());
     }
     //INIT MENU BACKGROUND SOUND
@@ -70,7 +70,7 @@ int main(int argc, char** argv) {
                 break;
             }
             
-            
+        //Main Menu Handling and Blitting
         if(background.niveau == 0){
         AfficherBouton(menuButtons, ecran, 0);
 	
@@ -85,7 +85,7 @@ int main(int argc, char** argv) {
                         if (menuButtons[i].actif == 0) {
                             menuButtons[i].actif = 1;
                             if (!menuHoverSoundPlayed) {
-                                Mix_PlayChannel(-1, menuHoverSound, 0);
+                                Mix_PlayChannel(1, menuHoverSound, 0);
                                 menuHoverSoundPlayed = 1;
                             }
                         }
@@ -120,6 +120,8 @@ int main(int argc, char** argv) {
                 }
         }
       }
+      
+      //Settings Menu handling and blitting
       else if(background.niveau == 1){
       		AfficherBouton(settingButtons, ecran, 1);
         	AfficherSoundSlider(&BS, ecran);
@@ -128,13 +130,14 @@ int main(int argc, char** argv) {
                   case SDL_QUIT:
                     playing = 0;
                     break;
+                  //Handling Buttons hovered effect sound
                   case SDL_MOUSEMOTION:
                 	for (int i = 0; i < SETTING_BUTTONS_COUNT; i++) {
                     		if (point_in_rect(event.motion.x, event.motion.y, settingButtons[i].button_rect)) {
                         		if (settingButtons[i].actif == 0) {
                             			settingButtons[i].actif = 1;
                             			if (!menuHoverSoundPlayed) {
-                                			Mix_PlayChannel(-1, menuHoverSound, 0);
+                                			Mix_PlayChannel(1, menuHoverSound, 0);
                                 			menuHoverSoundPlayed = 1;
                             			}
                         		}
@@ -143,6 +146,7 @@ int main(int argc, char** argv) {
                    		 }
                		 }
                   break;
+                  //Handling Buttons hovered effect + TOGGLE(FULLSCREEN/WINDOWED Modes)
                   case SDL_MOUSEBUTTONDOWN:
                         if (event.button.button == SDL_BUTTON_LEFT){
                         	if (point_in_rect(event.button.x, event.button.y, settingButtons[2].button_rect)){
@@ -152,7 +156,7 @@ int main(int argc, char** argv) {
                         	}else if(point_in_rect(event.button.x, event.button.y, settingButtons[1].button_rect)){
                         		toggleWindowedScreen();
                         	}
-                        	//SOUNDBUTTONS
+                        	//SOUNDBUTTONS HANDLING
                         	
                         	if(!buttonClicked){
                         		//VOLUME DOWN
@@ -163,6 +167,7 @@ int main(int argc, char** argv) {
                         		else if(point_in_rect(event.button.x, event.button.y, settingButtons[4].button_rect) && BS.soundLevel != 4){
                         			changeBackgroundSoundLevel(&BS, 1);
                         		}
+                        		//DELAY BETWEEN BUTTON CLICKS
                         		buttonClicked = 1;
                         		delay = 0;
                         	}
@@ -172,6 +177,7 @@ int main(int argc, char** argv) {
             }
       
       }
+      //
       if(delay > 50){
       	buttonClicked = 0;
       }
