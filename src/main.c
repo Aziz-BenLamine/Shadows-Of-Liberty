@@ -3,6 +3,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_mixer.h>
+#include <SDL/SDL_ttf.h> 
 #include "bouton.h"
 #include "background.h"
 
@@ -10,6 +11,7 @@
 #define SCREEN_WIDTH 1200
 #define MENU_BUTTONS_COUNT 4
 #define SETTING_BUTTONS_COUNT 5
+#define NUM_IMAGES 7
 
 int main(int argc, char** argv) {
     SDL_Surface *ecran;
@@ -21,13 +23,34 @@ int main(int argc, char** argv) {
     int selectedButtonIndex = 0;
     int previousButtonIndex = 0;
 
+    //Texte
+    SDL_Surface * surfaceTexte;
+    SDL_Rect positiontext;
+    TTF_Font *font;
+    SDL_Color textColor;
+    TTF_Init();
+    positiontext.x = 900;
+    positiontext.y = 650;
+    font = TTF_OpenFont("Ironmonger Black Regular.otf", 20);
+    if (font == NULL) {
+        fprintf(stderr, "Failed to load font: %s\n", TTF_GetError());
+        return 1;
+    }
+    textColor.r = 255;
+    textColor.g = 255;
+    textColor.b = 255;
+
+    //Animation
+    SDL_Surface *backgroundImages[NUM_IMAGES];
+    int currentImageIndex = 0;
+
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
         printf("Echec d'initialisation de SDL : %s\n", SDL_GetError());
         return 1;
     }
 
-    if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 2048 ) == -1) {
-        printf("Audio Error:%s",Mix_GetError());
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 2048) == -1) {
+        printf("Audio Error:%s", Mix_GetError());
     }
 
     backgroundSound BS;
@@ -35,9 +58,13 @@ int main(int argc, char** argv) {
 
     Mix_Chunk *menuHoverSound;
     menuHoverSound = Mix_LoadWAV("../audio/menuHoverSound.wav");
+    if (menuHoverSound == NULL) {
+        fprintf(stderr, "Failed to load menu hover sound: %s\n", Mix_GetError());
+        return 1;
+    }
     Mix_VolumeChunk(menuHoverSound, MIX_MAX_VOLUME / 2);
 
-    ecran = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, SDL_HWSURFACE | SDL_DOUBLEBUF| SDL_HWACCEL);
+    ecran = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_HWACCEL);
     if (ecran == NULL) {
         fprintf(stderr, "ERROR CREATING THE WINDOW %d*%d: %s.\n", SCREEN_HEIGHT, SCREEN_WIDTH, SDL_GetError());
         return 1;
@@ -53,15 +80,31 @@ int main(int argc, char** argv) {
     }
 
     button settingButtons[SETTING_BUTTONS_COUNT];
-    if(InitSettingsButtons(settingButtons) != 0){
+    if (InitSettingsButtons(settingButtons) != 0) {
         printf("ERROR INITIALIZING MENU BUTTONS \n");
         return 4;
     }
 
+    //Load animation
+    for (int i = 0; i < NUM_IMAGES; i++) {
+        char filename[50];
+        sprintf(filename, "../assets/moon%d.png", i);
+        backgroundImages[i] = IMG_Load(filename);
+        if (backgroundImages[i] == NULL) {
+            printf("Error loading background image %d: %s\n", i, IMG_GetError());
+        }
+    }
+
+    SDL_Rect posAnim;
+    posAnim.x = 1010;
+    posAnim.y = 70;
+    posAnim.w = backgroundImages[0]->w;
+    posAnim.h = backgroundImages[0]->h;
+
     SDL_Event event;
     while (playing) {
         AfficherBackground(background, ecran);
-
+        SDL_BlitSurface(backgroundImages[currentImageIndex], NULL, ecran, &posAnim);
         SDL_PollEvent(&event);
         switch (event.type) {
             case SDL_QUIT:
@@ -69,7 +112,7 @@ int main(int argc, char** argv) {
                 break;
         }
 
-        if(background.niveau == 0){
+        if (background.niveau == 0) {
             AfficherBouton(menuButtons, ecran, 0);
             switch (event.type) {
                 case SDL_MOUSEMOTION:
@@ -108,7 +151,7 @@ int main(int argc, char** argv) {
                     }
                     break;
                 case SDL_KEYDOWN:
-                    if(!keysClicked){
+                    if (!keysClicked) {
                         if (event.key.keysym.sym == SDLK_DOWN) {
                             previousButtonIndex = selectedButtonIndex;
                             selectedButtonIndex = (selectedButtonIndex + 1) % MENU_BUTTONS_COUNT;
@@ -147,8 +190,7 @@ int main(int argc, char** argv) {
                     keysClicked = 0;
                     break;
             }
-        }
-        else if(background.niveau == 1){
+        } else if (background.niveau == 1) {
             AfficherBouton(settingButtons, ecran, 1);
             AfficherSoundSlider(&BS, ecran);
             switch (event.type) {
@@ -168,18 +210,18 @@ int main(int argc, char** argv) {
                     }
                     break;
                 case SDL_MOUSEBUTTONDOWN:
-                    if (event.button.button == SDL_BUTTON_LEFT){
-                        if (point_in_rect(event.button.x, event.button.y, settingButtons[2].button_rect)){
+                    if (event.button.button == SDL_BUTTON_LEFT) {
+                        if (point_in_rect(event.button.x, event.button.y, settingButtons[2].button_rect)) {
                             background.niveau = 0;
-                        }else if(point_in_rect(event.button.x, event.button.y, settingButtons[0].button_rect)){
+                        } else if (point_in_rect(event.button.x, event.button.y, settingButtons[0].button_rect)) {
                             toggleFullScreen();
-                        }else if(point_in_rect(event.button.x, event.button.y, settingButtons[1].button_rect)){
+                        } else if (point_in_rect(event.button.x, event.button.y, settingButtons[1].button_rect)) {
                             toggleWindowedScreen();
                         }
-                        if(!buttonClicked){
-                            if(point_in_rect(event.button.x, event.button.y, settingButtons[3].button_rect) && BS.soundLevel != 0){
+                        if (!buttonClicked) {
+                            if (point_in_rect(event.button.x, event.button.y, settingButtons[3].button_rect) && BS.soundLevel != 0) {
                                 changeBackgroundSoundLevel(&BS, 0);
-                            }else if(point_in_rect(event.button.x, event.button.y, settingButtons[4].button_rect) && BS.soundLevel != 4){
+                            } else if (point_in_rect(event.button.x, event.button.y, settingButtons[4].button_rect) && BS.soundLevel != 4) {
                                 changeBackgroundSoundLevel(&BS, 1);
                             }
                             buttonClicked = 1;
@@ -188,8 +230,8 @@ int main(int argc, char** argv) {
                     }
                     break;
                 case SDL_KEYDOWN:
-                    if(!keysClicked){
-                        if(event.key.keysym.sym == SDLK_DOWN) {
+                    if (!keysClicked) {
+                        if (event.key.keysym.sym == SDLK_DOWN) {
                             previousButtonIndex = selectedButtonIndex;
                             selectedButtonIndex = (selectedButtonIndex + 1) % SETTING_BUTTONS_COUNT;
                             Mix_PlayChannel(1, menuHoverSound, 0);
@@ -201,10 +243,10 @@ int main(int argc, char** argv) {
                             Mix_PlayChannel(1, menuHoverSound, 0);
                             settingButtons[selectedButtonIndex].actif = 1;
                             settingButtons[previousButtonIndex].actif = 0;
-                        } else if(event.key.keysym.sym == SDLK_RETURN){
+                        } else if (event.key.keysym.sym == SDLK_RETURN) {
                             settingButtons[selectedButtonIndex].actif = 0;
                             settingButtons[previousButtonIndex].actif = 0;
-                            switch(selectedButtonIndex){
+                            switch (selectedButtonIndex) {
                                 case 0:
                                     toggleFullScreen();
                                     break;
@@ -225,21 +267,36 @@ int main(int argc, char** argv) {
             }
         }
 
-        if(delay > 50){
+        if (delay > 50) {
             buttonClicked = 0;
         }
         delay++;
 
         AfficherBoutonActif(menuButtons, ecran);
         menuHoverSoundPlayed = 0;
+        currentImageIndex = (currentImageIndex + 1) % NUM_IMAGES;
+
+        //TEXT BLIT
+        surfaceTexte = TTF_RenderText_Solid(font, "Ares Forge Games", textColor);
+        if (surfaceTexte == NULL) {
+            fprintf(stderr, "Failed to render text: %s\n", TTF_GetError());
+            return 1;
+        }
+        SDL_BlitSurface(surfaceTexte, NULL, ecran, &positiontext);
         SDL_Flip(ecran);
     }
 
+    for (int i = 0; i < NUM_IMAGES; i++) {
+        SDL_FreeSurface(backgroundImages[i]);
+    }
     FreeBackground(&background);
     FreeBouton(menuButtons, MENU_BUTTONS_COUNT);
     FreeBouton(settingButtons, SETTING_BUTTONS_COUNT);
     Mix_FreeChunk(menuHoverSound);
     Mix_FreeMusic(BS.music);
+    SDL_FreeSurface(surfaceTexte);
+    TTF_CloseFont(font);
+    TTF_Quit();
     SDL_Quit();
     return 0;
 }
