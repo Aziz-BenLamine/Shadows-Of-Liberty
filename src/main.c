@@ -22,6 +22,7 @@ int main(int argc, char** argv) {
     int delay = 0;
     int selectedButtonIndex = 0;
     int previousButtonIndex = 0;
+    int screenState = 0;
 
     //Texte
     SDL_Surface * surfaceTexte;
@@ -117,6 +118,18 @@ int main(int argc, char** argv) {
             case SDL_QUIT:
                 playing = 0;
                 break;
+            case SDL_KEYDOWN:
+            
+            	if(event.key.keysym.sym == SDLK_TAB){
+            		if(screenState == 0){
+           			toggleFullScreen();
+           			screenState = 1;
+           		}else if(screenState == 1){
+           			toggleWindowedScreen();
+           			screenState = 0;
+           		}
+           		break;
+            	}
         }
 
         if (background.niveau == 0) {
@@ -199,6 +212,7 @@ int main(int argc, char** argv) {
                 case SDL_KEYUP:
                     keysClicked = 0;
                     break;
+                    
             }
         } else if (background.niveau == 1) {
             AfficherBouton(settingButtons, ecran, 1);
