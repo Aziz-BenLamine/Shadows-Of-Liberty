@@ -128,8 +128,12 @@ int main(int argc, char** argv) {
            			toggleWindowedScreen();
            			screenState = 0;
            		}
-           		break;
             	}
+            	if (event.key.keysym.sym == SDLK_ESCAPE) {
+            		/*menuButtons[selectedButtonIndex].actif = 0;
+                       	menuButtons[previousButtonIndex].actif = 0;*/
+            		background.niveau = 0;
+        		}
         }
 
         if (background.niveau == 0) {
@@ -205,9 +209,23 @@ int main(int argc, char** argv) {
                         }
                         keysClicked = 1;
                     }
-                    if (event.key.keysym.sym == SDLK_ESCAPE) {
-            		playing = 0;
+                    //SHORTCUTS FOR THE MAIN MENU
+                    
+        		
+        	    
+        	    if (event.key.keysym.sym == SDLK_n) {
+        	    	menuButtons[selectedButtonIndex].actif = 0;
+                       	menuButtons[previousButtonIndex].actif = 0;
+            		background.niveau = 2;
         		}
+        		
+        	    if (event.key.keysym.sym == SDLK_s) {
+        	    	menuButtons[selectedButtonIndex].actif = 0;
+                       	menuButtons[previousButtonIndex].actif = 0;
+            		background.niveau = 1;
+        		}
+        		
+        		
                     break;
                 case SDL_KEYUP:
                     keysClicked = 0;
