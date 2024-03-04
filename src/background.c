@@ -5,6 +5,8 @@
 #include <SDL/SDL_mixer.h>
 #include "background.h"
 
+
+
 void InitBackground(Background *b){
     
     b->image[0] = IMG_Load("../assets/menuBackground.png");
@@ -104,4 +106,44 @@ void changeBackgroundSoundLevel(backgroundSound *sound, int action) {
     }
 }
 
+// INTRO
 
+
+void displayImageWithFade(char *imagePath, SDL_Surface *screen) {
+    SDL_Surface *image = IMG_Load(imagePath);
+    if (image == NULL) {
+        fprintf(stderr, "Error loading image: %s\n", IMG_GetError());
+        return;
+    }
+
+    // Set initial alpha value
+    int alpha = 255; // Start with full opacity
+
+    // Calculate the number of steps based on FADE_DURATION and a desired frame rate
+    int num_steps = 150;
+    int alpha_step = 255 / num_steps;
+
+    SDL_Rect fadeRect = {0, 0, screen->w, screen->h};
+
+    // Fade out effect
+    for (int i = 0; i <= num_steps; ++i) {
+        // Calculate alpha value
+        alpha = 255 - i * alpha_step;  // Fading out from full opacity to transparent
+
+        // Fill the screen with black color and adjusted alpha
+        SDL_FillRect(screen, &fadeRect, SDL_MapRGBA(screen->format, 0, 0, 0, alpha));
+
+        // Blit the image onto the screen with adjusted alpha
+        SDL_SetAlpha(image, SDL_SRCALPHA, alpha);
+        SDL_BlitSurface(image, NULL, screen, NULL);
+
+        // Update the screen after filling the fade rect and blitting the image
+        SDL_Flip(screen);
+
+        // Delay for smoother animation
+        SDL_Delay(1); // Adjusted delay for longer fade
+    }
+
+    // Free the image surface
+    SDL_FreeSurface(image);
+}

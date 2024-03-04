@@ -30,6 +30,7 @@ void changeBackgroundSoundLevel(backgroundSound *sound, int action);  // action 
 void toggleFullScreen();
 void toggleWindowedScreen();
 void FreeBackground(Background *b);
-
+//INTRO FUNCTIONS
+void displayImageWithFade(char *imagePath, SDL_Surface *screen);
 #endif // BACKGROUND_H
 

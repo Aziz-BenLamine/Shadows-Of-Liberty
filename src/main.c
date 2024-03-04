@@ -70,6 +70,7 @@ int main(int argc, char** argv) {
         return 1;
     }
 
+
     Background background;
     InitBackground(&background);
 
@@ -100,11 +101,17 @@ int main(int argc, char** argv) {
     posAnim.y = 70;
     posAnim.w = backgroundImages[0]->w;
     posAnim.h = backgroundImages[0]->h;
-
+    
+    
+    //GAME INTRO
+    displayImageWithFade("../assets/intro/gameStudioIntro.png", ecran); 	
+    displayImageWithFade("../assets/intro/gameIntro.png", ecran); 
+    
     SDL_Event event;
     while (playing) {
         AfficherBackground(background, ecran);
         SDL_BlitSurface(backgroundImages[currentImageIndex], NULL, ecran, &posAnim);
+        SDL_Delay(10);
         SDL_PollEvent(&event);
         switch (event.type) {
             case SDL_QUIT:
@@ -185,6 +192,9 @@ int main(int argc, char** argv) {
                         }
                         keysClicked = 1;
                     }
+                    if (event.key.keysym.sym == SDLK_ESCAPE) {
+            		playing = 0;
+        		}
                     break;
                 case SDL_KEYUP:
                     keysClicked = 0;
