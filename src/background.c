@@ -3,6 +3,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_mixer.h>
+#include <SDL/SDL_ttf.h>
 #include "background.h"
 
 
@@ -141,9 +142,34 @@ void displayImageWithFade(char *imagePath, SDL_Surface *screen) {
         SDL_Flip(screen);
 
         // Delay for smoother animation
-        SDL_Delay(1); // Adjusted delay for longer fade
+        //SDL_Delay(1); // Adjusted delay for longer fade
     }
 
     // Free the image surface
     SDL_FreeSurface(image);
 }
+
+
+//TEXT
+
+SDL_Surface* initText(TTF_Font *font, char *text, SDL_Color color) {
+    SDL_Surface *surfaceTexte = TTF_RenderText_Solid(font, text, color);
+    if (surfaceTexte == NULL) {
+        fprintf(stderr, "Failed to render text: %s\n", TTF_GetError());
+        return NULL;
+    }
+    return surfaceTexte;
+}
+
+
+void renderText(SDL_Surface *surface, TTF_Font *font, char *text, SDL_Color color, int x, int y) {
+    SDL_Surface *textSurface = initText(font, text, color);
+    if (textSurface == NULL) {
+        return;
+    }
+    SDL_Rect position = {x, y, 0, 0};
+    SDL_BlitSurface(textSurface, NULL, surface, &position);
+    SDL_FreeSurface(textSurface);
+}
+
+
