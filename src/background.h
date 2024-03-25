@@ -4,6 +4,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_mixer.h>
+#include <SDL/SDL_ttf.h>
 
 #define SCREEN_WIDTH 1200
 #define SCREEN_HEIGHT 700
@@ -32,5 +33,8 @@ void toggleWindowedScreen();
 void FreeBackground(Background *b);
 //INTRO FUNCTIONS
 void displayImageWithFade(char *imagePath, SDL_Surface *screen);
+//TEXT FUNCTIONS
+void renderText(SDL_Surface *surface, TTF_Font *font, char *text, SDL_Color color, int x, int y);
+SDL_Surface* initText(TTF_Font *font, char *text, SDL_Color color);
 #endif // BACKGROUND_H
 

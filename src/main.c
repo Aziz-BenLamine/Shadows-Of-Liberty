@@ -6,6 +6,7 @@
 #include <SDL/SDL_ttf.h> 
 #include "bouton.h"
 #include "background.h"
+#include "player.h"
 
 #define SCREEN_HEIGHT 700
 #define SCREEN_WIDTH 1200
@@ -25,21 +26,13 @@ int main(int argc, char** argv) {
     int screenState = 0;
 
     //Texte
-    SDL_Surface * surfaceTexte;
-    SDL_Rect positiontext;
-    TTF_Font *font;
-    SDL_Color textColor;
     TTF_Init();
-    positiontext.x = 900;
-    positiontext.y = 650;
-    font = TTF_OpenFont("Ironmonger Black Regular.otf", 20);
+    TTF_Font *font = TTF_OpenFont("Ironmonger Black Regular.otf", 20);
     if (font == NULL) {
         fprintf(stderr, "Failed to load font: %s\n", TTF_GetError());
         return 1;
     }
-    textColor.r = 255;
-    textColor.g = 255;
-    textColor.b = 255;
+    SDL_Color textColor = {255, 255, 255};
 
     //Animation
     SDL_Surface *backgroundImages[NUM_IMAGES];
@@ -111,7 +104,7 @@ int main(int argc, char** argv) {
     SDL_Event event;
     while (playing) {
         AfficherBackground(background, ecran);
-        SDL_Delay(10);
+        //SDL_Delay(1);
         SDL_PollEvent(&event);
         switch (event.type) {
             case SDL_QUIT:
@@ -138,6 +131,7 @@ int main(int argc, char** argv) {
         if (background.niveau == 0) {
             AfficherBouton(menuButtons, ecran, 0);
             SDL_BlitSurface(backgroundImages[currentImageIndex], NULL, ecran, &posAnim);
+            renderText(ecran, font, "Ares Forge Games", textColor, 900, 650);
             switch (event.type) {
                 case SDL_MOUSEMOTION:
                     for (int i = 0; i < MENU_BUTTONS_COUNT; i++) {
@@ -235,6 +229,7 @@ int main(int argc, char** argv) {
         } else if (background.niveau == 1) {
             AfficherBouton(settingButtons, ecran, 1);
             AfficherSoundSlider(&BS, ecran);
+            renderText(ecran, font, "Ares Forge Games", textColor, 900, 650);
             SDL_BlitSurface(backgroundImages[currentImageIndex], NULL, ecran, &posAnim);
             switch (event.type) {
                 case SDL_MOUSEMOTION:
@@ -320,12 +315,6 @@ int main(int argc, char** argv) {
         currentImageIndex = (currentImageIndex + 1) % NUM_IMAGES;
 
         //TEXT BLIT
-        surfaceTexte = TTF_RenderText_Solid(font, "Ares Forge Games", textColor);
-        if (surfaceTexte == NULL) {
-            fprintf(stderr, "Failed to render text: %s\n", TTF_GetError());
-            return 1;
-        }
-        SDL_BlitSurface(surfaceTexte, NULL, ecran, &positiontext);
         SDL_Flip(ecran);
     }
 
@@ -337,7 +326,6 @@ int main(int argc, char** argv) {
     FreeBouton(settingButtons, SETTING_BUTTONS_COUNT);
     Mix_FreeChunk(menuHoverSound);
     Mix_FreeMusic(BS.music);
-    SDL_FreeSurface(surfaceTexte);
     TTF_CloseFont(font);
     TTF_Quit();
     SDL_Quit();
