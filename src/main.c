@@ -132,6 +132,7 @@ int main(int argc, char** argv) {
         if (background.niveau == 0) {
             AfficherBouton(menuButtons, ecran, 0);
             SDL_BlitSurface(backgroundImages[currentImageIndex], NULL, ecran, &posAnim);
+            renderText(ecran, font, "Ares Forge Games", textColor, 900, 650);
             switch (event.type) {
                 case SDL_MOUSEMOTION:
                     for (int i = 0; i < MENU_BUTTONS_COUNT; i++) {
@@ -229,6 +230,7 @@ int main(int argc, char** argv) {
         } else if (background.niveau == 1) {
             AfficherBouton(settingButtons, ecran, 1);
             AfficherSoundSlider(&BS, ecran);
+            renderText(ecran, font, "Ares Forge Games", textColor, 900, 650);
             SDL_BlitSurface(backgroundImages[currentImageIndex], NULL, ecran, &posAnim);
             switch (event.type) {
                 case SDL_MOUSEMOTION:
