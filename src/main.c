@@ -6,6 +6,7 @@
 #include <SDL/SDL_ttf.h> 
 #include "bouton.h"
 #include "background.h"
+#include "player.h"
 
 #define SCREEN_HEIGHT 700
 #define SCREEN_WIDTH 1200
@@ -23,23 +24,16 @@ int main(int argc, char** argv) {
     int selectedButtonIndex = 0;
     int previousButtonIndex = 0;
     int screenState = 0;
-
+    Personne player;
+    init(&player, 0);
     //Texte
-    SDL_Surface * surfaceTexte;
-    SDL_Rect positiontext;
-    TTF_Font *font;
-    SDL_Color textColor;
     TTF_Init();
-    positiontext.x = 900;
-    positiontext.y = 650;
-    font = TTF_OpenFont("Ironmonger Black Regular.otf", 20);
+    TTF_Font *font = TTF_OpenFont("Ironmonger Black Regular.otf", 20);
     if (font == NULL) {
         fprintf(stderr, "Failed to load font: %s\n", TTF_GetError());
         return 1;
     }
-    textColor.r = 255;
-    textColor.g = 255;
-    textColor.b = 255;
+    SDL_Color textColor = {255, 255, 255};
 
     //Animation
     SDL_Surface *backgroundImages[NUM_IMAGES];
@@ -111,7 +105,7 @@ int main(int argc, char** argv) {
     SDL_Event event;
     while (playing) {
         AfficherBackground(background, ecran);
-        SDL_Delay(10);
+        //SDL_Delay(1);
         SDL_PollEvent(&event);
         switch (event.type) {
             case SDL_QUIT:
@@ -309,6 +303,13 @@ int main(int argc, char** argv) {
                     break;
             }
         }
+        //MAIN GAME
+        else if (background.niveau == 2){
+
+        	animerPerso (&player);
+        	afficherPerso(player, ecran);
+        	SDL_Delay(1);
+        }
 
         if (delay > 50) {
             buttonClicked = 0;
@@ -320,12 +321,6 @@ int main(int argc, char** argv) {
         currentImageIndex = (currentImageIndex + 1) % NUM_IMAGES;
 
         //TEXT BLIT
-        surfaceTexte = TTF_RenderText_Solid(font, "Ares Forge Games", textColor);
-        if (surfaceTexte == NULL) {
-            fprintf(stderr, "Failed to render text: %s\n", TTF_GetError());
-            return 1;
-        }
-        SDL_BlitSurface(surfaceTexte, NULL, ecran, &positiontext);
         SDL_Flip(ecran);
     }
 
@@ -337,7 +332,6 @@ int main(int argc, char** argv) {
     FreeBouton(settingButtons, SETTING_BUTTONS_COUNT);
     Mix_FreeChunk(menuHoverSound);
     Mix_FreeMusic(BS.music);
-    SDL_FreeSurface(surfaceTexte);
     TTF_CloseFont(font);
     TTF_Quit();
     SDL_Quit();
