@@ -11,43 +11,51 @@ int point_in_rect(int x, int y, SDL_Rect rect) {
     return (x >= rect.x && x < rect.x + rect.w && y >= rect.y && y < rect.y + rect.h);
 }
 
-int InitBouton(button b[]) {
-    //INIT newGameButton
+int InitBouton(button b[], int screenWidth, int screenHeight) {
+    // INIT newGameButton
     b[0].button_images[0] = IMG_Load("../assets/newGameButton.png");
     b[0].button_images[1] = IMG_Load("../assets/newGameButtonHovered.png");
     b[0].actif = 0;
 
-    //INIT loadGameButton
+    // INIT loadGameButton
     b[1].button_images[0] = IMG_Load("../assets/loadGameButton.png");
     b[1].button_images[1] = IMG_Load("../assets/loadGameButtonHovered.png");
     b[1].actif = 0;
 
-    //INIT settingsButton
+    // INIT settingsButton
     b[2].button_images[0] = IMG_Load("../assets/settingButton.png");
     b[2].button_images[1] = IMG_Load("../assets/settingButtonHovered.png");
     b[2].actif = 0;
 
-    //INIT quitButton
+    // INIT quitButton
     b[3].button_images[0] = IMG_Load("../assets/quitButton.png");
     b[3].button_images[1] = IMG_Load("../assets/quitButtonHovered.png");
     b[3].actif = 0;
 
-    if(b[0].button_images[0] == NULL || b[0].button_images[1] == NULL ||
-       b[1].button_images[0] == NULL || b[1].button_images[1] == NULL ||
-       b[2].button_images[0] == NULL || b[2].button_images[1] == NULL ||
-       b[3].button_images[0] == NULL || b[3].button_images[1] == NULL) {
+    if (b[0].button_images[0] == NULL || b[0].button_images[1] == NULL ||
+        b[1].button_images[0] == NULL || b[1].button_images[1] == NULL ||
+        b[2].button_images[0] == NULL || b[2].button_images[1] == NULL ||
+        b[3].button_images[0] == NULL || b[3].button_images[1] == NULL) {
         printf("ERROR LOADING BUTTON IMAGES: %s\n", IMG_GetError());
         return 3;
     }
 
-    for(int i = 0; i < 3; i++) {
-        b[i].button_rect = (SDL_Rect){475 , 230 + i * 50, b[i].button_images[0]->w, b[i].button_images[0]->h};
-    }
+    // Calculate button positions proportionate to the screen
+    int buttonWidth = b[0].button_images[0]->w;
+    int buttonHeight = b[0].button_images[0]->h;
+    int buttonSpacing = 50;
 
-    b[3].button_rect = (SDL_Rect){475 , 450, b[3].button_images[0]->w, b[3].button_images[0]->h};
+    int startY = (screenHeight - (buttonHeight * MENU_BUTTONS_COUNT + buttonSpacing * (MENU_BUTTONS_COUNT - 1))) / 2;
+
+    for (int i = 0; i < MENU_BUTTONS_COUNT; i++) {
+        int posX = (screenWidth - buttonWidth) / 2;
+        int posY = startY + i * (buttonHeight + buttonSpacing);
+        b[i].button_rect = (SDL_Rect){posX, posY, buttonWidth, buttonHeight};
+    }
 
     return 0;
 }
+
 
 int InitSettingsButtons(button b[]){
     //INIT FULL SCREEN BUTTON

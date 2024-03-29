@@ -5,6 +5,7 @@
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_mixer.h>
 #include <SDL/SDL_ttf.h>
+#include "bouton.h"
 
 #define SCREEN_WIDTH 1200
 #define SCREEN_HEIGHT 700
@@ -28,8 +29,8 @@ void InitBackgroundSound(backgroundSound *sound);
 void AfficherBackground(Background b, SDL_Surface *ecran);
 void AfficherSoundSlider(backgroundSound *sound, SDL_Surface *ecran);
 void changeBackgroundSoundLevel(backgroundSound *sound, int action);  // action 0:reduceVolume 1: addVolume
-void toggleFullScreen();
-void toggleWindowedScreen();
+void toggleFullScreen(button b[]);
+void toggleWindowedScreen(button b[]);
 void FreeBackground(Background *b);
 //INTRO FUNCTIONS
 void displayImageWithFade(char *imagePath, SDL_Surface *screen);

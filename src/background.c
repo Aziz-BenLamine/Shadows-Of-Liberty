@@ -5,14 +5,16 @@
 #include <SDL/SDL_mixer.h>
 #include <SDL/SDL_ttf.h>
 #include "background.h"
+#include "bouton.h"
 
-
+#define FULL_SCREEN_HEIGHT 944
+#define FULL_SCREEN_WIDTH 1920
 
 void InitBackground(Background *b){
     
     b->image[0] = IMG_Load("../assets/menuBackground.png");
     b->image[1] = IMG_Load("../assets/settingsMenu.png");
-    b->image[2] = IMG_Load("../assets/tempGameBackground.jpg");
+    b->image[2] = IMG_Load("../assets/tempGameBackground.png");
     
     if (b->image[0] == NULL || b->image[1] == NULL || b->image[2] == NULL) {
         printf("ERROR LOADING BACKGROUND IMAGE: %s\n", IMG_GetError());
@@ -31,17 +33,24 @@ void AfficherBackground(Background b, SDL_Surface *ecran){
  SDL_BlitSurface(b.image[b.niveau], NULL, ecran, &b.pos);
 }
 
-void toggleFullScreen() {
-    if (SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 0, SDL_FULLSCREEN) == NULL) {
+void toggleFullScreen(button b[]) {
+    if (SDL_SetVideoMode(FULL_SCREEN_WIDTH, FULL_SCREEN_HEIGHT, 0, SDL_FULLSCREEN) == NULL) {
         printf("FAILED TO TOGGLE FULL SCREEN: %s\n", SDL_GetError());
-
+        return;
     }
+
+    // Update button positions for fullscreen mode
+    InitBouton(b, FULL_SCREEN_WIDTH, FULL_SCREEN_HEIGHT);
 }
 
-void toggleWindowedScreen() {
+void toggleWindowedScreen(button b[]) {
     if (SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0) == NULL) {
         printf("FAILED TO TOGGLE WINDOWED SCREEN: %s\n", SDL_GetError());
+        return;
     }
+
+    // Update button positions for windowed mode
+    InitBouton(b, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
 void FreeBackground(Background *b) {
