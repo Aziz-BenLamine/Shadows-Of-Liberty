@@ -7,7 +7,7 @@
 #include <SDL/SDL_ttf.h>
 #include "bouton.h"
 
-#define SCREEN_WIDTH 1200
+#define SCREEN_WIDTH 1600
 #define SCREEN_HEIGHT 700
 
 typedef struct{

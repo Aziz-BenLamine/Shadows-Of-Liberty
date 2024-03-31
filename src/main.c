@@ -9,7 +9,7 @@
 #include "player.h"
 
 #define SCREEN_HEIGHT 700
-#define SCREEN_WIDTH 1200
+#define SCREEN_WIDTH 1600
 #define FULL_SCREEN_HEIGHT 1080
 #define FULL_SCREEN_WIDTH 1920
 #define MENU_BUTTONS_COUNT 4

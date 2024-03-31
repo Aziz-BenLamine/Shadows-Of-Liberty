@@ -34,13 +34,13 @@ void AfficherBackground(Background b, SDL_Surface *ecran){
 }
 
 void toggleFullScreen(button b[]) {
-    if (SDL_SetVideoMode(FULL_SCREEN_WIDTH, FULL_SCREEN_HEIGHT, 0, SDL_FULLSCREEN) == NULL) {
+    if (SDL_SetVideoMode(FULL_SCREEN_WIDTH, FULL_SCREEN_HEIGHT, 0, SDL_FULLSCREEN | SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_HWACCEL) == NULL) {
         printf("FAILED TO TOGGLE FULL SCREEN: %s\n", SDL_GetError());
         return;
     }
 
     // Update button positions for fullscreen mode
-    InitBouton(b, FULL_SCREEN_WIDTH, FULL_SCREEN_HEIGHT);
+    InitBouton(b, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
 void toggleWindowedScreen(button b[]) {
