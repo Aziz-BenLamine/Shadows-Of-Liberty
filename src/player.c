@@ -6,7 +6,7 @@
 #include "player.h"
 
 #define SCREEN_HEIGHT 700
-#define SCREEN_WIDTH 1200
+#define SCREEN_WIDTH 1600
 
 
 void init(Personne * p, int numperso){
@@ -14,7 +14,7 @@ void init(Personne * p, int numperso){
  p->num = 0;
  p->score = 0;
  p->vies = 3;
- p->vitesse = 1.0;
+ p->vitesse = 0.5;
  p->acceleration = 0.0;
  
  //DEFAULT CHARACTER SKIN

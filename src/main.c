@@ -331,12 +331,12 @@ int main(int argc, char** argv) {
 
 		    player.acceleration -= 0.001;
 
-		    // Limit total acceleration to avoid negative values
+		    // AVOID NEGATIVE ACCELERATION
 		    if (player.acceleration < 0) {
 		        player.acceleration = 0;
 		    }
 
-		    // Handle horizontal movement
+		    // HANDLE MOVEMENTS 
 		    if (event.key.keysym.sym == SDLK_RIGHT) {
 		        player.dir = 0;
 		        animerPerso(&player);
