@@ -76,42 +76,20 @@ void movePerso(Personne *p, Uint32 dt) {
 }
 
 
-/*void saut(Personne *P, int dt, int posinit) {
+void saut(Personne *P, int dt, int posinit) {
     double g = 9.81;
     double t = dt / 1000.0;
 
     int jump_height = 10;
-    printf("Jump_height:%d\n",jump_height);
     if(P->up == 1){
     	printf("UP\n");
     	if(posinit - jump_height > 0){
     		P->rect.y -= jump_height;
     	}else{
-    		printf("Down\n");
     		P->up = 0;
-    		//P->rect.y += 200;
     	}
-    	
-    	
     }
-    
-	
-}*/
 
-void saut(Personne *P, int dt, int posinit) {
-    // Constants for the jump
-    double g = 9.81;  // Acceleration due to gravity (m/s^2), you can adjust this value
-
-    if (P->up == 1) {
-        // Montée du personnage
-        if (P->rect.y > 0) {
-            P->rect.y -= 10; // Montée d'une hauteur fixe
-        } else {
-            // Descendre
-            P->up = 0;
-            P->rect.y = posinit;
-        }
-    }
 }
 
 

@@ -345,14 +345,27 @@ int main(int argc, char** argv) {
 		        player.dir = 1;
 		        animerPerso(&player);
 		        movePerso(&player, dt);
-		    } else if(event.key.keysym.sym == SDLK_UP){
+		    } else if(event.key.keysym.sym == SDLK_UP && player.up == 0){
 		    	player.up = 1;
 		    	saut(&player, dt, player.rect.y);
+		    	player.up = 0;
+		    	
 		    
 		    }
 		    break;
 	    }
+	    //DESCENTE DU JOUEUR
+	    if(player.up == 0){
+	  	if (player.rect.y < 200) {
+		   player.rect.y += 2;
+	    
+	    	}
+	    	else if(player.rect.y > 200){
+	    	   player.rect.y = 200;
 
+	    	}
+	    }
+	    printf("PLAYER Y:%d\n",player.rect.y);	    
 	    dt = SDL_GetTicks() - t_prev;
 	    afficherPerso(player, ecran);
 	}
