@@ -7,6 +7,7 @@
 #include "bouton.h"
 #include "background.h"
 #include "player.h"
+#include "entite.h"
 
 #define SCREEN_HEIGHT 700
 #define SCREEN_WIDTH 1600
@@ -28,6 +29,7 @@ int main(int argc, char** argv) {
     int selectedButtonIndex = 0;
     int previousButtonIndex = 0;
     int screenState = 0;
+	Entity e;
     
     //MAIN LOOP VARIABLES
     Uint32 dt, t_prev;
@@ -108,6 +110,9 @@ int main(int argc, char** argv) {
     //GAME INTRO
     displayImageWithFade("../assets/intro/gameStudioIntro.png", ecran); 	
     displayImageWithFade("../assets/intro/gameIntro.png", ecran); 
+
+
+InitEnnemi(&e);
     
     
     t_prev = SDL_GetTicks();
@@ -355,6 +360,11 @@ int main(int argc, char** argv) {
 
 	    dt = SDL_GetTicks() - t_prev;
 	    afficherPerso(player, ecran);
+
+
+
+
+AfficherEnnemi(e,ecran);
 	}
 
 

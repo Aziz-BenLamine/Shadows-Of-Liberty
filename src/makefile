@@ -1,7 +1,7 @@
-prog: main.o bouton.o background.o player.o
-	gcc main.o bouton.o background.o player.o -o prog -lSDL -lSDL_image -lSDL_mixer -lSDL_ttf -lm -g
+prog: main.o bouton.o background.o player.o entite.o
+	gcc main.o bouton.o background.o player.o entite.o -o prog -lSDL -lSDL_image -lSDL_mixer -lSDL_ttf -lm -g
 
-main.o: main.c bouton.h background.h player.h
+main.o: main.c bouton.h background.h player.h entite.h
 	gcc -c main.c -o main.o -g
 
 bouton.o: bouton.c bouton.h
@@ -12,3 +12,5 @@ background.o: background.c background.h
 	
 player.o: player.c player.h
 	gcc -c player.c -o player.o -g
+entite.o:entite.c entite.h
+	gcc -c entite.c -o entite.o -g
