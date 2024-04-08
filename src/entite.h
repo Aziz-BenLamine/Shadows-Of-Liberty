@@ -2,6 +2,7 @@
 #define ENTITE_H
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
+#include "player.h"
 
 
 
@@ -20,7 +21,7 @@ void Initbonus(Entity *e);
 void AfficherEnnemi(Entity e, SDL_Surface *screen);
 void Afficherbonus(Entity e, SDL_Surface *screen);
 void animerEntity(Entity *e);
-int collisionTri(Entity e, SDL_Rect pose);
+int collisionTri(Personne e, SDL_Rect pose);
 void move(Entity *e);
 int collisionBB(Entity e, SDL_Rect r);
 

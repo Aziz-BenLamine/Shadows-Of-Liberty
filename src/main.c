@@ -30,7 +30,10 @@ int main(int argc, char** argv) {
     int previousButtonIndex = 0;
     int screenState = 0;
 	Entity e;
+	Entity b;
 	int collennemi;
+	int collbonus;
+	int touchbonus=1;
     
     //MAIN LOOP VARIABLES
     Uint32 dt, t_prev;
@@ -114,6 +117,7 @@ int main(int argc, char** argv) {
 
 
 InitEnnemi(&e);
+Initbonus(&b);
     
     
     t_prev = SDL_GetTicks();
@@ -374,6 +378,15 @@ player.rect.x=200;
 player.rect.y=200;
 player.dir=0;
 }
+//Afficherbonus(b,ecran);
+collbonus=collisionTri(player,b.pos);
+if (touchbonus==1){
+Afficherbonus(b,ecran);
+}
+if (collbonus==1){
+touchbonus=0;
+}
+
 
 
 

@@ -5,6 +5,7 @@
 #include <SDL/SDL_mixer.h>
 #include <math.h>
 #include "entite.h"
+#include "player.h"
 
 
 
@@ -35,15 +36,15 @@ e->num=0;
 }
 
 void Initbonus(Entity *e){
-e->image[0][0]=IMG_Load("bb.jpg");
+e->image[0][0]=IMG_Load("../assets/ennemi/enleftwalk0.png");
 /*e->image[0][1]=
 e->image[0][2]=
 e->image[0][3]=
 e->image[0][4]=
 */
 
-e->pos.x=1200;
-e->pos.y=120;
+e->pos.x=500;
+e->pos.y=200;
 e->pos.w=e->image[0][0]->w;
 e->pos.h=e->image[0][0]->h;
 
@@ -95,14 +96,14 @@ return 1;
 
 
 
-int collisionTri(Entity e, SDL_Rect pose){
+int collisionTri(Personne e, SDL_Rect pose){
 SDL_Rect rec1;
 SDL_Rect rec2;
 float r1,r2,d;
 
-rec1.x=e.pos.x+(e.pos.w)/2;
-rec1.y=e.pos.y+(e.pos.h)/2;
-r1=sqrt(((e.pos.w)/2)*((e.pos.w)/2)+((e.pos.h)/2)*((e.pos.h)/2));
+rec1.x=e.rect.x+(e.rect.w)/2;
+rec1.y=e.rect.y+(e.rect.h)/2;
+r1=sqrt(((e.rect.w)/2)*((e.rect.w)/2)+((e.rect.h)/2)*((e.rect.h)/2));
 
 rec2.x=pose.x+(pose.w)/2;
 rec2.y=pose.y+(pose.h)/2;
