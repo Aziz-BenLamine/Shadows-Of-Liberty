@@ -20,11 +20,11 @@ void InitEnnemi(Entity *e){
  e->image[1][2]=IMG_Load("../assets/ennemi/enleftwalk2.png");
  e->image[1][3]=IMG_Load("../assets/ennemi/enleftwalk1.png");
  e->image[1][4]=IMG_Load("../assets/ennemi/enleftwalk0.png");
- /*e->image[2][0]=IMG_Load("s1.png");
- e->image[2][1]=IMG_Load("s2.png");
- e->image[2][2]=IMG_Load("s3.png");
- e->image[2][3]=IMG_Load("s4.png");
- e->image[2][4]=IMG_Load("s5.png");*/
+ e->image[2][0]=IMG_Load("../assets/ennemi/a4.png");
+ e->image[2][1]=IMG_Load("../assets/ennemi/a3.png");
+ e->image[2][2]=IMG_Load("../assets/ennemi/a2.png");
+ e->image[2][3]=IMG_Load("../assets/ennemi/a1.png");
+ e->image[2][4]=IMG_Load("../assets/ennemi/a0.png");
 e->pos.x=700;
 e->pos.y=200;
 e->pos.w=e->image[0][0]->w;

@@ -34,6 +34,7 @@ int main(int argc, char** argv) {
 	int collennemi;
 	int collbonus;
 	int touchbonus=1;
+int dirr;
     
     //MAIN LOOP VARIABLES
     Uint32 dt, t_prev;
@@ -377,8 +378,9 @@ if (collennemi==1){
 player.rect.x=200;
 player.rect.y=200;
 player.dir=0;
+player.vies--;
 }
-//Afficherbonus(b,ecran);
+
 collbonus=collisionTri(player,b.pos);
 if (touchbonus==1){
 Afficherbonus(b,ecran);
@@ -387,7 +389,13 @@ if (collbonus==1){
 touchbonus=0;
 }
 
+/*if(e.pos.x-(player.rect.x+player.rect.w)<20){
+	dirr=e.direction;
+	e.direction=2;
 
+	
+
+}*/
 
 
 
