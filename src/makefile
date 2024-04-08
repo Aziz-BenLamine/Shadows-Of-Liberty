@@ -1,5 +1,5 @@
 prog: main.o bouton.o background.o player.o
-	gcc main.o bouton.o background.o player.o -o prog -lSDL -lSDL_image -lSDL_mixer -lSDL_ttf -g
+	gcc main.o bouton.o background.o player.o -o prog -lSDL -lSDL_image -lSDL_mixer -lSDL_ttf -lm -g
 
 main.o: main.c bouton.h background.h player.h
 	gcc -c main.c -o main.o -g

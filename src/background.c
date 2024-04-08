@@ -62,7 +62,7 @@ void FreeBackground(Background *b) {
 //SOUND
 
 void InitBackgroundSound(backgroundSound *sound){
-    sound->music = Mix_LoadMUS("../audio/dark-background-sound.wav");
+    sound->music = Mix_LoadMUS("../audio/gameSound.mp3");
     Mix_PlayMusic(sound->music, -1);
     
     // Load slider images

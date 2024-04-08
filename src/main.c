@@ -345,6 +345,10 @@ int main(int argc, char** argv) {
 		        player.dir = 1;
 		        animerPerso(&player);
 		        movePerso(&player, dt);
+		    } else if(event.key.keysym.sym == SDLK_UP){
+		    	player.up = 1;
+		    	saut(&player, dt, player.rect.y);
+		    
 		    }
 		    break;
 	    }
