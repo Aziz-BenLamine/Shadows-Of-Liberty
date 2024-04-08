@@ -68,10 +68,10 @@ e->num++;
 }
 }
 void move(Entity *e){
-if(e->pos.x>700){
+if(e->pos.x>900){
 e->direction=1;
 }
-if(e->pos.x<70){
+if(e->pos.x<250){
 e->direction=0;
 }
 if(e->direction==0){

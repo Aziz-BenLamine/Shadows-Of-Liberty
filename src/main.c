@@ -30,6 +30,7 @@ int main(int argc, char** argv) {
     int previousButtonIndex = 0;
     int screenState = 0;
 	Entity e;
+	int collennemi;
     
     //MAIN LOOP VARIABLES
     Uint32 dt, t_prev;
@@ -367,6 +368,17 @@ InitEnnemi(&e);
 AfficherEnnemi(e,ecran);
 move(&e);
 animerEntity(&e);
+collennemi=collisionBB(e,player.rect);
+if (collennemi==1){
+player.rect.x=200;
+player.rect.y=200;
+player.dir=0;
+}
+
+
+
+
+
 	}
 
 
