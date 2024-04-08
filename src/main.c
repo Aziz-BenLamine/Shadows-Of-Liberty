@@ -361,10 +361,12 @@ InitEnnemi(&e);
 	    dt = SDL_GetTicks() - t_prev;
 	    afficherPerso(player, ecran);
 
-
+//entitesecondaire
 
 
 AfficherEnnemi(e,ecran);
+move(&e);
+animerEntity(&e);
 	}
 
 
