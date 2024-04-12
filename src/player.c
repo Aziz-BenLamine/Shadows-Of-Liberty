@@ -44,7 +44,7 @@ void init(Personne * p, int numperso){
 	printf("ERROR LOADING PLAYER IMAGES %s\n", IMG_GetError());
         return;
        }
-     p->rect = (SDL_Rect){500, 500, p->img[0][0]->w, p->img[0][0]->h};
+     p->rect = (SDL_Rect){200, 200, p->img[0][0]->w, p->img[0][0]->h};
 }
 
 void afficherPerso(Personne p, SDL_Surface *screen) {
