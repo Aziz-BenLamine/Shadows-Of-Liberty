@@ -426,7 +426,7 @@ Initbonus(&b);
 		    
 	    }
 	    //GRAVITE
-	  	if (player.rect.y < 500) {
+	  	if (player.rect.y < 200) {
 		   player.rect.y += 8.5;
 	    
 	    	}
