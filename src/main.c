@@ -39,6 +39,12 @@ int dirr;
     //MAIN LOOP VARIABLES
     Uint32 dt, t_prev;
     Personne player;
+    int xINIT = 0;
+    int yINIT = 0;
+    int x0 = 0, y0 = 0;
+    int jumpDone = 0;
+    int timeIncrement = 50;
+    
     init(&player, 0);
     //Texte
     TTF_Init();
@@ -121,10 +127,11 @@ InitEnnemi(&e);
 Initbonus(&b);
     
     
-    t_prev = SDL_GetTicks();
+    
     SDL_Event event;
     while (playing) {
-    	Uint32 dt = SDL_GetTicks() - t_prev;
+    	t_prev = SDL_GetTicks();
+    	
         AfficherBackground(background, ecran);
         //SDL_Delay(1);
         SDL_PollEvent(&event);
@@ -333,11 +340,15 @@ Initbonus(&b);
 		case SDL_KEYDOWN:
 		    if (event.key.keysym.sym == SDLK_LSHIFT) {
 		        player.acceleration += 0.005;
-		        if (player.acceleration > 0.1) {
-		            player.acceleration = 0.1;
-		        }
+		        dt += timeIncrement;
+		        animerPerso(&player);
+		        movePerso(&player, dt);
+
 		    } else if (event.key.keysym.sym == SDLK_LCTRL) {
 		        player.acceleration -= 0.01;
+		        dt += timeIncrement;
+		        animerPerso(&player);
+		        movePerso(&player, dt);
 		    }
 
 		    player.acceleration -= 0.001;
@@ -349,22 +360,76 @@ Initbonus(&b);
 
 		    // HANDLE MOVEMENTS 
 		    if (event.key.keysym.sym == SDLK_RIGHT) {
+		    		dt += timeIncrement;
 		        player.dir = 0;
 		        animerPerso(&player);
 		        movePerso(&player, dt);
+		       
 		    } else if (event.key.keysym.sym == SDLK_LEFT) {
+		    		dt += timeIncrement;
 		        player.dir = 1;
 		        animerPerso(&player);
 		        movePerso(&player, dt);
 		    } else if(event.key.keysym.sym == SDLK_UP){
-		    	player.up = 1;
-		    	saut(&player, dt, player.rect.y);
+		    	if(!jumpDone){
+				  	if(player.up == 0){
+				  		yINIT = player.rect.y;
+				  	}
+				  	//printf("yINIT = %d| y = %d | player.up = %d\n",yINIT, player.rect.y ,player.up);
+				  	printf("player.up = %d |",player.up);
+				    dt += timeIncrement;
+				  	player.up = 1;
+				  	saut(&player, dt, yINIT);
+				  		if(player.up == 0){
+				  			jumpDone = 1;
+				  	}
+					}
+		    	
 		    
 		    }
-		    break;
-	    }
+		    else if(event.key.keysym.sym ==  SDLK_SPACE){
+				  	if(!jumpDone){
+							//printf("PLAYER x0 = %d | x = %d PLAYER.UP = %d\n",x0,player.rect.x,player.up);
+							//printf("PLAYER y0 = %d | y = %d PLAYER.UP = %d\n",y0,player.rect.y,player.up);
+							if(player.up == 0){
+								xINIT = player.rect.x;
+								yINIT = player.rect.y;
+								x0 = -50;
+								y0 = 0;
+								player.up = 1;
+							}
+							if(player.up == 1){
+								x0 += 10;
+								y0 = -0.04 * x0 * x0 + 100;
+								if(player.dir == 0){
+									player.rect.x += 10;
+								}else{
+									player.rect.x -= 10;
+								}
 
-	    dt = SDL_GetTicks() - t_prev;
+								player.rect.y = yINIT - y0;
+								if(x0 >= 50){
+								 player.up = 0;
+								 jumpDone = 1;
+								}
+				  	}
+				  }
+		    }
+		    break;
+		    case SDL_KEYUP:
+		    	if(event.key.keysym.sym ==  SDLK_SPACE || event.key.keysym.sym == SDLK_UP){
+		    		jumpDone = 0;
+
+		    	}
+		    	dt = 0;
+					break;
+		    
+	    }
+	    //GRAVITE
+	  	if (player.rect.y < 500) {
+		   player.rect.y += 8.5;
+	    
+	    	}
 	    afficherPerso(player, ecran);
 
 //entitesecondaire
@@ -414,6 +479,8 @@ touchbonus=0;
 
         //TEXT BLIT
         SDL_Flip(ecran);
+        t_prev = (SDL_GetTicks() - t_prev)/4;
+        //printf("t_prev = %d |dt = %d\n",t_prev,dt);
         
     }
 
