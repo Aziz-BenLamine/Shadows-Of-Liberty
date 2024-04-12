@@ -14,7 +14,7 @@ void init(Personne * p, int numperso){
  p->num = 0;
  p->score = 0;
  p->vies = 3;
- p->vitesse = 0.5;
+ p->vitesse = 5;
  p->acceleration = 0.0;
  p->up = 0;
  //DEFAULT CHARACTER SKIN
@@ -44,7 +44,7 @@ void init(Personne * p, int numperso){
 	printf("ERROR LOADING PLAYER IMAGES %s\n", IMG_GetError());
         return;
        }
-     p->rect = (SDL_Rect){200, 200, p->img[0][0]->w, p->img[0][0]->h};
+     p->rect = (SDL_Rect){500, 500, p->img[0][0]->w, p->img[0][0]->h};
 }
 
 void afficherPerso(Personne p, SDL_Surface *screen) {
@@ -62,6 +62,12 @@ void movePerso(Personne *p, Uint32 dt) {
     double dt_secondes = dt / 1000.0;
     double dx = 0.5 * p->acceleration * dt_secondes * dt_secondes + p->vitesse * dt_secondes;
 
+    if(p->acceleration == 0 && dx >= 14){
+    	dx = 14;
+    }else if(p->acceleration != 0 && dx >= 20){
+    	dx = 20;
+    }
+        printf("dx = %.2f\n", dx);
     if (p->dir == 0) {
         p->rect.x += dx;
     } else if (p->dir == 1) {
@@ -80,19 +86,14 @@ void saut(Personne *P, int dt, int posinit) {
     double g = 9.81;
     double t = dt / 1000.0;
 
-    int jump_height = 10;
+    int jump_height = 120;
+    printf("P->rect.y = %d | posinit + jump_height = %d \n",P->rect.y,posinit-jump_height);
     if(P->up == 1){
-    	printf("UP\n");
-    	if(posinit - jump_height > 0){
-    		P->rect.y -= jump_height;
+    	if(P->rect.y > posinit - jump_height){
+    		P->rect.y -= 20;
     	}else{
     		P->up = 0;
     	}
     }
 
 }
-
-
-
-
-
