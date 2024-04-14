@@ -43,12 +43,12 @@ int InitBouton(button b[], int screenWidth, int screenHeight) {
     // Calculate button positions proportionate to the screen
     int buttonWidth = b[0].button_images[0]->w;
     int buttonHeight = b[0].button_images[0]->h;
-    int buttonSpacing = 50;
+    int buttonSpacing = 40;
 
-    int startY = (screenHeight - (buttonHeight * MENU_BUTTONS_COUNT + buttonSpacing * (MENU_BUTTONS_COUNT - 1))) / 2;
+    int startY = (screenHeight - (buttonHeight * MENU_BUTTONS_COUNT + buttonSpacing * (MENU_BUTTONS_COUNT - 1))) / 2 + 100;
 
     for (int i = 0; i < MENU_BUTTONS_COUNT; i++) {
-        int posX = (screenWidth - buttonWidth) / 2;
+        int posX = 500;
         int posY = startY + i * (buttonHeight + buttonSpacing);
         b[i].button_rect = (SDL_Rect){posX, posY, buttonWidth, buttonHeight};
     }
