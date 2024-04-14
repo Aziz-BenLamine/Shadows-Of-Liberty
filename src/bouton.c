@@ -92,15 +92,15 @@ int InitSettingsButtons(button b[]){
     
     //DISPLAY BUTTONS RECT
     for(int i = 0; i < 2; i++) {
-        b[i].button_rect = (SDL_Rect){490 , 230 + i * 80, b[i].button_images[0]->w, b[i].button_images[0]->h};
+        b[i].button_rect = (SDL_Rect){460 , 300 + i * 90, b[i].button_images[0]->w, b[i].button_images[0]->h};
     }
     
     //RETURN BUTTON RECT
-    b[2].button_rect = (SDL_Rect){490 , 530, b[2].button_images[0]->w, b[2].button_images[0]->h};
+    b[2].button_rect = (SDL_Rect){450 , 590, b[2].button_images[0]->w, b[2].button_images[0]->h};
     
     //DISPLAY SOUND BUTTON RECT
-    b[3].button_rect = (SDL_Rect){480 , 230 + 170, b[3].button_images[0]->w, b[3].button_images[0]->h};
-    b[4].button_rect = (SDL_Rect){775 , 230 + 170, b[4].button_images[0]->w, b[4].button_images[0]->h};
+    b[3].button_rect = (SDL_Rect){520 , 504, b[3].button_images[0]->w, b[3].button_images[0]->h};
+    b[4].button_rect = (SDL_Rect){680 , 504, b[4].button_images[0]->w, b[4].button_images[0]->h};
 
     return 0;
 }

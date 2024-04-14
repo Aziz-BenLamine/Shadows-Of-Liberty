@@ -160,7 +160,7 @@ Initbonus(&b);
         if (background.niveau == 0) {
             AfficherBouton(menuButtons, ecran, 0);
             SDL_BlitSurface(backgroundImages[currentImageIndex], NULL, ecran, &posAnim);
-            renderText(ecran, font, "Ares Forge Games", textColor, 900, 650);
+            renderText(ecran, font, "Ares Forge Games", textColor, 1300, 660);
             switch (event.type) {
                 case SDL_MOUSEMOTION:
                     for (int i = 0; i < MENU_BUTTONS_COUNT; i++) {
@@ -258,7 +258,7 @@ Initbonus(&b);
         } else if (background.niveau == 1) {
             AfficherBouton(settingButtons, ecran, 1);
             AfficherSoundSlider(&BS, ecran);
-            renderText(ecran, font, "Ares Forge Games", textColor, 900, 650);
+            renderText(ecran, font, "Ares Forge Games", textColor, 1300, 660);
             SDL_BlitSurface(backgroundImages[currentImageIndex], NULL, ecran, &posAnim);
             switch (event.type) {
                 case SDL_MOUSEMOTION:
@@ -432,35 +432,35 @@ Initbonus(&b);
 	    	}
 	    afficherPerso(player, ecran);
 
-//entitesecondaire
+	//entitesecondaire
 
 
-AfficherEnnemi(e,ecran);
-move(&e);
-animerEntity(&e);
-collennemi=collisionBB(e,player.rect);
-if (collennemi==1){
-player.rect.x=200;
-player.rect.y=200;
-player.dir=0;
-player.vies--;
-}
+	AfficherEnnemi(e,ecran);
+	move(&e);
+	animerEntity(&e);
+	collennemi=collisionBB(e,player.rect);
+	if (collennemi==1){
+	player.rect.x=200;
+	player.rect.y=200;
+	player.dir=0;
+	player.vies--;
+	}
 
-collbonus=collisionTri(player,b.pos);
-if (touchbonus==1){
-Afficherbonus(b,ecran);
-}
-if (collbonus==1){
-touchbonus=0;
-}
+	collbonus=collisionTri(player,b.pos);
+	if (touchbonus==1){
+	Afficherbonus(b,ecran);
+	}
+	if (collbonus==1){
+	touchbonus=0;
+	}
 
-/*if(e.pos.x-(player.rect.x+player.rect.w)<20){
-	dirr=e.direction;
-	e.direction=2;
+	/*if(e.pos.x-(player.rect.x+player.rect.w)<20){
+		dirr=e.direction;
+		e.direction=2;
 
-	
+		
 
-}*/
+	}*/
 
 
 

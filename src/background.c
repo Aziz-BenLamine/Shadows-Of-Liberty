@@ -80,7 +80,7 @@ void InitBackgroundSound(backgroundSound *sound){
     }
     
     sound->soundLevel = 3;
-    sound->pos = (SDL_Rect){520 , 400, sound->sliderState[0]->w, sound->sliderState[0]->h};
+    sound->pos = (SDL_Rect){500 , 502, sound->sliderState[0]->w, sound->sliderState[0]->h};
 }
 
 
