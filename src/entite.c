@@ -76,10 +76,10 @@ if(e->pos.x<250){
 e->direction=0;
 }
 if(e->direction==0){
-e->pos.x=e->pos.x+10;
+e->pos.x=e->pos.x+2;
 }
 else{
-e->pos.x=e->pos.x-10;
+e->pos.x=e->pos.x-2;
 }
 
 }

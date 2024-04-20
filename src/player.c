@@ -14,9 +14,15 @@ void init(Personne * p, int numperso){
  p->num = 0;
  p->score = 0;
  p->vies = 3;
- p->vitesse = 5;
+ p->vitesse = 10;
  p->acceleration = 0.0;
  p->up = 0;
+ //INIT PLAYER HEALTH IMAGES
+ p->healthImage[0] = IMG_Load("../assets/vies/HEART0.png");
+ p->healthImage[1] = IMG_Load("../assets/vies/HEART1.png");
+ p->healthImage[2] = IMG_Load("../assets/vies/HEART2.png");
+ p->healthImage[3] = IMG_Load("../assets/vies/HEART3.png");
+ p->healthRect = (SDL_Rect){1350, 25, p->healthImage[0]->w, p->healthImage[0]->h};
  //DEFAULT CHARACTER SKIN
  if(numperso == 0)
  {
@@ -45,6 +51,7 @@ void init(Personne * p, int numperso){
         return;
        }
      p->rect = (SDL_Rect){200, 200, p->img[0][0]->w, p->img[0][0]->h};
+ 
 }
 
 void afficherPerso(Personne p, SDL_Surface *screen) {
@@ -83,8 +90,8 @@ void movePerso(Personne *p, Uint32 dt) {
 
 
 void saut(Personne *P, int dt, int posinit) {
-    double g = 9.81;
-    double t = dt / 1000.0;
+    //double g = 9.81;
+    //double t = dt / 1000.0;
 
     int jump_height = 120;
     printf("P->rect.y = %d | posinit + jump_height = %d \n",P->rect.y,posinit-jump_height);

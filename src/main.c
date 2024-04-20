@@ -259,7 +259,7 @@ Initbonus(&b);
             AfficherBouton(settingButtons, ecran, 1);
             AfficherSoundSlider(&BS, ecran);
             renderText(ecran, font, "Ares Forge Games", textColor, 1300, 660);
-            SDL_BlitSurface(backgroundImages[currentImageIndex], NULL, ecran, &posAnim);
+            //SDL_BlitSurface(backgroundImages[currentImageIndex], NULL, ecran, &posAnim);
             switch (event.type) {
                 case SDL_MOUSEMOTION:
                     for (int i = 0; i < SETTING_BUTTONS_COUNT; i++) {
@@ -335,6 +335,8 @@ Initbonus(&b);
         }
         //MAIN GAME
         else if (background.niveau == 2) {
+        //DISPLAY HEALTH
+        SDL_BlitSurface(player.healthImage[player.vies], NULL, ecran, &(player.healthRect));
     // PLAYER MOVEMENT 
 	    switch (event.type) {
 		case SDL_KEYDOWN:
@@ -377,7 +379,7 @@ Initbonus(&b);
 				  	}
 				  	//printf("yINIT = %d| y = %d | player.up = %d\n",yINIT, player.rect.y ,player.up);
 				  	printf("player.up = %d |",player.up);
-				    dt += timeIncrement;
+				    	dt += timeIncrement;
 				  	player.up = 1;
 				  	saut(&player, dt, yINIT);
 				  		if(player.up == 0){
@@ -430,6 +432,7 @@ Initbonus(&b);
 		   player.rect.y += 8.5;
 	    
 	    	}
+	    	
 	    afficherPerso(player, ecran);
 
 	//entitesecondaire
@@ -466,7 +469,10 @@ Initbonus(&b);
 
 
 	}
-
+	
+	if(player.vies < 0){
+		player.vies = 0;
+	}
 
         if (delay > 50) {
             buttonClicked = 0;

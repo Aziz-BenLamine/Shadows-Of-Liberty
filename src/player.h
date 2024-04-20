@@ -6,6 +6,8 @@
 typedef struct{
   SDL_Surface *img[playerImageColumns][playerImagerows];
   SDL_Rect rect;
+  SDL_Surface *healthImage[4];
+  SDL_Rect healthRect;
   int dir;
   int up;
   int num;
