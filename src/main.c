@@ -122,6 +122,7 @@ int dirr;
     posAnim.h = backgroundImages[0]->h;
     
     
+    
     //GAME INTRO
     displayImageWithFade("../assets/intro/gameStudioIntro.png", ecran); 	
     displayImageWithFade("../assets/intro/gameIntro.png", ecran); 
@@ -130,13 +131,15 @@ int dirr;
 InitEnnemi(&e);
 Initbonus(&b);
     
-    
+    int lvl = 2;
+    int dir;
+    int pas = 10;
 
     SDL_Event event;
     while (playing) {
     	
     	
-        AfficherBackground(background, ecran);
+        AfficherBackground(background, ecran,lvl);
         //SDL_Delay(1);
         SDL_PollEvent(&event);
         switch (event.type) {
@@ -373,12 +376,12 @@ Initbonus(&b);
 		        dt += timeIncrement;
 		        animerPerso(&player);
 		        movePerso(&player, dt);
-
 		    } else if (event.key.keysym.sym == SDLK_LCTRL) {
 		        player.acceleration -= 0.01;
 		        dt += timeIncrement;
 		        animerPerso(&player);
 		        movePerso(&player, dt);
+			
 		    }
 
 		    player.acceleration -= 0.001;
@@ -394,12 +397,15 @@ Initbonus(&b);
 		        player.dir = 0;
 		        animerPerso(&player);
 		        movePerso(&player, dt);
-		       
+			dir = 0;
+			scrolling(&background,pas,dir);
 		    } else if (event.key.keysym.sym == SDLK_LEFT) {
 		    		dt += timeIncrement;
 		        player.dir = 1;
 		        animerPerso(&player);
 		        movePerso(&player, dt);
+			dir = 1;
+			scrolling(&background,pas,dir);
 		    } else if(event.key.keysym.sym == SDLK_UP){
 		    	if(!jumpDone){
 				  	if(player.up == 0){
@@ -531,4 +537,3 @@ Initbonus(&b);
     SDL_Quit();
     return 0;
 }
-
