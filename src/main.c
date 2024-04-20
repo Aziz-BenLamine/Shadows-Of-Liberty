@@ -46,6 +46,7 @@ int dirr;
     int jumpDone = 0;
     int timeIncrement = 50;
     int game = 0;
+    int score = 0;
     
     init(&player, 0);
     //Texte
@@ -352,6 +353,12 @@ Initbonus(&b);
         char timerText[100];
 	sprintf(timerText, "Timer: %02d:%02d", minutes, seconds);
         renderText(ecran, font2, timerText, textColor, 700, 25);
+        
+        //DISPLAY SCORE
+        score = 1000 - ((3 -player.vies) * 100) - currentTime;  //FORMULE SCORE
+        char scoreText[100];
+        sprintf(scoreText, "Score: %d", score);
+        renderText(ecran, font2, scoreText, textColor, 50, 25);
         
         //DISPLAY HEALTH
         SDL_BlitSurface(player.healthImage[player.vies], NULL, ecran, &(player.healthRect));
