@@ -356,6 +356,9 @@ Initbonus(&b);
         
         //DISPLAY SCORE
         score = 1000 - ((3 -player.vies) * 100) - currentTime;  //FORMULE SCORE
+        if(score <= 0){
+        	score = 0;
+        }
         char scoreText[100];
         sprintf(scoreText, "Score: %d", score);
         renderText(ecran, font2, scoreText, textColor, 50, 25);
