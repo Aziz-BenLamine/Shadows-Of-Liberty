@@ -14,23 +14,36 @@ void InitBackground(Background *b){
     
     b->image[0] = IMG_Load("../assets/menuBackground.png");
     b->image[1] = IMG_Load("../assets/settingsMenu.png");
-    b->image[2] = IMG_Load("../assets/tempGameBackground.png");
+    b->image[2] = IMG_Load("../assets/level 3.png");
     
     if (b->image[0] == NULL || b->image[1] == NULL || b->image[2] == NULL) {
         printf("ERROR LOADING BACKGROUND IMAGE: %s\n", IMG_GetError());
         return;
     }
-    b->pos.x = 0;
-    b->pos.y = 0;
-    b->pos.w = SCREEN_WIDTH;
-    b->pos.h = SCREEN_HEIGHT;
+
+    b->niveau = 0;
+
+    b->bg1.x = 0;
+    b->bg1.y = 0;
+    /*b->bg2.x = 0;
+    b->bg2.y = 0;*/
     
     b->niveau = 0;
+//ajouter init camera
+    b->camera.x = 0;
+    b->camera.y = 0;
+    b->camera.w = SCREEN_WIDTH;
+    b->camera.h = SCREEN_HEIGHT;
+    /*b->camera1.x = 800;
+    b->camera1.y = 0;
+    b->camera1.w = SCREEN_WIDTH;
+    b->camera1.h = SCREEN_HEIGHT;*/
 }
 
 
-void AfficherBackground(Background b, SDL_Surface *ecran){
- SDL_BlitSurface(b.image[b.niveau], NULL, ecran, &b.pos);
+void AfficherBackground(Background b, SDL_Surface *ecran,int lvl){
+ 	SDL_BlitSurface(b.image[lvl], &b.camera, ecran, &b.bg1);
+	//SDL_BlitSurface(b.image[lvl], &b.camera1, ecran, &b.bg2);
 }
 
 void toggleFullScreen(button b[]) {
@@ -181,4 +194,113 @@ void renderText(SDL_Surface *surface, TTF_Font *font, char *text, SDL_Color colo
     SDL_FreeSurface(textSurface);
 }
 
+void scrolling(Background *b,int pas,int dir){
+	if(dir==0){
+	    b->camera.x+=pas;
+	}
+	if(dir==1){
+	    b->camera.x-=pas;
+	}
+	if(dir== 0 && (b->image[2]->w)-1920 <=(b->camera.x)){
+	    b->camera.x=b->image[2]->w-1920;
+	}
+	if((dir==1) && (b->camera.x <= 0)){
+	    b->camera.x=0;
+	}
+	if(dir==2){
+	    b->camera.y+=pas;
+	}
+	if(dir==3){
+	    b->camera.y-=pas;
+	}
+	if(dir==2 && (b->image[2]->h)-944<=b->camera.y){
+	    b->camera.y=b->image[2]->h-944;
+	}
+	if(dir==3 && b->camera.y <= 0){
+	    b->camera.y=0;
+	}
 
+}
+/*void animerBackground(background *e, SDL_Surface *ecran)
+{
+	for (int j = 0; j < 5; j++)
+	{
+		switch (j)
+		{
+		case 0:
+			SDL_FreeSurface(e->img_b);
+			e->img = IMG_Load("");
+			break;
+		case 1:
+			SDL_FreeSurface(e->img_b);
+			e->img = IMG_Load("");
+		case 2:
+
+			SDL_FreeSurface(e->img_b);
+			e->img = IMG_Load("");
+			break;
+		case 3:
+			SDL_FreeSurface(e->img_b);
+			e->img = IMG_Load("");
+			break;
+		case 4:
+			SDL_FreeSurface(e->img_b);
+			e->img = IMG_Load("");
+			break;
+		}
+		SDL_BlitSurface(e->img, &e->bg1, ecran, NULL);
+		SDL_Flip(ecran);
+		SDL_Delay(100);
+		}
+	}
+}
+
+
+void savescore(char *filename,int score){
+	FILE* f = open(filename, "a");
+	
+	if (f == NULL){
+		printf("error");
+	}
+	fprintf(f,"%d %d %s \n",s.score,s.temps,s.nom);
+
+	fclose(f);
+}
+
+void bestscore(char * filename , scoreinfo t[3]){
+	FILE *f = open(filename,"r");
+	if(f == NULL){
+		printf("errorr");	
+	}
+	int i = 0;
+	while (fscanf(f, "%d %d %s", &t[i].score, &t[i].temps, t[i].nom) != EOF) {
+        t[i].surface = NULL;
+        t[i].x = 0;
+        t[i].y = 0;
+        i++;
+    }
+    fclose(f);
+
+
+    for (int i = 0; i < 3; i++) {
+        for (int j = i + 1; j < 3; j++) {
+            if (t[i].score == t[j].score) {
+                if (t[i].temps > t[j].temps) {
+                    ScoreInfo temp = t[i];
+                    t[i] = t[j];
+                    t[j] = temp;
+                }
+            }
+        }
+    }
+
+    char str[100];
+    for (int i = 0; i < 3; i++) {
+        sprintf(str, "%s %d %d", t[i].nom, t[i].score, t[i].temps);
+    }
+
+}
+
+void afficherbest(SDL_Surface *ecran,scoreinfo t[]){
+	
+}*/
