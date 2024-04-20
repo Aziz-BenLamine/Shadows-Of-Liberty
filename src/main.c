@@ -38,17 +38,20 @@ int dirr;
     
     //MAIN LOOP VARIABLES
     Uint32 dt, t_prev;
+    Uint32 startTime, currentTime, minutes,seconds;
     Personne player;
     int xINIT = 0;
     int yINIT = 0;
     int x0 = 0, y0 = 0;
     int jumpDone = 0;
     int timeIncrement = 50;
+    int game = 0;
     
     init(&player, 0);
     //Texte
     TTF_Init();
     TTF_Font *font = TTF_OpenFont("Ironmonger Black Regular.otf", 20);
+    TTF_Font *font2 = TTF_OpenFont("Ironmonger Black Regular.otf", 24);
     if (font == NULL) {
         fprintf(stderr, "Failed to load font: %s\n", TTF_GetError());
         return 1;
@@ -127,10 +130,10 @@ InitEnnemi(&e);
 Initbonus(&b);
     
     
-    
+
     SDL_Event event;
     while (playing) {
-    	t_prev = SDL_GetTicks();
+    	
     	
         AfficherBackground(background, ecran);
         //SDL_Delay(1);
@@ -335,9 +338,24 @@ Initbonus(&b);
         }
         //MAIN GAME
         else if (background.niveau == 2) {
+        
+        //START , TRACK AND DISPLAY TIMER
+        if(game != 1){
+        	startTime = SDL_GetTicks();
+        	game = 1;
+        }
+        currentTime = (SDL_GetTicks() - startTime)/1000;
+	minutes = currentTime / 60;
+	seconds = currentTime % 60;
+	
+        printf("\nCurrent time: %d",currentTime);
+        char timerText[100];
+	sprintf(timerText, "Timer: %02d:%02d", minutes, seconds);
+        renderText(ecran, font2, timerText, textColor, 700, 25);
+        
         //DISPLAY HEALTH
         SDL_BlitSurface(player.healthImage[player.vies], NULL, ecran, &(player.healthRect));
-    // PLAYER MOVEMENT 
+    	// PLAYER MOVEMENT 
 	    switch (event.type) {
 		case SDL_KEYDOWN:
 		    if (event.key.keysym.sym == SDLK_LSHIFT) {
