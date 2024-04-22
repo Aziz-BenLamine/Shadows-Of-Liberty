@@ -15,7 +15,7 @@ typedef struct {
 void initmap(minimap * m);
 void afficherminimap(minimap m,SDL_Surface *screen);
 void Liberer (minimap * m);
-//void MAJMinimap(SDL_Rect posJoueur, minimap *m, SDL_Rect camera, int redimensionnement);
+void MAJMinimap(SDL_Rect posJoueur, minimap *m, SDL_Rect cameraa, int redimensionnement);
 
 
 #endif

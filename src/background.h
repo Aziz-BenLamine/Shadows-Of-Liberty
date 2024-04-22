@@ -11,6 +11,7 @@
 #define SCREEN_WIDTH 1600
 #define SCREEN_HEIGHT 700
 
+
 typedef struct{
     SDL_Rect positionfromimage;
     SDL_Surface *image[3];

@@ -475,7 +475,7 @@ int dirr;
 	    afficherPerso(player, ecran);
 
 	    afficherminimap(m,ecran);
-            //MAJMinimap(player.rect, &m, background.camera, 20);
+            MAJMinimap(player.rect, &m, background.camera, 20);
 	//entitesecondaire
 
 

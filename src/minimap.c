@@ -39,15 +39,15 @@ void Liberer (minimap * m)
 SDL_FreeSurface(m->bonhomme.image[3]);
 SDL_FreeSurface(m->minimap.image[3]);
 }
-/*void MAJMinimap(SDL_Rect posJoueur, minimap *m, SDL_Rect camera, int redimensionnement)
+void MAJMinimap(SDL_Rect posJoueur, minimap *m, SDL_Rect cameraa, int redimensionnement)
 {
 SDL_Rect posJoueurABS;
-    posJoueurABS.x = posJoueur.x + camera.x;
-    posJoueurABS.y = posJoueur.y + camera.y;
+    posJoueurABS.x = posJoueur.x + cameraa.x;
+    posJoueurABS.y = posJoueur.y + cameraa.y;
     m->bonhomme.camera.x = posJoueurABS.x * redimensionnement / 100;
     m->bonhomme.camera.y = posJoueurABS.y * redimensionnement / 100;
-printf("New position of bonhomme: (%d, %d)\n", m->bonhomme.camera.x, m->bonhomme.camera.y);
-}*/
+
+}
 
 
 
