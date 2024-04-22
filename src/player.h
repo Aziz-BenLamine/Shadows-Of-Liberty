@@ -17,7 +17,7 @@ typedef struct{
   int vies;
   double vitesse;
   double acceleration;
-  SDL_Rect camera;
+  SDL_Rect cameraa;
   int tab[4];
 }Personne;
 
