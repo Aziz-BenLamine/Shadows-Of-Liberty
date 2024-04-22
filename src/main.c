@@ -8,7 +8,7 @@
 #include "background.h"
 #include "player.h"
 #include "entite.h"
-
+#include"minimap.h"
 #define SCREEN_HEIGHT 700
 #define SCREEN_WIDTH 1600
 #define FULL_SCREEN_HEIGHT 1080
@@ -21,6 +21,7 @@ int main(int argc, char** argv) {
     SDL_Surface *ecran;
     
     //MENU VARIABLES
+    minimap m;
     int playing = 1;
     int buttonClicked = 0;
     int keysClicked = 0;
@@ -91,6 +92,9 @@ int dirr;
 
 
     Background background;
+
+
+
     InitBackground(&background);
 
     button menuButtons[MENU_BUTTONS_COUNT];
@@ -127,9 +131,10 @@ int dirr;
     displayImageWithFade("../assets/intro/gameStudioIntro.png", ecran); 	
     displayImageWithFade("../assets/intro/gameIntro.png", ecran); 
 
-
-InitEnnemi(&e);
-Initbonus(&b);
+	
+	InitEnnemi(&e);
+	Initbonus(&b);
+	initmap(&m);
     
     int lvl = 2;
     int dir;
@@ -469,6 +474,8 @@ Initbonus(&b);
 	    	
 	    afficherPerso(player, ecran);
 
+	    afficherminimap(m,ecran);
+            //MAJMinimap(player.rect, &m, background.camera, 20);
 	//entitesecondaire
 
 
@@ -527,6 +534,7 @@ Initbonus(&b);
     for (int i = 0; i < NUM_IMAGES; i++) {
         SDL_FreeSurface(backgroundImages[i]);
     }
+    Liberer(&m);
     FreeBackground(&background);
     FreeBouton(menuButtons, MENU_BUTTONS_COUNT);
     FreeBouton(settingButtons, SETTING_BUTTONS_COUNT);

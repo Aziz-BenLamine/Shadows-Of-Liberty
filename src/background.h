@@ -7,15 +7,18 @@
 #include <SDL/SDL_ttf.h>
 #include "bouton.h"
 
+
 #define SCREEN_WIDTH 1600
 #define SCREEN_HEIGHT 700
 
 typedef struct{
+    SDL_Rect positionfromimage;
     SDL_Surface *image[3];
     Mix_Music *music;
-     SDL_Rect camera,camera1,bg1,bg2;
+    SDL_Rect camera,camera1,bg1,bg2;
     int dir;
     int niveau; //0: Menu  1:Settings  2:Main Game
+
 }Background;
 
 typedef struct{

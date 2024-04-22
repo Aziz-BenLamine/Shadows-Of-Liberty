@@ -4,7 +4,7 @@
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_mixer.h>
 #include "player.h"
-
+#include"minimap.h"
 #define SCREEN_HEIGHT 700
 #define SCREEN_WIDTH 1600
 
@@ -51,7 +51,10 @@ void init(Personne * p, int numperso){
         return;
        }
      p->rect = (SDL_Rect){200, 200, p->img[0][0]->w, p->img[0][0]->h};
- 
+        p->tab[0]=1;
+	p->tab[1]=1;
+	p->tab[2]=1;
+	p->tab[3]=1;
 }
 
 void afficherPerso(Personne p, SDL_Surface *screen) {

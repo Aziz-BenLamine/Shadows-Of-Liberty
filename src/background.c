@@ -6,6 +6,7 @@
 #include <SDL/SDL_ttf.h>
 #include "background.h"
 #include "bouton.h"
+#include"minimap.h"
 
 #define FULL_SCREEN_HEIGHT 944
 #define FULL_SCREEN_WIDTH 1920
