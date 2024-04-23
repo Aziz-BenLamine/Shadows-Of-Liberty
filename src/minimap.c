@@ -68,7 +68,7 @@ void animerMinimap(minimap *m) {
  }
 }
 
-/*int collisionPP(Personne *p, SDL_Surface *Masque, Background bp)
+int collisionPP(Personne *p, SDL_Surface *Masque, Background bp)
 {
 int persowidth = 40;
 int persoheight = 64;
@@ -129,6 +129,6 @@ if (color.r == 0 && color.g == 0 && color.b == 0) {
        p->tab[3]=0;
     } 
 
-}*/
+}
 
 

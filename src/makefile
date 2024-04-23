@@ -7,6 +7,11 @@ main.o: main.c bouton.h background.h player.h entite.h minimap.h
 bouton.o: bouton.c bouton.h
 	gcc -c bouton.c -o bouton.o -g
 
+
+minimap.o:minimap.c minimap.h player.h
+	gcc -c minimap.c -o minimap.o -g
+
+
 background.o: background.c background.h
 	gcc -c background.c -o background.o -g
 	
@@ -17,5 +22,4 @@ entite.o:entite.c entite.h
 	gcc -c entite.c -o entite.o -g
 
 
-minimap.o:minimap.c minimap.h
-	gcc -c minimap.c -o minimap.o -g
+

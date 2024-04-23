@@ -32,7 +32,7 @@ void InitBackground(Background *b){
     b->niveau = 0;
 //ajouter init camera
     b->camera.x = 0;
-    b->camera.y = 0;
+    b->camera.y = 150;
     b->camera.w = SCREEN_WIDTH;
     b->camera.h = SCREEN_HEIGHT;
     /*b->camera1.x = 800;
