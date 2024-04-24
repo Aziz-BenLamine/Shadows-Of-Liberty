@@ -4,7 +4,7 @@
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_mixer.h>
 #include "player.h"
-#include"minimap.h"
+#include "minimap.h"
 #define SCREEN_HEIGHT 700
 #define SCREEN_WIDTH 1600
 

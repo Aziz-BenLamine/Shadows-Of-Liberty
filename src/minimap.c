@@ -1,6 +1,13 @@
-#include"minimap.h"
-#include "background.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
+#include <SDL/SDL_mixer.h>
+
 #include "player.h"
+#include "minimap.h"
+#include "background.h"
+
 
 void initmap (minimap * m)
 {
@@ -70,65 +77,55 @@ void animerMinimap(minimap *m) {
 
 int collisionPP(Personne *p, SDL_Surface *Masque, Background bp)
 {
-int persowidth = 40;
-int persoheight = 64;
+    int persowidth = 40;
+    int persoheight = 64;
 
-SDL_Color color;
-    
-    int x = p->player.rect.x + persowidth + bp.background.positionfromimage.x;
-    int y = p->player.rect.y+persoheight/2 + bp.background.positionfromimage.y;
+    SDL_Color color;
 
-	color = GetPixel(Masque, x, y);
+    int x = p->rect.x + persowidth + bp.positionfromimage.x;
+    int y = p->rect.y + persoheight/2 + bp.positionfromimage.y;
 
-if (color.r == 0 && color.g == 0 && color.b == 0) {
-      
-      p->tab[0]=1;
-    }  else {
-       p->tab[0]=0;
+    color = GetPixel(Masque, x, y);
+
+    if (color.r == 0 && color.g == 0 && color.b == 0) {
+        p->tab[0] = 1;
+    } else {
+        p->tab[0] = 0;
     }
 
-    int x2 = p->player.rect.x + bp.background.positionfromimage.x;
-    int y2 = p->player.rect.y +persoheight/2+ bp.background.positionfromimage.y;
-   
-     color = GetPixel(Masque, x2, y2);
+    int x2 = p->rect.x + bp.positionfromimage.x;
+    int y2 = p->rect.y + persoheight/2 + bp.positionfromimage.y;
 
-    
+    color = GetPixel(Masque, x2, y2);
+
     if (color.r == 0 && color.g == 0 && color.b == 0) {
-        
-            
-         p->tab[1]=1;
-    }  else {
-       p->tab[1]=0;
+        p->tab[1] = 1;
+    } else {
+        p->tab[1] = 0;
     }
 
-    int x3 = p->player.rect.x+persowidth/2 + bp.background.positionfromimage.x;
-    int y3 = p->player.rect.y+ bp.background.positionfromimage.y-5;
-    
-     color = GetPixel(Masque, x3, y3);
+    int x3 = p->rect.x + persowidth/2 + bp.positionfromimage.x;
+    int y3 = p->rect.y + bp.positionfromimage.y - 5;
 
-    
+    color = GetPixel(Masque, x3, y3);
+
     if (color.r == 0 && color.g == 0 && color.b == 0) {
-        
-         p->tab[2]=1;
-    }  else {
-       p->tab[2]=0;
+        p->tab[2] = 1;
+    } else {
+        p->tab[2] = 0;
     }
-   
-    int x4 = p->player.rect.x+persowidth/2 + bp.background.positionfromimage.x;
-    int y4 = p->player.rect.y+persoheight+ bp.background.positionfromimage.y-5;
-   
 
-    
-     color = GetPixel(Masque, x4, y4);
+    int x4 = p->rect.x + persowidth/2 + bp.positionfromimage.x;
+    int y4 = p->rect.y + persoheight + bp.positionfromimage.y - 5;
 
-    
+    color = GetPixel(Masque, x4, y4);
+
     if (color.r == 0 && color.g == 0 && color.b == 0) {
-       
-            p->tab[3]=1;
-    }  else {
-       p->tab[3]=0;
-    } 
+        p->tab[3] = 1;
+    } else {
+        p->tab[3] = 0;
+    }
 
+    return 0;
 }
-
 

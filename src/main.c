@@ -8,7 +8,7 @@
 #include "background.h"
 #include "player.h"
 #include "entite.h"
-#include"minimap.h"
+#include "minimap.h"
 #define SCREEN_HEIGHT 700
 #define SCREEN_WIDTH 1600
 #define FULL_SCREEN_HEIGHT 1080
