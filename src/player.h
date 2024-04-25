@@ -3,7 +3,7 @@
 #include"background.h"
 #include"minimap.h"
 #define playerImagerows 6
-#define playerImageColumns 2
+#define playerImageColumns 4
 typedef struct{
 
   SDL_Surface *img[playerImageColumns][playerImagerows];
@@ -26,4 +26,6 @@ void animerPerso (Personne* p);
 void afficherPerso(Personne p, SDL_Surface * screen);
 void movePerso(Personne *p,Uint32 dt);
 void saut(Personne *P,int dt, int posinit);
+void sautParabolique(Personne *player, int *jumpDone, int *x0, int *y0, int *xINIT, int *yINIT);
+void freePlayer(Personne * p);
 #endif // PLAYER_H

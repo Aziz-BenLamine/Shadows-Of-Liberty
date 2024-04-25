@@ -39,18 +39,45 @@ void init(Personne * p, int numperso){
     p->img[1][3] = IMG_Load("../assets/player/leftwalk3.png");
     p->img[1][4] = IMG_Load("../assets/player/leftwalk4.png");
     p->img[1][5] = IMG_Load("../assets/player/leftwalk5.png");
+    
+    p->img[2][0] = IMG_Load("../assets/player/jump/rightjump0.png");
+    p->img[2][1] = IMG_Load("../assets/player/jump/rightjump1.png");
+    p->img[2][2] = IMG_Load("../assets/player/jump/rightjump2.png");
+    p->img[2][3] = IMG_Load("../assets/player/jump/rightjump3.png");
+    p->img[2][4] = IMG_Load("../assets/player/jump/rightjump4.png");
+    p->img[3][5] = IMG_Load("../assets/player/jump/rightjump5.png");
+    
+    p->img[3][0] = IMG_Load("../assets/player/jump/leftjump0.png");
+    p->img[3][1] = IMG_Load("../assets/player/jump/leftjump1.png");
+    p->img[3][2] = IMG_Load("../assets/player/jump/leftjump2.png");
+    p->img[3][3] = IMG_Load("../assets/player/jump/leftjump3.png");
+    p->img[3][4] = IMG_Load("../assets/player/jump/leftjump4.png");
+    p->img[3][5] = IMG_Load("../assets/player/jump/leftjump5.png");
+    
+    
+    
     printf("Images Loaded");
  }
  if(p->img[0][0] == NULL || p->img[0][1] == NULL ||
     p->img[0][2] == NULL || p->img[0][3] == NULL ||
     p->img[0][4] == NULL || p->img[0][5] == NULL ||
+    
     p->img[1][0] == NULL || p->img[1][1] == NULL ||
     p->img[1][2] == NULL || p->img[1][3] == NULL ||
-    p->img[1][4] == NULL || p->img[1][5] == NULL ){
+    p->img[1][4] == NULL || p->img[1][5] == NULL ||
+    
+    p->img[2][0] == NULL || p->img[2][1] == NULL ||
+    p->img[2][2] == NULL || p->img[2][3] == NULL ||
+    p->img[2][4] == NULL || p->img[2][5] == NULL ||
+    
+    p->img[3][0] == NULL || p->img[3][1] == NULL ||
+    p->img[3][2] == NULL || p->img[3][3] == NULL ||
+    p->img[3][4] == NULL || p->img[3][5] == NULL
+    ){
 	printf("ERROR LOADING PLAYER IMAGES %s\n", IMG_GetError());
         return;
        }
-     p->rect = (SDL_Rect){200, 200, p->img[0][0]->w, p->img[0][0]->h};
+     p->rect = (SDL_Rect){200, 510, p->img[0][0]->w, p->img[0][0]->h};
         p->tab[0]=1;
 	p->tab[1]=1;
 	p->tab[2]=1;
@@ -64,6 +91,7 @@ void afficherPerso(Personne p, SDL_Surface *screen) {
 void animerPerso(Personne *p) {
     p->num++;
     if (p->num >= playerImagerows) {
+    	printf("YO");
         p->num = 0;
     }
 }
@@ -77,7 +105,7 @@ void movePerso(Personne *p, Uint32 dt) {
     }else if(p->acceleration != 0 && dx >= 20){
     	dx = 20;
     }
-        printf("dx = %.2f\n", dx);
+    //printf("dx = %.2f\n", dx);
     if (p->dir == 0) {
         p->rect.x += dx;
     } else if (p->dir == 1) {
@@ -97,7 +125,7 @@ void saut(Personne *P, int dt, int posinit) {
     //double t = dt / 1000.0;
 
     int jump_height = 120;
-    printf("P->rect.y = %d | posinit + jump_height = %d \n",P->rect.y,posinit-jump_height);
+    //printf("P->rect.y = %d | posinit + jump_height = %d \n",P->rect.y,posinit-jump_height);
     if(P->up == 1){
     	if(P->rect.y > posinit - jump_height){
     		P->rect.y -= 20;
@@ -105,5 +133,48 @@ void saut(Personne *P, int dt, int posinit) {
     		P->up = 0;
     	}
     }
+
+}
+
+void sautParabolique(Personne *player, int *jumpDone, int *x0, int *y0, int *xINIT, int *yINIT) {
+    if (!(*jumpDone)) {
+    	//printf("PLAYER x0 = %d | x = %d PLAYER.UP = %d\n",x0,player.rect.x,player.up);
+	//printf("PLAYER y0 = %d | y = %d PLAYER.UP = %d\n",y0,player.rect.y,player.up);
+        if (player->up == 0) {
+            *xINIT = player->rect.x;
+            *yINIT = player->rect.y;
+            *x0 = -50;
+            *y0 = 0;
+            player->up = 1;
+        }
+
+        if (player->up == 1) {
+            *x0 += 10;
+            *y0 = -0.04 * (*x0) * (*x0) + 100;
+            if (player->dir == 0 || player->dir == 2) {
+                player->rect.x += 10;
+            } else {
+                player->rect.x -= 10;
+            }
+            player->rect.y = *yINIT - *y0;
+            if (*x0 >= 50) {
+                player->up = 0;
+                *jumpDone = 1;
+            }
+        }
+    }
+}
+
+void freePlayer(Personne * p){
+	for(int i = 0; i < playerImageColumns; i++){
+		for(int j = 0; j < playerImagerows; j++){
+			SDL_FreeSurface(p->img[i][j]);
+		}
+		SDL_FreeSurface(p->healthImage[i]);
+	}
+
+
+
+
 
 }

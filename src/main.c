@@ -30,12 +30,12 @@ int main(int argc, char** argv) {
     int selectedButtonIndex = 0;
     int previousButtonIndex = 0;
     int screenState = 0;
-	Entity e;
-	Entity b;
-	int collennemi;
-	int collbonus;
-	int touchbonus=1;
-int dirr;
+    Entity e;
+    Entity b;
+    int collennemi;
+    int collbonus;
+    int touchbonus=1;
+    int dirr;
     
     //MAIN LOOP VARIABLES
     Uint32 dt, t_prev;
@@ -48,6 +48,7 @@ int dirr;
     int timeIncrement = 50;
     int game = 0;
     int score = 0;
+    int jumpAnimation = 0;
     
     init(&player, 0);
     //Texte
@@ -170,6 +171,8 @@ int dirr;
         }
 
         if (background.niveau == 0) {
+            background.camera.y = 0;
+            background.camera.x = 0;
             AfficherBouton(menuButtons, ecran, 0);
             SDL_BlitSurface(backgroundImages[currentImageIndex], NULL, ecran, &posAnim);
             renderText(ecran, font, "Ares Forge Games", textColor, 1300, 660);
@@ -268,6 +271,8 @@ int dirr;
                     
             }
         } else if (background.niveau == 1) {
+            background.camera.y = 0;
+            background.camera.x = 0;
             AfficherBouton(settingButtons, ecran, 1);
             AfficherSoundSlider(&BS, ecran);
             renderText(ecran, font, "Ares Forge Games", textColor, 1300, 660);
@@ -347,7 +352,9 @@ int dirr;
         }
         //MAIN GAME
         else if (background.niveau == 2) {
-        
+        printf("JUmpanimation=%d\n",jumpAnimation);
+        //printf("player.dir = %d\n",player.dir);
+        background.camera.y = 100;
         //START , TRACK AND DISPLAY TIMER
         if(game != 1){
         	startTime = SDL_GetTicks();
@@ -357,7 +364,7 @@ int dirr;
 	minutes = currentTime / 60;
 	seconds = currentTime % 60;
 	
-        printf("\nCurrent time: %d",currentTime);
+        //printf("\nCurrent time: %d",currentTime);
         char timerText[100];
 	sprintf(timerText, "Timer: %02d:%02d", minutes, seconds);
         renderText(ecran, font2, timerText, textColor, 700, 25);
@@ -369,7 +376,7 @@ int dirr;
         }
         char scoreText[100];
         sprintf(scoreText, "Score: %d", score);
-        renderText(ecran, font2, scoreText, textColor, 50, 25);
+        renderText(ecran, font2, scoreText, textColor, 700, 75);
         
         //DISPLAY HEALTH
         SDL_BlitSurface(player.healthImage[player.vies], NULL, ecran, &(player.healthRect));
@@ -398,21 +405,37 @@ int dirr;
 
 		    // HANDLE MOVEMENTS 
 		    if (event.key.keysym.sym == SDLK_RIGHT) {
-		    		dt += timeIncrement;
+		    	//MOUVEMENT A DROITE
+		    	dt += timeIncrement;
 		        player.dir = 0;
 		        animerPerso(&player);
 		        movePerso(&player, dt);
 			dir = 0;
 			scrolling(&background,pas,dir);
 		    } else if (event.key.keysym.sym == SDLK_LEFT) {
-		    		dt += timeIncrement;
+		    	//MOUVEMENT A GAUCHE
+		    	dt += timeIncrement;
 		        player.dir = 1;
 		        animerPerso(&player);
 		        movePerso(&player, dt);
 			dir = 1;
 			scrolling(&background,pas,dir);
 		    } else if(event.key.keysym.sym == SDLK_UP){
+			if(player.dir == 0){
+		    		player.dir = 2;
+		    		player.num = 0;
+		    	}else if(player.dir == 1){
+		    		player.dir = 3;
+		    		player.num = 0;
+		    	}
+			if(jumpAnimation < playerImagerows){
+		    		animerPerso(&player);
+		    		jumpAnimation++;
+		    		printf("player.num=%d, player.dir=%d\n",player.num,player.dir);
+		    	}
+		    	//SAUT HORIZONTAL
 		    	if(!jumpDone){
+		    	
 				  	if(player.up == 0){
 				  		yINIT = player.rect.y;
 				  	}
@@ -428,46 +451,41 @@ int dirr;
 		    	
 		    
 		    }
+		    //SAUT PARABOLIQUE
 		    else if(event.key.keysym.sym ==  SDLK_SPACE){
-				  	if(!jumpDone){
-							//printf("PLAYER x0 = %d | x = %d PLAYER.UP = %d\n",x0,player.rect.x,player.up);
-							//printf("PLAYER y0 = %d | y = %d PLAYER.UP = %d\n",y0,player.rect.y,player.up);
-							if(player.up == 0){
-								xINIT = player.rect.x;
-								yINIT = player.rect.y;
-								x0 = -50;
-								y0 = 0;
-								player.up = 1;
-							}
-							if(player.up == 1){
-								x0 += 10;
-								y0 = -0.04 * x0 * x0 + 100;
-								if(player.dir == 0){
-									player.rect.x += 10;
-								}else{
-									player.rect.x -= 10;
-								}
-
-								player.rect.y = yINIT - y0;
-								if(x0 >= 50){
-								 player.up = 0;
-								 jumpDone = 1;
-								}
-				  	}
-				  }
+		    	if(player.dir == 0){
+		    		player.dir = 2;
+		    		player.num = 0;
+		    	}else if(player.dir == 1){
+		    		player.dir = 3;
+		    		player.num = 0;
+		    	}
+			if(jumpAnimation < playerImagerows){
+		    		animerPerso(&player);
+		    		jumpAnimation++;
+		    		printf("player.num=%d, player.dir=%d\n",player.num,player.dir);
+		    	}
+			sautParabolique(&player, &jumpDone, &x0, &y0, &xINIT, &yINIT);
+			
 		    }
 		    break;
 		    case SDL_KEYUP:
 		    	if(event.key.keysym.sym ==  SDLK_SPACE || event.key.keysym.sym == SDLK_UP){
 		    		jumpDone = 0;
+		    		if(player.dir == 2){
+		    			player.dir = 0;
+		    		}else if(player.dir == 3){
+		    			player.dir = 1;
+		    		}
 
 		    	}
 		    	dt = 0;
+		    	jumpAnimation = 0;
 					break;
 		    
 	    }
 	    //GRAVITE
-	  	if (player.rect.y < 200) {
+	  	if (player.rect.y < 510) {
 		   player.rect.y += 8.5;
 	    
 	    	}
@@ -485,17 +503,17 @@ int dirr;
 	collennemi=collisionBB(e,player.rect);
 	if (collennemi==1){
 	player.rect.x=200;
-	player.rect.y=200;
+	player.rect.y=510;
 	player.dir=0;
 	player.vies--;
 	}
 
 	collbonus=collisionTri(player,b.pos);
 	if (touchbonus==1){
-	Afficherbonus(b,ecran);
+		Afficherbonus(b,ecran);
 	}
 	if (collbonus==1){
-	touchbonus=0;
+		touchbonus=0;
 	}
 
 	/*if(e.pos.x-(player.rect.x+player.rect.w)<20){
@@ -535,6 +553,7 @@ int dirr;
         SDL_FreeSurface(backgroundImages[i]);
     }
     Liberer(&m);
+    freePlayer(&player);
     FreeBackground(&background);
     FreeBouton(menuButtons, MENU_BUTTONS_COUNT);
     FreeBouton(settingButtons, SETTING_BUTTONS_COUNT);

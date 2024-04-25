@@ -43,7 +43,7 @@ void InitBackground(Background *b){
 
 
 void AfficherBackground(Background b, SDL_Surface *ecran,int lvl){
- 	SDL_BlitSurface(b.image[lvl], &b.camera, ecran, &b.bg1);
+ 	SDL_BlitSurface(b.image[b.niveau], &b.camera, ecran, &b.bg1);
 	//SDL_BlitSurface(b.image[lvl], &b.camera1, ecran, &b.bg2);
 }
 
