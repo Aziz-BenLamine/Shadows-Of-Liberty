@@ -39,7 +39,28 @@ void InitBackground(Background *b){
     b->camera1.y = 0;
     b->camera1.w = SCREEN_WIDTH;
     b->camera1.h = SCREEN_HEIGHT;*/
+
+
+	
 }
+void Initmask(Background *mask)
+{
+    
+    
+     if (mask->image[3] == NULL) {
+        printf("ERROR LOADING BACKGROUND IMAGE: %s\n", IMG_GetError());
+        return;
+    }
+    mask->bg1.x = 0;
+    mask->bg1.y = 0;    
+
+    mask->camera.x = 0;
+    mask->camera.y = 150;
+    mask->camera.w = SCREEN_WIDTH;
+    mask->camera.h = SCREEN_HEIGHT;
+    
+}
+
 
 
 void AfficherBackground(Background b, SDL_Surface *ecran,int lvl){

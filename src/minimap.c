@@ -26,10 +26,13 @@ m->animation.image[3]=IMG_Load("spritecolors.png");
    
 m->animation.camera.x = 250;
 m->animation.camera.y = 60;
-m->animation.positionfromimage.h = 47;
-m->animation.positionfromimage.w = 30;
+m->animation.camera.h = 47;
+m->animation.camera.w = 30;
 m->animation.camera.x = 200;
 m->animation.camera.y = 50;
+ 
+
+ 
 
 }
 
@@ -37,7 +40,7 @@ void afficherminimap(minimap m,SDL_Surface *ecran)
 {
  SDL_BlitSurface(m.minimap.image[3],NULL,ecran,&m.minimap.camera);
  SDL_BlitSurface(m.bonhomme.image[3],NULL,ecran,&m.bonhomme.camera);
- SDL_BlitSurface(m.animation.image[3],&m.animation.positionfromimage, ecran, &m.animation.camera);
+ SDL_BlitSurface(m.animation.image[3],&m.animation.camera, ecran, &m.animation.camera);
 
 
 }
@@ -68,11 +71,24 @@ void afficherpoint(SDL_Surface * img, int x,int y,SDL_Surface *screen) {
 void animerMinimap(minimap *m) {
 
  
-  m->animation.positionfromimage.x = m->animation.positionfromimage.x + m->animation.positionfromimage.w;
-  if (m->animation.positionfromimage.x >  m->animation.image[3]->w - m->animation.positionfromimage.w)
+  m->animation.camera.x = m->animation.camera.x + m->animation.camera.w;
+  if (m->animation.camera.x >  m->animation.image[3]->w - m->animation.camera.w)
   {
-    m->animation.positionfromimage.x = 0;
+    m->animation.camera.x = 0;
  }
+}
+SDL_Color  GetPixel(SDL_Surface *pSurface,int x,int y)/// hethi besh itraja3 il caractere louun 
+{
+SDL_Color color;
+Uint32 col=0;
+//Determine position
+char* pPosition=(char* ) pSurface->pixels;
+pPosition+= (pSurface->pitch * y);
+pPosition+= (pSurface->format->BytesPerPixel *x);
+memcpy(&col ,pPosition ,pSurface->format->BytesPerPixel);
+//convertir color
+SDL_GetRGB(col,pSurface->format, &color.r, &color.g, &color.b);
+return (color); 
 }
 
 int collisionPP(Personne *p, SDL_Surface *Masque, Background bp)
@@ -82,8 +98,8 @@ int collisionPP(Personne *p, SDL_Surface *Masque, Background bp)
 
     SDL_Color color;
 
-    int x = p->rect.x + persowidth + bp.positionfromimage.x;
-    int y = p->rect.y + persoheight/2 + bp.positionfromimage.y;
+    int x = p->rect.x + persowidth + bp.camera.x;
+    int y = p->rect.y + persoheight/2 + bp.camera.y;
 
     color = GetPixel(Masque, x, y);
 
@@ -93,8 +109,8 @@ int collisionPP(Personne *p, SDL_Surface *Masque, Background bp)
         p->tab[0] = 0;
     }
 
-    int x2 = p->rect.x + bp.positionfromimage.x;
-    int y2 = p->rect.y + persoheight/2 + bp.positionfromimage.y;
+    int x2 = p->rect.x + bp.camera.x;
+    int y2 = p->rect.y + persoheight/2 + bp.camera.y;
 
     color = GetPixel(Masque, x2, y2);
 
@@ -104,8 +120,8 @@ int collisionPP(Personne *p, SDL_Surface *Masque, Background bp)
         p->tab[1] = 0;
     }
 
-    int x3 = p->rect.x + persowidth/2 + bp.positionfromimage.x;
-    int y3 = p->rect.y + bp.positionfromimage.y - 5;
+    int x3 = p->rect.x + persowidth/2 + bp.camera.x;
+    int y3 = p->rect.y + bp.camera.y - 5;
 
     color = GetPixel(Masque, x3, y3);
 
@@ -115,8 +131,8 @@ int collisionPP(Personne *p, SDL_Surface *Masque, Background bp)
         p->tab[2] = 0;
     }
 
-    int x4 = p->rect.x + persowidth/2 + bp.positionfromimage.x;
-    int y4 = p->rect.y + persoheight + bp.positionfromimage.y - 5;
+    int x4 = p->rect.x + persowidth/2 + bp.camera.x;
+    int y4 = p->rect.y + persoheight + bp.camera.y - 5;
 
     color = GetPixel(Masque, x4, y4);
 
@@ -128,4 +144,6 @@ int collisionPP(Personne *p, SDL_Surface *Masque, Background bp)
 
     return 0;
 }
+
+
 

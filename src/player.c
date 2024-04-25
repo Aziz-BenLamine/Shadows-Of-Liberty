@@ -50,7 +50,7 @@ void init(Personne * p, int numperso){
 	printf("ERROR LOADING PLAYER IMAGES %s\n", IMG_GetError());
         return;
        }
-     p->rect = (SDL_Rect){200, 200, p->img[0][0]->w, p->img[0][0]->h};
+     p->rect = (SDL_Rect){200, 540, p->img[0][0]->w, p->img[0][0]->h};
         p->tab[0]=1;
 	p->tab[1]=1;
 	p->tab[2]=1;
@@ -78,10 +78,15 @@ void movePerso(Personne *p, Uint32 dt) {
     	dx = 20;
     }
         printf("dx = %.2f\n", dx);
+    if(p->tab[0]==0) {
     if (p->dir == 0) {
         p->rect.x += dx;
-    } else if (p->dir == 1) {
+    }
+}
+	if(p->tab[1]==0) {
+	if (p->dir == 1) {
         p->rect.x -= dx;
+    }
     }
 
     if (p->rect.x < 0) {
@@ -98,12 +103,19 @@ void saut(Personne *P, int dt, int posinit) {
 
     int jump_height = 120;
     printf("P->rect.y = %d | posinit + jump_height = %d \n",P->rect.y,posinit-jump_height);
-    if(P->up == 1){
+    if(P->up == 1)
+{	
+     
     	if(P->rect.y > posinit - jump_height){
     		P->rect.y -= 20;
-    	}else{
-    		P->up = 0;
     	}
+	
+	
+	
+	else{
+    		P->up = 0;
+            }
+    
     }
 
 }

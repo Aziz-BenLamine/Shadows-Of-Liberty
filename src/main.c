@@ -22,6 +22,8 @@ int main(int argc, char** argv) {
     
     //MENU VARIABLES
     minimap m;
+  
+
     int playing = 1;
     int buttonClicked = 0;
     int keysClicked = 0;
@@ -96,6 +98,7 @@ int dirr;
 
 
     InitBackground(&background);
+    
 
     button menuButtons[MENU_BUTTONS_COUNT];
     if (InitBouton(menuButtons, SCREEN_WIDTH, SCREEN_HEIGHT)!= 0) {
@@ -353,6 +356,12 @@ int dirr;
         	startTime = SDL_GetTicks();
         	game = 1;
         }
+ for (int i = 0; i < 4; i++) {
+    		player.tab[i] = 0;
+	    printf("tab[%d]=%d \n",i,player.tab[i]);
+       }
+
+
         currentTime = (SDL_GetTicks() - startTime)/1000;
 	minutes = currentTime / 60;
 	seconds = currentTime % 60;
@@ -467,15 +476,25 @@ int dirr;
 		    
 	    }
 	    //GRAVITE
-	  	if (player.rect.y < 200) {
+
+	  	if (player.rect.y < 540) {
 		   player.rect.y += 8.5;
 	    
 	    	}
-	    	
+	    
 	    afficherPerso(player, ecran);
+	////////
+    
+            SDL_Surface *surfM = IMG_Load("mask.png");
+	
 	    afficherminimap(m,ecran);
             MAJMinimap(player.rect, &m, background.camera, 20);
-            //animerMinimap(&m);
+            animerMinimap(&m);
+            collisionPP(&player,surfM,background);
+       
+            background.mask.positionfromimage =   background.camera;
+			
+
 	//entitesecondaire
 
 
