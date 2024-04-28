@@ -9,6 +9,7 @@
 
 #define FULL_SCREEN_HEIGHT 944
 #define FULL_SCREEN_WIDTH 1920
+#define NUM_IMAGES 7
 
 void InitBackground(Background *b){
     
@@ -25,25 +26,25 @@ void InitBackground(Background *b){
 
     b->bg1.x = 0;
     b->bg1.y = 0;
-    /*b->bg2.x = 0;
-    b->bg2.y = 0;*/
+    b->bg2.x = 800;
+    b->bg2.y = 0;
     
     b->niveau = 0;
 //ajouter init camera
     b->camera.x = 0;
-    b->camera.y = 0;
+    b->camera.y = 130;
     b->camera.w = SCREEN_WIDTH;
     b->camera.h = SCREEN_HEIGHT;
-    /*b->camera1.x = 800;
-    b->camera1.y = 0;
+    b->camera1.x = 0;
+    b->camera1.y = 130;
     b->camera1.w = SCREEN_WIDTH;
-    b->camera1.h = SCREEN_HEIGHT;*/
+    b->camera1.h = SCREEN_HEIGHT;
 }
 
 
 void AfficherBackground(Background b, SDL_Surface *ecran,int lvl){
  	SDL_BlitSurface(b.image[lvl], &b.camera, ecran, &b.bg1);
-	//SDL_BlitSurface(b.image[lvl], &b.camera1, ecran, &b.bg2);
+	SDL_BlitSurface(b.image[lvl], &b.camera1, ecran, &b.bg2);
 }
 
 void toggleFullScreen(button b[]) {
@@ -194,69 +195,84 @@ void renderText(SDL_Surface *surface, TTF_Font *font, char *text, SDL_Color colo
     SDL_FreeSurface(textSurface);
 }
 
-void scrolling(Background *b,int pas,int dir){
-	if(dir==0){
-	    b->camera.x+=pas;
-	}
-	if(dir==1){
-	    b->camera.x-=pas;
-	}
-	if(dir== 0 && (b->image[2]->w)-1920 <=(b->camera.x)){
-	    b->camera.x=b->image[2]->w-1920;
-	}
-	if((dir==1) && (b->camera.x <= 0)){
-	    b->camera.x=0;
-	}
-	if(dir==2){
-	    b->camera.y+=pas;
-	}
-	if(dir==3){
-	    b->camera.y-=pas;
-	}
-	if(dir==2 && (b->image[2]->h)-944<=b->camera.y){
-	    b->camera.y=b->image[2]->h-944;
-	}
-	if(dir==3 && b->camera.y <= 0){
-	    b->camera.y=0;
-	}
-
-}
-/*void animerBackground(background *e, SDL_Surface *ecran)
-{
-	for (int j = 0; j < 5; j++)
-	{
-		switch (j)
-		{
-		case 0:
-			SDL_FreeSurface(e->img_b);
-			e->img = IMG_Load("");
-			break;
-		case 1:
-			SDL_FreeSurface(e->img_b);
-			e->img = IMG_Load("");
-		case 2:
-
-			SDL_FreeSurface(e->img_b);
-			e->img = IMG_Load("");
-			break;
-		case 3:
-			SDL_FreeSurface(e->img_b);
-			e->img = IMG_Load("");
-			break;
-		case 4:
-			SDL_FreeSurface(e->img_b);
-			e->img = IMG_Load("");
-			break;
+void scrolling(Background *b,int pas,int dir,int player){
+	if(player == 1){
+		if(dir==0){
+	    	b->camera.x+=pas;
 		}
-		SDL_BlitSurface(e->img, &e->bg1, ecran, NULL);
-		SDL_Flip(ecran);
-		SDL_Delay(100);
+		if(dir==1){
+	 	   b->camera.x-=pas;
+		}
+		if(dir== 0 && (b->image[2]->w)-1920 <=(b->camera.x)){
+		    b->camera.x=b->image[2]->w-1920;
+		}
+		if((dir==1) && (b->camera.x <= 0)){
+		    b->camera.x=0;
+		}
+		if(dir==2){
+		    b->camera.y+=pas;
+		}
+		if(dir==3){
+		    b->camera.y-=pas;
+		}
+		if(dir==2 && (b->image[2]->h)-944<=b->camera.y){
+		    b->camera.y=b->image[2]->h-944;
+		}
+		if(dir==3 && b->camera.y <= 0){
+		    b->camera.y=0;
+		}
+	}else{
+		if(dir==0){
+	    	b->camera1.x+=pas;
+		}
+		if(dir==1){
+	 	   b->camera1.x-=pas;
+		}
+		if(dir== 0 && (b->image[2]->w)-1920 <=(b->camera1.x)){
+		    b->camera1.x=b->image[2]->w-1920;
+		}
+		if((dir==1) && (b->camera1.x <= 0)){
+		    b->camera1.x=0;
+		}
+		if(dir==2){
+		    b->camera1.y+=pas;
+		}
+		if(dir==3){
+		    b->camera1.y-=pas;
+		}
+		if(dir==2 && (b->image[2]->h)-944<=b->camera1.y){
+		    b->camera1.y=b->image[2]->h-944;
+		}
+		if(dir==3 && b->camera1.y <= 0){
+		    b->camera1.y=0;
 		}
 	}
 }
 
+void animerBackground(SDL_Surface *ecran,int index){
+        int currentImageIndex = 0;
+	SDL_Surface *backgroundImages[NUM_IMAGES];
+	int i;
+	for (int i = 0; i < NUM_IMAGES; i++) {
+        char filename[50];
+        sprintf(filename, "../assets/moon%d.png", i);
+        backgroundImages[i] = IMG_Load(filename);
+        if (backgroundImages[i] == NULL) {
+            printf("Error loading background image %d: %s\n", i, IMG_GetError());
+        }
+    }
+    SDL_Rect posAnim;
+    posAnim.x = 1010;
+    posAnim.y = 70;
+    posAnim.w = backgroundImages[0]->w;
+    posAnim.h = backgroundImages[0]->h;
 
-void savescore(char *filename,int score){
+    SDL_BlitSurface(backgroundImages[index], NULL, ecran, &posAnim);
+    
+}
+
+
+/*void savescore(char *filename,int score){
 	FILE* f = open(filename, "a");
 	
 	if (f == NULL){
