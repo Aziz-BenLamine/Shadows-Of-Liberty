@@ -8,7 +8,6 @@
 #include "background.h"
 #include "player.h"
 #include "entite.h"
-
 #define SCREEN_HEIGHT 700
 #define SCREEN_WIDTH 1600
 #define FULL_SCREEN_HEIGHT 1080
@@ -62,6 +61,7 @@ int dirr;
     //Animation
     SDL_Surface *backgroundImages[NUM_IMAGES];
     int currentImageIndex = 0;
+    int currentImageIndex1 = 0;
 
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
         printf("Echec d'initialisation de SDL : %s\n", SDL_GetError());
@@ -91,6 +91,9 @@ int dirr;
 
 
     Background background;
+
+
+
     InitBackground(&background);
 
     button menuButtons[MENU_BUTTONS_COUNT];
@@ -127,12 +130,12 @@ int dirr;
     displayImageWithFade("../assets/intro/gameStudioIntro.png", ecran); 	
     displayImageWithFade("../assets/intro/gameIntro.png", ecran); 
 
-
-InitEnnemi(&e);
-Initbonus(&b);
+	
+	InitEnnemi(&e);
+	Initbonus(&b);
     
     int lvl = 2;
-    int dir;
+    int dir,pl;
     int pas = 10;
 
     SDL_Event event;
@@ -342,6 +345,8 @@ Initbonus(&b);
         }
         //MAIN GAME
         else if (background.niveau == 2) {
+		animerBackground(ecran,currentImageIndex1);
+		currentImageIndex1 = (currentImageIndex1 + 1) % NUM_IMAGES;
         
         //START , TRACK AND DISPLAY TIMER
         if(game != 1){
@@ -359,6 +364,9 @@ Initbonus(&b);
         
         //DISPLAY SCORE
         score = 1000 - ((3 -player.vies) * 100) - currentTime;  //FORMULE SCORE
+        if(score <= 0){
+        	score = 0;
+        }
         char scoreText[100];
         sprintf(scoreText, "Score: %d", score);
         renderText(ecran, font2, scoreText, textColor, 50, 25);
@@ -395,15 +403,28 @@ Initbonus(&b);
 		        animerPerso(&player);
 		        movePerso(&player, dt);
 			dir = 0;
-			scrolling(&background,pas,dir);
+			pl = 1;
+			scrolling(&background,pas,dir,pl);
 		    } else if (event.key.keysym.sym == SDLK_LEFT) {
 		    		dt += timeIncrement;
 		        player.dir = 1;
 		        animerPerso(&player);
 		        movePerso(&player, dt);
 			dir = 1;
-			scrolling(&background,pas,dir);
-		    } else if(event.key.keysym.sym == SDLK_UP){
+			pl = 1;
+			scrolling(&background,pas,dir,pl);
+			
+		    }else if (event.key.keysym.sym == SDLK_d) {
+			dir = 0;
+			pl = 2;
+			scrolling(&background,pas,dir,pl);
+
+		    }else if (event.key.keysym.sym == SDLK_q) {
+			dir = 1;
+			pl = 2;
+			scrolling(&background,pas,dir,pl);
+
+		    }else if(event.key.keysym.sym == SDLK_UP){
 		    	if(!jumpDone){
 				  	if(player.up == 0){
 				  		yINIT = player.rect.y;
@@ -465,7 +486,6 @@ Initbonus(&b);
 	    	}
 	    	
 	    afficherPerso(player, ecran);
-
 	//entitesecondaire
 
 
