@@ -26,7 +26,7 @@ void InitEnnemi(Entity *e){
  e->image[2][3]=IMG_Load("../assets/ennemi/a1.png");
  e->image[2][4]=IMG_Load("../assets/ennemi/a0.png");
 e->pos.x=700;
-e->pos.y=200;
+e->pos.y=580;
 e->pos.w=e->image[0][0]->w;
 e->pos.h=e->image[0][0]->h;
 
@@ -43,8 +43,8 @@ e->image[0][3]=
 e->image[0][4]=
 */
 
-e->pos.x=500;
-e->pos.y=200;
+e->pos.x=1005;
+e->pos.y=580;
 e->pos.w=e->image[0][0]->w;
 e->pos.h=e->image[0][0]->h;
 

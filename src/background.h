@@ -39,8 +39,8 @@ typedef struct{
 void afficherbest(SDL_Surface *ecran,scoreinfo t[]);
 void savescore(char *filename,int score);*/
 void AfficherBackground(Background b, SDL_Surface *ecran,int lvl);
-//void animerbackground(Background *e, SDL_Surface *ecran);
-void scrolling(Background *b,int pas,int dir);
+void animerBackground(SDL_Surface *ecran,int index);
+void scrolling(Background *b,int pas,int dir,int player);
 void InitBackground(Background *b);
 
 

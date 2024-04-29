@@ -157,6 +157,11 @@ void sautParabolique(Personne *player, int *jumpDone, int *x0, int *y0, int *xIN
                 player->rect.x -= 10;
             }
             player->rect.y = *yINIT - *y0;
+            if (player->rect.x < 0) {
+        	player->rect.x = 0;
+    	    } else if (player->rect.x + player->rect.w > SCREEN_WIDTH) {
+        	player->rect.x = SCREEN_WIDTH - player->rect.w;
+    		}
             if (*x0 >= 50) {
                 player->up = 0;
                 *jumpDone = 1;

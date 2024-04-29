@@ -64,6 +64,7 @@ int main(int argc, char** argv) {
     //Animation
     SDL_Surface *backgroundImages[NUM_IMAGES];
     int currentImageIndex = 0;
+    int currentImageIndex1 = 0;
 
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
         printf("Echec d'initialisation de SDL : %s\n", SDL_GetError());
@@ -138,7 +139,7 @@ int main(int argc, char** argv) {
 	initmap(&m);
     
     int lvl = 2;
-    int dir;
+    int dir,pl;
     int pas = 10;
 
     SDL_Event event;
@@ -274,6 +275,7 @@ int main(int argc, char** argv) {
             background.camera.y = 0;
             background.camera.x = 0;
             AfficherBouton(settingButtons, ecran, 1);
+            SDL_Delay(50);
             AfficherSoundSlider(&BS, ecran);
             renderText(ecran, font, "Ares Forge Games", textColor, 1300, 660);
             //SDL_BlitSurface(backgroundImages[currentImageIndex], NULL, ecran, &posAnim);
@@ -352,7 +354,10 @@ int main(int argc, char** argv) {
         }
         //MAIN GAME
         else if (background.niveau == 2) {
-        printf("JUmpanimation=%d\n",jumpAnimation);
+        printf("camera.x: %d\n",background.camera.x);
+        animerBackground(ecran,currentImageIndex1);
+	currentImageIndex1 = (currentImageIndex1 + 1) % NUM_IMAGES;
+        //printf("JUmpanimation=%d\n",jumpAnimation);
         //printf("player.dir = %d\n",player.dir);
         background.camera.y = 100;
         //START , TRACK AND DISPLAY TIMER
@@ -410,16 +415,39 @@ int main(int argc, char** argv) {
 		        player.dir = 0;
 		        animerPerso(&player);
 		        movePerso(&player, dt);
+		        pl = 1;
 			dir = 0;
-			scrolling(&background,pas,dir);
+			scrolling(&background,pas,dir,pl);
+			if(background.camera.x < 1600){
+				b.pos.x -= pas;
+				e.pos.x -= pas;
+			}
+			//e.pos.x += pas;
 		    } else if (event.key.keysym.sym == SDLK_LEFT) {
 		    	//MOUVEMENT A GAUCHE
 		    	dt += timeIncrement;
 		        player.dir = 1;
 		        animerPerso(&player);
 		        movePerso(&player, dt);
+		        pl = 1;
 			dir = 1;
-			scrolling(&background,pas,dir);
+			scrolling(&background,pas,dir,pl);
+			if(background.camera.x > 0){
+				
+				b.pos.x += pas;
+				e.pos.x += pas;
+			}
+			//e.pos.x -= pas;
+		    }else if (event.key.keysym.sym == SDLK_d) {
+			dir = 0;
+			pl = 2;
+			scrolling(&background,pas,dir,pl);
+
+		    }else if (event.key.keysym.sym == SDLK_q) {
+			dir = 1;
+			pl = 2;
+			scrolling(&background,pas,dir,pl);
+
 		    } else if(event.key.keysym.sym == SDLK_UP){
 			if(player.dir == 0){
 		    		player.dir = 2;
@@ -431,7 +459,7 @@ int main(int argc, char** argv) {
 			if(jumpAnimation < playerImagerows){
 		    		animerPerso(&player);
 		    		jumpAnimation++;
-		    		printf("player.num=%d, player.dir=%d\n",player.num,player.dir);
+		    		//printf("player.num=%d, player.dir=%d\n",player.num,player.dir);
 		    	}
 		    	//SAUT HORIZONTAL
 		    	if(!jumpDone){
@@ -463,7 +491,7 @@ int main(int argc, char** argv) {
 			if(jumpAnimation < playerImagerows){
 		    		animerPerso(&player);
 		    		jumpAnimation++;
-		    		printf("player.num=%d, player.dir=%d\n",player.num,player.dir);
+		    		//printf("player.num=%d, player.dir=%d\n",player.num,player.dir);
 		    	}
 			sautParabolique(&player, &jumpDone, &x0, &y0, &xINIT, &yINIT);
 			
@@ -507,7 +535,7 @@ int main(int argc, char** argv) {
 	player.dir=0;
 	player.vies--;
 	}
-
+	//e.pos.x += background.camera.x;
 	collbonus=collisionTri(player,b.pos);
 	if (touchbonus==1){
 		Afficherbonus(b,ecran);

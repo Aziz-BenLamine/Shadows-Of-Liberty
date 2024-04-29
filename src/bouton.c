@@ -40,7 +40,6 @@ int InitBouton(button b[], int screenWidth, int screenHeight) {
         return 3;
     }
 
-    // Calculate button positions proportionate to the screen
     int buttonWidth = b[0].button_images[0]->w;
     int buttonHeight = b[0].button_images[0]->h;
     int buttonSpacing = 40;
@@ -67,20 +66,22 @@ int InitSettingsButtons(button b[]){
     b[1].button_images[0] = IMG_Load("../assets/windowedButton.png");
     b[1].button_images[1] = IMG_Load("../assets/windowedHoveredButton.png");
     b[1].actif = 0;
-
-    //INIT RETURN BUTTON 
-    b[2].button_images[0] = IMG_Load("../assets/returnButton.png");
-    b[2].button_images[1] = IMG_Load("../assets/returnHoveredButton.png");
-    b[2].actif = 0;
     
     //INIT SOUNDDOWN BUTTONS
-    b[3].button_images[0] = IMG_Load("../assets/sound/soundDownButton.png");
-    b[3].button_images[1] = IMG_Load("../assets/sound/soundDownButton.png");
-    b[3].actif=0;
+    b[2].button_images[0] = IMG_Load("../assets/sound/soundDownButton.png");
+    b[2].button_images[1] = IMG_Load("../assets/sound/soundDownButton.png");
+    b[2].actif=0;
     //INIT SOUNDUP BUTTONS
-    b[4].button_images[0] = IMG_Load("../assets/sound/soundUpButton.png");
-    b[4].button_images[1] = IMG_Load("../assets/sound/soundUpButton.png");
-    b[4].actif=0;
+    b[3].button_images[0] = IMG_Load("../assets/sound/soundUpButton.png");
+    b[3].button_images[1] = IMG_Load("../assets/sound/soundUpButton.png");
+    b[3].actif=0;
+
+    //INIT RETURN BUTTON 
+    b[4].button_images[0] = IMG_Load("../assets/returnButton.png");
+    b[4].button_images[1] = IMG_Load("../assets/returnHoveredButton.png");
+    b[4].actif = 0;
+    
+    
     
     if(b[0].button_images[0] == NULL || b[0].button_images[1] == NULL ||
        b[1].button_images[0] == NULL || b[1].button_images[1] == NULL ||
@@ -96,11 +97,11 @@ int InitSettingsButtons(button b[]){
     }
     
     //RETURN BUTTON RECT
-    b[2].button_rect = (SDL_Rect){450 , 590, b[2].button_images[0]->w, b[2].button_images[0]->h};
+    b[4].button_rect = (SDL_Rect){450 , 590, b[4].button_images[0]->w, b[4].button_images[0]->h};
     
     //DISPLAY SOUND BUTTON RECT
-    b[3].button_rect = (SDL_Rect){520 , 504, b[3].button_images[0]->w, b[3].button_images[0]->h};
-    b[4].button_rect = (SDL_Rect){680 , 504, b[4].button_images[0]->w, b[4].button_images[0]->h};
+    b[2].button_rect = (SDL_Rect){520 , 504, b[2].button_images[0]->w, b[2].button_images[0]->h};
+    b[3].button_rect = (SDL_Rect){680 , 504, b[3].button_images[0]->w, b[3].button_images[0]->h};
 
     return 0;
 }
