@@ -142,7 +142,7 @@ int dirr;
     int lvl = 2;
     int dir;
     int pas = 10;
-
+    SDL_Surface *surfM = IMG_Load("mask.png");
     SDL_Event event;
     while (playing) {
     	
@@ -356,8 +356,8 @@ int dirr;
         	startTime = SDL_GetTicks();
         	game = 1;
         }
- for (int i = 0; i < 4; i++) {
-    		player.tab[i] = 0;
+ 	for (int i = 0; i < 4; i++) {
+    	    //player.tab[i] = 0;
 	    printf("tab[%d]=%d \n",i,player.tab[i]);
        }
 
@@ -366,7 +366,7 @@ int dirr;
 	minutes = currentTime / 60;
 	seconds = currentTime % 60;
 	
-        printf("\nCurrent time: %d",currentTime);
+        //printf("\nCurrent time: %d",currentTime);
         char timerText[100];
 	sprintf(timerText, "Timer: %02d:%02d", minutes, seconds);
         renderText(ecran, font2, timerText, textColor, 700, 25);
@@ -407,19 +407,27 @@ int dirr;
 
 		    // HANDLE MOVEMENTS 
 		    if (event.key.keysym.sym == SDLK_RIGHT) {
-		    		dt += timeIncrement;
+		    	
+		    	dt += timeIncrement;
 		        player.dir = 0;
-		        animerPerso(&player);
-		        movePerso(&player, dt);
-			dir = 0;
-			scrolling(&background,pas,dir);
+		        dir = 0;
+		        if(player.tab[0] != 1){
+				animerPerso(&player);
+				movePerso(&player, dt);
+				scrolling(&background,pas,dir);
+			}
 		    } else if (event.key.keysym.sym == SDLK_LEFT) {
-		    		dt += timeIncrement;
+
+		    	dt += timeIncrement;
 		        player.dir = 1;
-		        animerPerso(&player);
-		        movePerso(&player, dt);
-			dir = 1;
-			scrolling(&background,pas,dir);
+		        dir = 1;
+		        if(player.tab[1] != 1){
+		        	animerPerso(&player);
+		        	movePerso(&player, dt);
+		        	scrolling(&background,pas,dir);
+			}
+			
+			
 		    } else if(event.key.keysym.sym == SDLK_UP){
 		    	if(!jumpDone){
 				  	if(player.up == 0){
@@ -429,11 +437,13 @@ int dirr;
 				  	printf("player.up = %d |",player.up);
 				    	dt += timeIncrement;
 				  	player.up = 1;
+				  	if(player.tab[2] != 1){
 				  	saut(&player, dt, yINIT);
 				  		if(player.up == 0){
 				  			jumpDone = 1;
+				  		}
 				  	}
-					}
+				     }
 		    	
 		    
 		    }
@@ -477,7 +487,7 @@ int dirr;
 	    }
 	    //GRAVITE
 
-	  	if (player.rect.y < 540) {
+	  	if (player.rect.y < 540 && player.tab[3] != 1) {
 		   player.rect.y += 8.5;
 	    
 	    	}
@@ -485,7 +495,7 @@ int dirr;
 	    afficherPerso(player, ecran);
 	////////
     
-            SDL_Surface *surfM = IMG_Load("mask.png");
+            
 	
 	    afficherminimap(m,ecran);
             MAJMinimap(player.rect, &m, background.camera, 20);

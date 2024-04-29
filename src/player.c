@@ -79,10 +79,10 @@ void movePerso(Personne *p, Uint32 dt) {
     }
         printf("dx = %.2f\n", dx);
     if(p->tab[0]==0) {
-    if (p->dir == 0) {
-        p->rect.x += dx;
-    }
-}
+	    if (p->dir == 0) {
+		p->rect.x += dx;
+	    }
+	}
 	if(p->tab[1]==0) {
 	if (p->dir == 1) {
         p->rect.x -= dx;
