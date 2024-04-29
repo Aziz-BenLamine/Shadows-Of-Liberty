@@ -141,7 +141,8 @@ int main(int argc, char** argv) {
     int lvl = 2;
     int dir,pl;
     int pas = 10;
-
+    SDL_Surface *surfM = IMG_Load("mask.png");
+    
     SDL_Event event;
     while (playing) {
     	
@@ -360,6 +361,13 @@ int main(int argc, char** argv) {
         //printf("JUmpanimation=%d\n",jumpAnimation);
         //printf("player.dir = %d\n",player.dir);
         background.camera.y = 100;
+        
+        //Collision Check
+        for (int i = 0; i < 4; i++) {
+    	    //player.tab[i] = 0;
+	    printf("tab[%d]=%d \n",i,player.tab[i]);
+       }
+       
         //START , TRACK AND DISPLAY TIMER
         if(game != 1){
         	startTime = SDL_GetTicks();
@@ -413,29 +421,34 @@ int main(int argc, char** argv) {
 		    	//MOUVEMENT A DROITE
 		    	dt += timeIncrement;
 		        player.dir = 0;
-		        animerPerso(&player);
-		        movePerso(&player, dt);
-		        pl = 1;
-			dir = 0;
-			scrolling(&background,pas,dir,pl);
-			if(background.camera.x < 1600){
-				b.pos.x -= pas;
-				e.pos.x -= pas;
+		        if(player.tab[0] != 1){
+				animerPerso(&player);
+				movePerso(&player, dt);
+				pl = 1;
+				dir = 0;
+				scrolling(&background,pas,dir,pl);
+				if(background.camera.x < 1600){
+					b.pos.x -= pas;
+					e.pos.x -= pas;
+				}
 			}
 			//e.pos.x += pas;
 		    } else if (event.key.keysym.sym == SDLK_LEFT) {
 		    	//MOUVEMENT A GAUCHE
 		    	dt += timeIncrement;
 		        player.dir = 1;
-		        animerPerso(&player);
-		        movePerso(&player, dt);
-		        pl = 1;
-			dir = 1;
-			scrolling(&background,pas,dir,pl);
-			if(background.camera.x > 0){
+		        if(player.tab[1] != 1){
+		        	animerPerso(&player);
+		        	movePerso(&player, dt);
+		        	pl = 1;
+				dir = 1;
+				scrolling(&background,pas,dir,pl);
 				
-				b.pos.x += pas;
-				e.pos.x += pas;
+				if(background.camera.x > 0){
+					
+					b.pos.x += pas;
+					e.pos.x += pas;
+				}	
 			}
 			//e.pos.x -= pas;
 		    }else if (event.key.keysym.sym == SDLK_d) {
@@ -462,6 +475,7 @@ int main(int argc, char** argv) {
 		    		//printf("player.num=%d, player.dir=%d\n",player.num,player.dir);
 		    	}
 		    	//SAUT HORIZONTAL
+		    	
 		    	if(!jumpDone){
 		    	
 				  	if(player.up == 0){
@@ -472,11 +486,12 @@ int main(int argc, char** argv) {
 				    	dt += timeIncrement;
 				  	player.up = 1;
 				  	saut(&player, dt, yINIT);
-				  		if(player.up == 0){
+				  		if(player.up == 0 || player.tab[2] == 1){
 				  			jumpDone = 1;
 				  	}
 					}
 		    	
+		    
 		    
 		    }
 		    //SAUT PARABOLIQUE
@@ -513,7 +528,7 @@ int main(int argc, char** argv) {
 		    
 	    }
 	    //GRAVITE
-	  	if (player.rect.y < 510) {
+	  	if (player.rect.y < 510 && player.tab[3] != 1) {
 		   player.rect.y += 8.5;
 	    
 	    	}
@@ -522,9 +537,12 @@ int main(int argc, char** argv) {
 	    afficherminimap(m,ecran);
             MAJMinimap(player.rect, &m, background.camera, 20);
             animerMinimap(&m);
+            
+            collisionPP(&player,surfM,background);
+            background.mask.positionfromimage =   background.camera;
 	//entitesecondaire
 
-
+	/*
 	AfficherEnnemi(e,ecran);
 	move(&e);
 	animerEntity(&e);
@@ -534,7 +552,7 @@ int main(int argc, char** argv) {
 	player.rect.y=510;
 	player.dir=0;
 	player.vies--;
-	}
+	}*/
 	//e.pos.x += background.camera.x;
 	collbonus=collisionTri(player,b.pos);
 	if (touchbonus==1){

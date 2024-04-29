@@ -147,16 +147,20 @@ void sautParabolique(Personne *player, int *jumpDone, int *x0, int *y0, int *xIN
             *y0 = 0;
             player->up = 1;
         }
-
+	//collisionPP(player,surfM,background);
         if (player->up == 1) {
             *x0 += 10;
             *y0 = -0.04 * (*x0) * (*x0) + 100;
-            if (player->dir == 0 || player->dir == 2) {
-                player->rect.x += 10;
-            } else {
-                player->rect.x -= 10;
-            }
+            if(player->tab[0] != 1 && player->tab[1] != 1){
+		    if (player->dir == 0 || player->dir == 2) {
+		        player->rect.x += 10;
+		    } else {
+		        player->rect.x -= 10;
+		    }
+	    }
+	    
             player->rect.y = *yINIT - *y0;
+            
             if (player->rect.x < 0) {
         	player->rect.x = 0;
     	    } else if (player->rect.x + player->rect.w > SCREEN_WIDTH) {

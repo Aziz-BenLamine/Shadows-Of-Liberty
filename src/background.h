@@ -11,14 +11,19 @@
 #define SCREEN_WIDTH 1600
 #define SCREEN_HEIGHT 700
 
+typedef struct struct_img{
+ SDL_Surface* image;
+ SDL_Rect positionfromimage;
+}struct_img;
 
 typedef struct{
-    SDL_Rect positionfromimage;
     SDL_Surface *image[3];
+    SDL_Surface *image1[4];
     Mix_Music *music;
     SDL_Rect camera,camera1,bg1,bg2;
     int dir;
     int niveau; //0: Menu  1:Settings  2:Main Game
+    struct_img  mask;
 
 }Background;
 
@@ -35,6 +40,7 @@ typedef struct{
     int soundLevel;
 } backgroundSound;
 
+void Initmask(Background *mask);
 /*void bestscore(char *filename ,scoreinfo t[]);
 void afficherbest(SDL_Surface *ecran,scoreinfo t[]);
 void savescore(char *filename,int score);*/

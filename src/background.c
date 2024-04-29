@@ -42,6 +42,24 @@ void InitBackground(Background *b){
     b->camera1.h = SCREEN_HEIGHT;
 }
 
+void Initmask(Background *mask)
+{
+    
+    
+     if (mask->image[3] == NULL) {
+        printf("ERROR LOADING BACKGROUND IMAGE: %s\n", IMG_GetError());
+        return;
+    }
+    mask->bg1.x = 0;
+    mask->bg1.y = 0;    
+
+    mask->camera.x = 0;
+    mask->camera.y = 0;
+    mask->camera.w = SCREEN_WIDTH;
+    mask->camera.h = SCREEN_HEIGHT;
+    
+}
+
 
 void AfficherBackground(Background b, SDL_Surface *ecran,int lvl){
  	SDL_BlitSurface(b.image[b.niveau], &b.camera, ecran, &b.bg1);
@@ -271,6 +289,8 @@ void animerBackground(SDL_Surface *ecran,int index){
     SDL_BlitSurface(backgroundImages[index], NULL, ecran, &posAnim);
     
 }
+
+
 /*void animerBackground(background *e, SDL_Surface *ecran)
 {
 	for (int j = 0; j < 5; j++)

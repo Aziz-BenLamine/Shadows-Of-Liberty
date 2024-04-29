@@ -1,7 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include"background.h"
-#include"minimap.h"
+
 #define playerImagerows 6
 #define playerImageColumns 4
 typedef struct{
