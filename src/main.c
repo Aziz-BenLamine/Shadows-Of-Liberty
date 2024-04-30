@@ -9,6 +9,8 @@
 #include "player.h"
 #include "entite.h"
 #include"minimap.h"
+#include"enigme.h"
+
 #define SCREEN_HEIGHT 700
 #define SCREEN_WIDTH 1600
 #define FULL_SCREEN_HEIGHT 1080
@@ -22,6 +24,7 @@ int main(int argc, char** argv) {
     
     //MENU VARIABLES
     minimap m;
+    enigme eng;
     int playing = 1;
     int buttonClicked = 0;
     int keysClicked = 0;
@@ -48,7 +51,12 @@ int dirr;
     int timeIncrement = 50;
     int game = 0;
     int score = 0;
-    
+    int rep = -1;
+    SDL_Surface* img1;
+    SDL_Surface* img2;
+    SDL_Rect pos1;
+    SDL_Rect pos2;
+    eng.etat = 0;
     init(&player, 0);
     //Texte
     TTF_Init();
@@ -476,6 +484,91 @@ int dirr;
 	    afficherminimap(m,ecran);
             MAJMinimap(player.rect, &m, background.camera, 20);
             animerMinimap(&m);
+
+           //enigme
+           
+           img1 = IMG_Load("img1.jpg");
+           if (img1 == NULL) {
+             printf("Erreur lors du chargement de l'image1 : %s\n", SDL_GetError());
+             return 1;
+           }
+    
+           img2 = IMG_Load("img2.jpg");
+           if (img2 == NULL) {
+              printf("Erreur lors du chargement de l'image2 : %s\n", SDL_GetError());
+              return 1;
+           }
+    
+           //Position de l'image de victoire 
+           pos1.x = (ecran->w - img1->w) / 2;
+           pos1.y = (ecran->w - img1->w) / 2;
+    
+   
+           //Position de l'image de defaite
+    
+           pos2.x = (ecran->w - img2->w) / 2;
+           pos2.y = (ecran->w - img2->w) / 2;
+
+           if(player.rect.x==200) {
+
+           eng = generer("enigme.txt");
+           afficherEnigme(eng, ecran);
+
+           switch (event.type) { 
+                
+                case SDL_KEYDOWN:
+                    // Gestion des touches du clavier
+                    switch (event.key.keysym.sym) {
+                        case SDLK_a:
+                            // L'utilisateur a appuyé sur la touche 'a'
+                            rep = 1; // Réponse 1	
+                            break;
+                        case SDLK_b:
+                            // L'utilisateur a appuyé sur la touche 'b'
+                            rep = 2; // Réponse 2
+                            break;
+                        case SDLK_c:
+                            // L'utilisateur a appuyé sur la touche 'c'
+                            rep = 3; // Réponse 3
+                            break;
+                    }
+            }
+   
+           // Vérification de la réponse correcte
+          if (rep != -1) {
+
+          if (rep == eng.bonrep) {
+
+            eng.etat = 1;
+
+            SDL_BlitSurface(img1, NULL, ecran, &pos1); 
+           
+            SDL_Flip(ecran);
+
+            SDL_Delay(1000); // Délai de 1 secondes avant de continuer
+    
+        } 
+        else {
+
+            eng.etat = -1;
+
+            SDL_BlitSurface(img2, NULL, ecran, &pos2);
+
+            SDL_Flip(ecran);
+
+            SDL_Delay(1000); // Délai de 1 secondes avant de continuer
+    
+       }
+
+       // Réinitialiser rep après l'affichage
+
+       rep = -1;
+      }
+        
+      }
+            
+         
+
 	//entitesecondaire
 
 
@@ -496,7 +589,7 @@ int dirr;
 	}
 	if (collbonus==1){
 	touchbonus=0;
-	}
+	
 
 	/*if(e.pos.x-(player.rect.x+player.rect.w)<20){
 		dirr=e.direction;
@@ -534,14 +627,20 @@ int dirr;
     for (int i = 0; i < NUM_IMAGES; i++) {
         SDL_FreeSurface(backgroundImages[i]);
     }
+     
     Liberer(&m);
+    liberer(eng);
     FreeBackground(&background);
     FreeBouton(menuButtons, MENU_BUTTONS_COUNT);
     FreeBouton(settingButtons, SETTING_BUTTONS_COUNT);
+    SDL_FreeSurface(img1);
+    SDL_FreeSurface(img2);
     Mix_FreeChunk(menuHoverSound);
     Mix_FreeMusic(BS.music);
     TTF_CloseFont(font);
     TTF_Quit();
     SDL_Quit();
     return 0;
+}
+
 }

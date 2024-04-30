@@ -19,3 +19,10 @@ entite.o:entite.c entite.h
 
 minimap.o:minimap.c minimap.h
 	gcc -c minimap.c -o minimap.o -g
+
+
+fonction.o:fonction.c enigme.h
+	gcc -c fonction.c -o fonction.o -g
+
+
+
