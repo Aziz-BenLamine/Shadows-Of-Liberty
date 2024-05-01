@@ -1,6 +1,11 @@
 #ifndef DEFINITION_H_INCLUDED
 #define DEFINITION_H_INCLUDED
+#include <stdlib.h>
+#include <stdio.h>
 #include <SDL/SDL.h>
+#include <SDL/SDL_ttf.h>
+#include <SDL/SDL_image.h>
+#include <time.h>
 
 typedef struct
 {

@@ -1,8 +1,9 @@
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <SDL/SDL.h>
-#include <SDL/SDL_ttf.h>
 #include <SDL/SDL_image.h>
+#include <SDL/SDL_mixer.h>
+#include <SDL/SDL_ttf.h> 
 #include <time.h>
 #include "enigme.h"
 
@@ -65,14 +66,14 @@ void afficherEnigme(enigme e, SDL_Surface *ecran) {
     if (font == NULL) {
         printf("Erreur lors du chargement de la police : %s\n", TTF_GetError());
       
-        return 1;
+        return;
     }
     
     // Charger l'image de fond de l'énigme
     background = IMG_Load("img.png");
     if (background == NULL) {
         printf("Erreur lors du chargement de l'image de fond : %s\n", SDL_GetError());
-        return 1;
+        return;
     }
     
     //Position de l'image de l'engime
