@@ -511,10 +511,12 @@ int dirr;
 
            pos2.x = (ecran->w - img2->w) / 2;
            pos2.y = (ecran->w - img2->w) / 2;
-           
-	   if(player.rect.x == 200) {
 
            eng = generer("enigme.txt");
+
+	   if( player.rect.x == 200 && eng.etat == 0 ) {
+
+           //eng = generer("enigme.txt");
            afficherEnigme(eng, ecran);
 
            switch (event.type) { 
@@ -524,7 +526,7 @@ int dirr;
                     switch (event.key.keysym.sym) {
                         case SDLK_a:
                             // L'utilisateur a appuyé sur la touche 'a'
-                            rep = 1; // Réponse 1	
+                            rep = 1; // Réponse 1S	
                             break;
                         case SDLK_b:
                             // L'utilisateur a appuyé sur la touche 'b'
@@ -540,6 +542,8 @@ int dirr;
           if (rep != -1) {
 
 		  if (rep == eng.bonrep) {
+
+                    //player.vies--;
 
 		    eng.etat = 1;
 
@@ -561,7 +565,7 @@ int dirr;
 		    SDL_Delay(1000); // Délai de 1 secondes avant de continuer
 
 	       }
-	        rep = -1;
+	       rep = -1;
             }
         }//ENIGME CLOSING BRACKET
 	//entitesecondaire
@@ -623,6 +627,7 @@ int dirr;
         SDL_FreeSurface(backgroundImages[i]);
     }
     Liberer(&m);
+    liberer(eng);
     FreeBackground(&background);
     FreeBouton(menuButtons, MENU_BUTTONS_COUNT);
     FreeBouton(settingButtons, SETTING_BUTTONS_COUNT);

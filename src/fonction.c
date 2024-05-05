@@ -46,6 +46,7 @@ enigme generer(char *nomfich)
             }
             fclose(fichier); 
         }
+        //fclose(fichier); 
     }
     return e;
 }
@@ -97,7 +98,7 @@ void afficherEnigme(enigme e, SDL_Surface *ecran) {
 
     // Positionnement de la question au centre horizontalement
     e.pos_quest.x = (ecran->w - e.surface_question->w) / 2;
-    e.pos_quest.y = centre_vertical - e.surface_question->h * 2; // Ajustement de la position   verticale
+    e.pos_quest.y = centre_vertical - e.surface_question->h * 2; // Ajustement de la position verticale
 
     // Positionnement des réponses centrées horizontalement sous la question
     int espacement_reponses = ecran->h / 10; // Marge entre la question et les réponses
