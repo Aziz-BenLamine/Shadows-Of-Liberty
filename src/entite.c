@@ -25,7 +25,7 @@ void InitEnnemi(Entity *e){
  e->image[2][2]=IMG_Load("../assets/ennemi/a2.png");
  e->image[2][3]=IMG_Load("../assets/ennemi/a1.png");
  e->image[2][4]=IMG_Load("../assets/ennemi/a0.png");
-e->pos.x=700;
+e->pos.x=1200;
 e->pos.y=580;
 e->pos.w=e->image[0][0]->w;
 e->pos.h=e->image[0][0]->h;
@@ -33,6 +33,7 @@ e->pos.h=e->image[0][0]->h;
 
 e->direction=0;
 e->num=0;
+e->state=waiting;
 }
 
 void Initbonus(Entity *e){
@@ -124,4 +125,64 @@ return 0;
 void Afficherbonus(Entity e, SDL_Surface *screen){
  SDL_BlitSurface(e.image[0][e.num], NULL,screen, &e.pos);
 }
+
+
+
+void updateetat(Entity *e,int d){
+switch (e->state)
+{
+case waiting:
+if ((100<d) && (d<400)){
+e->state=following;
+e->direction=1;
+}
+break;
+case following:
+if ((0<d) && (d<=100)){
+e->state=attacking;
+e->direction=2;
+}
+break;
+case attacking:
+if (d<=0){
+e->state=waiting;
+e->direction=0;
+}
+break;
+
+
+}
+
+
+}
+
+
+void updateennemi(Entity *e,SDL_Rect posh){
+switch(e->state)
+{
+case waiting:
+animerEntity(e);
+break;
+case following:
+animerEntity(e);
+if(posh.x<e->pos.x){
+e->pos.x=e->pos.x-2;
+}
+break;
+case attacking:
+animerEntity(e);
+if(posh.x<e->pos.x){
+e->pos.x=e->pos.x-2;
+}
+break;
+
+
+}
+
+
+
+
+
+}
+
 

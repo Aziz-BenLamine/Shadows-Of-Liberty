@@ -4,15 +4,18 @@
 #include <SDL/SDL_image.h>
 #include "player.h"
 
+typedef enum STATE STATE;
+enum STATE {waiting,following,attacking};
 
-
-typedef struct{
+typedef struct {
 SDL_Surface *image[3][5];
 SDL_Rect pos;
 int direction;
 int num;
+STATE state;
 
 }Entity;
+
 
 
 
@@ -24,6 +27,9 @@ void animerEntity(Entity *e);
 int collisionTri(Personne e, SDL_Rect pose);
 void move(Entity *e);
 int collisionBB(Entity e, SDL_Rect r);
+void updateetat(Entity *e,int d);
+void updateennemi(Entity *e,SDL_Rect posh);
+
 
 
 

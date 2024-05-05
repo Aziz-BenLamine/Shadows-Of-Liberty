@@ -36,6 +36,7 @@ int main(int argc, char** argv) {
     int collbonus;
     int touchbonus=1;
     int dirr;
+	int distheroennemi;
     
     //MAIN LOOP VARIABLES
     Uint32 dt, t_prev;
@@ -542,17 +543,17 @@ int main(int argc, char** argv) {
             background.mask.positionfromimage =   background.camera;
 	//entitesecondaire
 
-	/*
+	
 	AfficherEnnemi(e,ecran);
-	move(&e);
-	animerEntity(&e);
+	//move(&e);
+	//animerEntity(&e);
 	collennemi=collisionBB(e,player.rect);
 	if (collennemi==1){
 	player.rect.x=200;
 	player.rect.y=510;
 	player.dir=0;
 	player.vies--;
-	}*/
+	}
 	//e.pos.x += background.camera.x;
 	collbonus=collisionTri(player,b.pos);
 	if (touchbonus==1){
@@ -569,6 +570,16 @@ int main(int argc, char** argv) {
 		
 
 	}*/
+
+//move ia
+distheroennemi=e.pos.x-player.rect.x;
+updateetat(&e,distheroennemi);
+updateennemi(&e,player.rect);
+
+
+
+
+
 
 
 
