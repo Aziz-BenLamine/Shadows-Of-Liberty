@@ -17,7 +17,7 @@
 #define SETTING_BUTTONS_COUNT 5
 #define NEWGAME_BUTTONS_COUNT 7
 #define NUM_IMAGES 7
-
+#define NUM_PERSO 2
 int main(int argc, char** argv) {
     SDL_Surface *ecran;
     
@@ -43,6 +43,8 @@ int main(int argc, char** argv) {
     Personne player;
     Personne player2;
     int multi = 0;
+    int numperso = 0;
+    int numperso2 = 0;
     //MAIN LOOP VARIABLES
     Uint32 dt, t_prev;
     Uint32 startTime, currentTime, minutes,seconds;
@@ -158,6 +160,7 @@ int main(int argc, char** argv) {
     
     SDL_Event event;
     while (playing) {
+        printf("numperso: %d || numperso2: %d\n",numperso,numperso2);
     	SDL_EnableKeyRepeat (SDL_DEFAULT_REPEAT_DELAY,SDL_DEFAULT_REPEAT_INTERVAL);	
     	
         AfficherBackground(background, ecran);
@@ -602,7 +605,9 @@ updateennemi(&e,player.rect);
 
 
 
-	}         else if (background.niveau == 4) {
+	}         
+	//NEW GAME SUB-MENU
+	else if (background.niveau == 4) {
             background.camera.y = 0;
             background.camera.x = 0;
             AfficherBouton(newGameButtons, ecran, 4);
@@ -627,6 +632,7 @@ updateennemi(&e,player.rect);
                 case SDL_MOUSEBUTTONDOWN:
                     if (event.button.button == SDL_BUTTON_LEFT) {
                         if (point_in_rect(event.button.x, event.button.y, newGameButtons[0].button_rect)) {
+                            init(&player, numperso, multi);
                             background.niveau = 2;
                             for (int i = 0; i < NEWGAME_BUTTONS_COUNT; i++) {
                                 newGameButtons[i].actif = 0;
@@ -634,26 +640,47 @@ updateennemi(&e,player.rect);
                         } else if (point_in_rect(event.button.x, event.button.y, newGameButtons[1].button_rect)) {
                             background.niveau = 2;
                             multi = 1;
+                            init(&player, numperso2, multi);
                             for (int i = 0; i < NEWGAME_BUTTONS_COUNT; i++) {
                                 newGameButtons[i].actif = 0;
                             }
                         } else if (point_in_rect(event.button.x, event.button.y, newGameButtons[2].button_rect)) {
+                            numperso--;
+                            if(numperso < 0){
+				numperso = 0;
+                            }
                             for (int i = 0; i < NEWGAME_BUTTONS_COUNT; i++) {
                                 newGameButtons[i].actif = 0;
                             }
-                        } else if (point_in_rect(event.button.x, event.button.y, newGameButtons[3].button_rect)) {
+                        }
+                         else if (point_in_rect(event.button.x, event.button.y, newGameButtons[3].button_rect)) {
+                            numperso++;
+                            if(numperso > 1){
+				numperso = 1;
+                            }
                             for (int i = 0; i < NEWGAME_BUTTONS_COUNT; i++) {
                                 newGameButtons[i].actif = 0;
                             }
-                        } else if (point_in_rect(event.button.x, event.button.y, newGameButtons[4].button_rect)) {
+                        }
+                         else if (point_in_rect(event.button.x, event.button.y, newGameButtons[4].button_rect)) {
+                            numperso2--;
+                            if(numperso < 0){
+				numperso = 0;
+                            }
                             for (int i = 0; i < NEWGAME_BUTTONS_COUNT; i++) {
                                 newGameButtons[i].actif = 0;
                             }
-                        } else if (point_in_rect(event.button.x, event.button.y, newGameButtons[5].button_rect)) {
+                        }
+                         else if (point_in_rect(event.button.x, event.button.y, newGameButtons[5].button_rect)) {
+                            numperso2++;
+                            if(numperso2 > 1){
+				numperso2 = 1;
+                            }
                             for (int i = 0; i < NEWGAME_BUTTONS_COUNT; i++) {
                                 newGameButtons[i].actif = 0;
                             }
                         } else if (point_in_rect(event.button.x, event.button.y, newGameButtons[6].button_rect)) {
+                            background.niveau = 0;
                             for (int i = 0; i < NEWGAME_BUTTONS_COUNT; i++) {
                                 newGameButtons[i].actif = 0;
                             }
@@ -681,12 +708,14 @@ updateennemi(&e,player.rect);
                             switch (selectedButtonIndex) {
                                 case 0:
                                     background.niveau = 2;
+                                    init(&player, numperso, multi);
                                     selectedButtonIndex = 0;
                                     previousButtonIndex = 0;
                                     break;
                                 case 1:
                                     multi = 1;
                                     background.niveau = 2;
+                                    init(&player, numperso, multi);
                                     selectedButtonIndex = 0;
                                     previousButtonIndex = 0;
                                     break;

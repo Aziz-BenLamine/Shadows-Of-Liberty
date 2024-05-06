@@ -10,6 +10,7 @@
 
 
 void init(Personne * p, int numperso, int multi){
+ int y;
  p->dir = 0;
  p->num = 0;
  p->score = 0;
@@ -53,9 +54,39 @@ void init(Personne * p, int numperso, int multi){
     p->img[3][3] = IMG_Load("../assets/player/jump/leftjump3.png");
     p->img[3][4] = IMG_Load("../assets/player/jump/leftjump4.png");
     p->img[3][5] = IMG_Load("../assets/player/jump/leftjump5.png");
+    y = 510;
+    printf("Images Loaded");
+ } 
+ else if(numperso == 1)
+ {
+    p->img[0][0] = IMG_Load("../assets/player2/walk0.png");
+    p->img[0][1] = IMG_Load("../assets/player2/walk1.png");
+    p->img[0][2] = IMG_Load("../assets/player2/walk2.png");
+    p->img[0][3] = IMG_Load("../assets/player2/walk3.png");
+    p->img[0][4] = IMG_Load("../assets/player2/walk4.png");
+    p->img[0][5] = IMG_Load("../assets/player2/walk5.png");
     
+    p->img[1][0] = IMG_Load("../assets/player2/leftwalk0.png");
+    p->img[1][1] = IMG_Load("../assets/player2/leftwalk1.png");
+    p->img[1][2] = IMG_Load("../assets/player2/leftwalk2.png");
+    p->img[1][3] = IMG_Load("../assets/player2/leftwalk3.png");
+    p->img[1][4] = IMG_Load("../assets/player2/leftwalk4.png");
+    p->img[1][5] = IMG_Load("../assets/player2/leftwalk5.png");
     
+    p->img[2][0] = IMG_Load("../assets/player2/jump/rightjump0.png");
+    p->img[2][1] = IMG_Load("../assets/player2/jump/rightjump1.png");
+    p->img[2][2] = IMG_Load("../assets/player2/jump/rightjump2.png");
+    p->img[2][3] = IMG_Load("../assets/player2/jump/rightjump3.png");
+    p->img[2][4] = IMG_Load("../assets/player2/jump/rightjump4.png");
+    p->img[3][5] = IMG_Load("../assets/player2/jump/rightjump5.png");
     
+    p->img[3][0] = IMG_Load("../assets/player2/jump/leftjump0.png");
+    p->img[3][1] = IMG_Load("../assets/player2/jump/leftjump1.png");
+    p->img[3][2] = IMG_Load("../assets/player2/jump/leftjump2.png");
+    p->img[3][3] = IMG_Load("../assets/player2/jump/leftjump3.png");
+    p->img[3][4] = IMG_Load("../assets/player2/jump/leftjump4.png");
+    p->img[3][5] = IMG_Load("../assets/player2/jump/leftjump5.png");
+    y = 440;
     printf("Images Loaded");
  }
  if(p->img[0][0] == NULL || p->img[0][1] == NULL ||
@@ -78,9 +109,9 @@ void init(Personne * p, int numperso, int multi){
         return;
        }
      if(multi == 0){
-     	p->rect = (SDL_Rect){200, 510, p->img[0][0]->w, p->img[0][0]->h};
+     	p->rect = (SDL_Rect){200, y, p->img[0][0]->w, p->img[0][0]->h};
      }else if(multi == 1){
-        p->rect = (SDL_Rect){850, 510, p->img[0][0]->w, p->img[0][0]->h};
+        p->rect = (SDL_Rect){850, y, p->img[0][0]->w, p->img[0][0]->h};
      }
         p->tab[0]=1;
 	p->tab[1]=1;
