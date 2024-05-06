@@ -11,6 +11,7 @@ typedef struct{
 
 int InitBouton(button b[], int screenWidth, int screenHeight);
 int InitSettingsButtons(button b[]);
+int InitNewGameMenuButtons(button b[]);
 void AfficherBouton(button b[], SDL_Surface *ecran, int niveau);
 void AfficherBoutonActif(button b[], SDL_Surface *ecran);
 void FreeBouton(button b[], int nb);

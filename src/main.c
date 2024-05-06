@@ -15,6 +15,7 @@
 #define FULL_SCREEN_WIDTH 1920
 #define MENU_BUTTONS_COUNT 4
 #define SETTING_BUTTONS_COUNT 5
+#define NEWGAME_BUTTONS_COUNT 7
 #define NUM_IMAGES 7
 
 int main(int argc, char** argv) {
@@ -112,6 +113,12 @@ int main(int argc, char** argv) {
         return 4;
     }
 
+    button newGameButtons[NEWGAME_BUTTONS_COUNT];
+    if (InitNewGameMenuButtons(newGameButtons) != 0) {
+        printf("ERROR INITIALIZING MENU BUTTONS \n");
+        return 5;
+    }
+
     //Load animation
     for (int i = 0; i < NUM_IMAGES; i++) {
         char filename[50];
@@ -146,7 +153,8 @@ int main(int argc, char** argv) {
     
     SDL_Event event;
     while (playing) {
-    	
+    	SDL_EnableKeyRepeat (SDL_DEFAULT_REPEAT_DELAY,
+SDL_DEFAULT_REPEAT_INTERVAL);	
     	
         AfficherBackground(background, ecran,lvl);
         //SDL_Delay(1);
@@ -198,7 +206,7 @@ int main(int argc, char** argv) {
                 case SDL_MOUSEBUTTONDOWN:
                     if (event.button.button == SDL_BUTTON_LEFT) {
                         if (point_in_rect(event.button.x, event.button.y, menuButtons[0].button_rect)) {
-                            background.niveau = 2;
+                            background.niveau = 4;
                             for (int i = 0; i < MENU_BUTTONS_COUNT; i++) {
                                 menuButtons[i].actif = 0;
                             }
@@ -257,7 +265,7 @@ int main(int argc, char** argv) {
         	    if (event.key.keysym.sym == SDLK_n) {
         	    	menuButtons[selectedButtonIndex].actif = 0;
                        	menuButtons[previousButtonIndex].actif = 0;
-            		background.niveau = 2;
+            		background.niveau = 4;
         		}
         		
         	    if (event.key.keysym.sym == SDLK_s) {
@@ -357,8 +365,8 @@ int main(int argc, char** argv) {
         //MAIN GAME
         else if (background.niveau == 2) {
         printf("camera.x: %d\n",background.camera.x);
-        animerBackground(ecran,currentImageIndex1);
-	currentImageIndex1 = (currentImageIndex1 + 1) % NUM_IMAGES;
+        //animerBackground(ecran,currentImageIndex1);
+	//currentImageIndex1 = (currentImageIndex1 + 1) % NUM_IMAGES;
         //printf("JUmpanimation=%d\n",jumpAnimation);
         //printf("player.dir = %d\n",player.dir);
         background.camera.y = 100;
@@ -584,7 +592,125 @@ updateennemi(&e,player.rect);
 
 
 
-	}
+	}         else if (background.niveau == 4) {
+            background.camera.y = 0;
+            background.camera.x = 0;
+            AfficherBouton(newGameButtons, ecran, 4);
+            //SDL_BlitSurface(backgroundImages[currentImageIndex], NULL, ecran, &posAnim);
+            renderText(ecran, font, "Ares Forge Games", textColor, 1300, 660);
+            switch (event.type) {
+                case SDL_MOUSEMOTION:
+                    for (int i = 0; i < NEWGAME_BUTTONS_COUNT; i++) {
+                        if (point_in_rect(event.motion.x, event.motion.y, newGameButtons[i].button_rect)) {
+                            if (newGameButtons[i].actif == 0) {
+                                newGameButtons[i].actif = 1;
+                                if (!menuHoverSoundPlayed) {
+                                    Mix_PlayChannel(1, menuHoverSound, 0);
+                                    menuHoverSoundPlayed = 1;
+                                }
+                            }
+                        } else {
+                            newGameButtons[i].actif = 0;
+                        }
+                    }
+                    break;
+                case SDL_MOUSEBUTTONDOWN:
+                    if (event.button.button == SDL_BUTTON_LEFT) {
+                        if (point_in_rect(event.button.x, event.button.y, newGameButtons[0].button_rect)) {
+                            background.niveau = 2;
+                            for (int i = 0; i < NEWGAME_BUTTONS_COUNT; i++) {
+                                newGameButtons[i].actif = 0;
+                            }
+                        } else if (point_in_rect(event.button.x, event.button.y, newGameButtons[1].button_rect)) {
+                            background.niveau = 2;
+                            for (int i = 0; i < NEWGAME_BUTTONS_COUNT; i++) {
+                                newGameButtons[i].actif = 0;
+                            }
+                        } else if (point_in_rect(event.button.x, event.button.y, newGameButtons[2].button_rect)) {
+                            for (int i = 0; i < NEWGAME_BUTTONS_COUNT; i++) {
+                                newGameButtons[i].actif = 0;
+                            }
+                        } else if (point_in_rect(event.button.x, event.button.y, newGameButtons[3].button_rect)) {
+                            for (int i = 0; i < NEWGAME_BUTTONS_COUNT; i++) {
+                                newGameButtons[i].actif = 0;
+                            }
+                        } else if (point_in_rect(event.button.x, event.button.y, newGameButtons[4].button_rect)) {
+                            for (int i = 0; i < NEWGAME_BUTTONS_COUNT; i++) {
+                                newGameButtons[i].actif = 0;
+                            }
+                        } else if (point_in_rect(event.button.x, event.button.y, newGameButtons[5].button_rect)) {
+                            for (int i = 0; i < NEWGAME_BUTTONS_COUNT; i++) {
+                                newGameButtons[i].actif = 0;
+                            }
+                        } else if (point_in_rect(event.button.x, event.button.y, newGameButtons[6].button_rect)) {
+                            for (int i = 0; i < NEWGAME_BUTTONS_COUNT; i++) {
+                                newGameButtons[i].actif = 0;
+                            }
+                        }
+                        
+                    }
+                    break;
+                case SDL_KEYDOWN:
+                    if (!keysClicked) {
+                        if (event.key.keysym.sym == SDLK_DOWN) {
+                            previousButtonIndex = selectedButtonIndex;
+                            selectedButtonIndex = (selectedButtonIndex + 1) % NEWGAME_BUTTONS_COUNT;
+                            Mix_PlayChannel(1, menuHoverSound, 0);
+                            newGameButtons[selectedButtonIndex].actif = 1;
+                            newGameButtons[previousButtonIndex].actif = 0;
+                        } else if (event.key.keysym.sym == SDLK_UP) {
+                            previousButtonIndex = selectedButtonIndex;
+                            selectedButtonIndex = (selectedButtonIndex - 1 + NEWGAME_BUTTONS_COUNT) % NEWGAME_BUTTONS_COUNT;
+                            Mix_PlayChannel(1, menuHoverSound, 0);
+                            newGameButtons[selectedButtonIndex].actif = 1;
+                            newGameButtons[previousButtonIndex].actif = 0;
+                        } else if (event.key.keysym.sym == SDLK_RETURN) {
+                            newGameButtons[selectedButtonIndex].actif = 0;
+                            newGameButtons[previousButtonIndex].actif = 0;
+                            switch (selectedButtonIndex) {
+                                case 0:
+                                    background.niveau = 2;
+                                    selectedButtonIndex = 0;
+                                    previousButtonIndex = 0;
+                                    break;
+                                case 1:
+                                    background.niveau = 2;
+                                    selectedButtonIndex = 0;
+                                    previousButtonIndex = 0;
+                                    break;
+                                case 6:
+                                    background.niveau = 0;
+                                    selectedButtonIndex = 0;
+                                    previousButtonIndex = 0;
+                                    break;
+                            }
+                        }
+                        keysClicked = 1;
+                    }
+                    //SHORTCUTS FOR THE MAIN MENU
+                    
+        		
+        	    
+        	    if (event.key.keysym.sym == SDLK_p) {
+        	    	newGameButtons[selectedButtonIndex].actif = 0;
+                       	newGameButtons[previousButtonIndex].actif = 0;
+            		background.niveau = 2;
+        		}
+        		
+        	    /*if (event.key.keysym.sym == SDLK_s) {
+        	    	newGameButtons[selectedButtonIndex].actif = 0;
+                       	newGameButtons[previousButtonIndex].actif = 0;
+            		background.niveau = 1;
+        		}*/
+        		
+        		
+                    break;
+                case SDL_KEYUP:
+                    keysClicked = 0;
+                    break;
+                    
+            }
+        }
 	
 	if(player.vies < 0){
 		player.vies = 0;
