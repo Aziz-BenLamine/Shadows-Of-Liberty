@@ -21,7 +21,7 @@ typedef struct{
   int tab[4];
 }Personne;
 
-void init(Personne * p, int numperso);
+void init(Personne * p, int numperso, int multi);
 void animerPerso (Personne* p);
 void afficherPerso(Personne p, SDL_Surface * screen);
 void movePerso(Personne *p,Uint32 dt);

@@ -37,12 +37,16 @@ int main(int argc, char** argv) {
     int collbonus;
     int touchbonus=1;
     int dirr;
-	int distheroennemi;
+    int distheroennemi;
     
+    //SINGLE PLAYER || MULTIPLAYER VARIABLES
+    Personne player;
+    Personne player2;
+    int multi = 0;
     //MAIN LOOP VARIABLES
     Uint32 dt, t_prev;
     Uint32 startTime, currentTime, minutes,seconds;
-    Personne player;
+
     int xINIT = 0;
     int yINIT = 0;
     int x0 = 0, y0 = 0;
@@ -52,7 +56,8 @@ int main(int argc, char** argv) {
     int score = 0;
     int jumpAnimation = 0;
     
-    init(&player, 0);
+    init(&player, 0, 0);
+    init(&player2, 0, 1);
     //Texte
     TTF_Init();
     TTF_Font *font = TTF_OpenFont("Ironmonger Black Regular.otf", 20);
@@ -153,10 +158,9 @@ int main(int argc, char** argv) {
     
     SDL_Event event;
     while (playing) {
-    	SDL_EnableKeyRepeat (SDL_DEFAULT_REPEAT_DELAY,
-SDL_DEFAULT_REPEAT_INTERVAL);	
+    	SDL_EnableKeyRepeat (SDL_DEFAULT_REPEAT_DELAY,SDL_DEFAULT_REPEAT_INTERVAL);	
     	
-        AfficherBackground(background, ecran,lvl);
+        AfficherBackground(background, ecran);
         //SDL_Delay(1);
         SDL_PollEvent(&event);
         switch (event.type) {
@@ -182,6 +186,7 @@ SDL_DEFAULT_REPEAT_INTERVAL);
         }
 
         if (background.niveau == 0) {
+       	    multi = 0;
             background.camera.y = 0;
             background.camera.x = 0;
             AfficherBouton(menuButtons, ecran, 0);
@@ -282,6 +287,7 @@ SDL_DEFAULT_REPEAT_INTERVAL);
                     
             }
         } else if (background.niveau == 1) {
+            multi = 0;
             background.camera.y = 0;
             background.camera.x = 0;
             AfficherBouton(settingButtons, ecran, 1);
@@ -364,6 +370,10 @@ SDL_DEFAULT_REPEAT_INTERVAL);
         }
         //MAIN GAME
         else if (background.niveau == 2) {
+        if(multi == 1){
+         AfficherBackgroundMulti(background, ecran);
+         afficherPerso(player2, ecran);
+        }
         printf("camera.x: %d\n",background.camera.x);
         //animerBackground(ecran,currentImageIndex1);
 	//currentImageIndex1 = (currentImageIndex1 + 1) % NUM_IMAGES;
@@ -623,6 +633,7 @@ updateennemi(&e,player.rect);
                             }
                         } else if (point_in_rect(event.button.x, event.button.y, newGameButtons[1].button_rect)) {
                             background.niveau = 2;
+                            multi = 1;
                             for (int i = 0; i < NEWGAME_BUTTONS_COUNT; i++) {
                                 newGameButtons[i].actif = 0;
                             }
@@ -674,6 +685,7 @@ updateennemi(&e,player.rect);
                                     previousButtonIndex = 0;
                                     break;
                                 case 1:
+                                    multi = 1;
                                     background.niveau = 2;
                                     selectedButtonIndex = 0;
                                     previousButtonIndex = 0;

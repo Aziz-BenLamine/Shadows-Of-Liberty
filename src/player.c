@@ -9,7 +9,7 @@
 #define SCREEN_WIDTH 1600
 
 
-void init(Personne * p, int numperso){
+void init(Personne * p, int numperso, int multi){
  p->dir = 0;
  p->num = 0;
  p->score = 0;
@@ -77,7 +77,11 @@ void init(Personne * p, int numperso){
 	printf("ERROR LOADING PLAYER IMAGES %s\n", IMG_GetError());
         return;
        }
-     p->rect = (SDL_Rect){200, 510, p->img[0][0]->w, p->img[0][0]->h};
+     if(multi == 0){
+     	p->rect = (SDL_Rect){200, 510, p->img[0][0]->w, p->img[0][0]->h};
+     }else if(multi == 1){
+        p->rect = (SDL_Rect){850, 510, p->img[0][0]->w, p->img[0][0]->h};
+     }
         p->tab[0]=1;
 	p->tab[1]=1;
 	p->tab[2]=1;

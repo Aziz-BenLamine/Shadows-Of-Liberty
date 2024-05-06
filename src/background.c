@@ -37,8 +37,9 @@ void InitBackground(Background *b){
     b->camera.y = 0;
     b->camera.w = SCREEN_WIDTH;
     b->camera.h = SCREEN_HEIGHT;
+    
     b->camera1.x = 0;
-    b->camera1.y = 0;
+    b->camera1.y = 100;
     b->camera1.w = SCREEN_WIDTH;
     b->camera1.h = SCREEN_HEIGHT;
 }
@@ -62,9 +63,12 @@ void Initmask(Background *mask)
 }
 
 
-void AfficherBackground(Background b, SDL_Surface *ecran,int lvl){
+void AfficherBackground(Background b, SDL_Surface *ecran){
  	SDL_BlitSurface(b.image[b.niveau], &b.camera, ecran, &b.bg1);
-	//SDL_BlitSurface(b.image[lvl], &b.camera1, ecran, &b.bg2);
+}
+
+void AfficherBackgroundMulti(Background b, SDL_Surface *ecran){
+	SDL_BlitSurface(b.image[b.niveau], &b.camera1, ecran, &b.bg2);
 }
 
 void toggleFullScreen(button b[]) {
