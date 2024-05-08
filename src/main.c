@@ -8,6 +8,7 @@
 #include "background.h"
 #include "player.h"
 #include "entite.h"
+#include "enigme.h"
 #include"minimap.h"
 #define SCREEN_HEIGHT 700
 #define SCREEN_WIDTH 1600
@@ -57,6 +58,15 @@ int main(int argc, char** argv) {
     int game = 0;
     int score = 0;
     int jumpAnimation = 0;
+    
+    //Engime INIT
+    enigme eng;
+    int rep = -1;
+    SDL_Surface* img1;
+    SDL_Surface* img2;
+    SDL_Rect pos1;
+    SDL_Rect pos2;
+    eng.etat = 0;
     
     init(&player, 0, 0);
     init(&player2, 0, 1);
@@ -569,9 +579,84 @@ int main(int argc, char** argv) {
 	//move(&e);
 	//animerEntity(&e);
 	collennemi=collisionBB(e,player.rect);
-	if (collennemi==1){
+		if (collennemi==1){
+            
+           //ENIGME
+        
+           img1 = IMG_Load("img1.jpg");
+           if (img1 == NULL) {
+             printf("Erreur lors du chargement de l'image1 : %s\n", SDL_GetError());
+             return 1;
+           }
+
+           img2 = IMG_Load("img2.jpg");
+           if (img2 == NULL) {
+              printf("Erreur lors du chargement de l'image2 : %s\n", SDL_GetError());
+              return 1;
+           }
+
+           //Position de l'image de victoire 
+           pos1.x = (ecran->w - img1->w) / 2;
+           pos1.y = (ecran->w - img1->w) / 2;
+
+
+           //Position de l'image de defaite
+           pos2.x = (ecran->w - img2->w) / 2;
+           pos2.y = (ecran->w - img2->w) / 2;
+
+           eng = generer("enigme.txt");
+
+           afficherEnigme(eng, ecran);
+
+           switch (event.type) { 
+
+                case SDL_KEYDOWN:
+                    // Gestion des touches du clavier
+                    switch (event.key.keysym.sym) {
+                        case SDLK_a:
+                            // L'utilisateur a appuyé sur la touche 'a'
+                            rep = 1; // Réponse 1S	
+                            break;
+                        case SDLK_b:
+                            // L'utilisateur a appuyé sur la touche 'b'
+                            rep = 2; // Réponse 2
+                            break;
+                        case SDLK_c:
+                            // L'utilisateur a appuyé sur la touche 'c'
+                            rep = 3; // Réponse 3
+                            break;
+                    }
+            }
+          // Vérification de la réponse correcte
+          if (rep != -1) {
+
+		  if (rep == eng.bonrep) {
+
+		    eng.etat = 1;
+
+		    SDL_BlitSurface(img1, NULL, ecran, &pos1); 
+
+		    SDL_Flip(ecran);
+
+		    SDL_Delay(2000); // Délai de 1 secondes avant de continuer
+
+		} 
+		else {
+
+		    eng.etat = -1;
+
+		    SDL_BlitSurface(img2, NULL, ecran, &pos2);
+
+		    SDL_Flip(ecran);
+
+		    SDL_Delay(2000); // Délai de 1 secondes avant de continuer
+
+	       }
+	       rep = -1;
+           }
+        //ENIGME CLOSING BRACKET
 	player.rect.x=200;
-	player.rect.y=510;
+	player.rect.y=200;
 	player.dir=0;
 	player.vies--;
 	}
@@ -777,6 +862,7 @@ updateennemi(&e,player.rect);
         SDL_FreeSurface(backgroundImages[i]);
     }
     Liberer(&m);
+    liberer(eng);
     freePlayer(&player);
     FreeBackground(&background);
     FreeBouton(menuButtons, MENU_BUTTONS_COUNT);

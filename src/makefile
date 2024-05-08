@@ -1,5 +1,5 @@
-prog: main.o bouton.o background.o player.o entite.o minimap.o
-	gcc main.o bouton.o background.o player.o entite.o minimap.o -o prog -lSDL -lSDL_image -lSDL_mixer -lSDL_ttf -lm -g
+prog: main.o bouton.o background.o player.o entite.o minimap.o fonction.o
+	gcc main.o bouton.o background.o player.o entite.o minimap.o fonction.o -o prog -lSDL -lSDL_image -lSDL_mixer -lSDL_ttf -lm -g
 main.o: main.c bouton.h background.h player.h entite.h minimap.h
 	gcc -c main.c -o main.o -g
 
@@ -16,3 +16,6 @@ player.o: player.c player.h
 	gcc -c player.c -o player.o -g
 entite.o:entite.c entite.h
 	gcc -c entite.c -o entite.o -g
+
+fonction.o:fonction.c enigme.h
+	gcc -c fonction.c -o fonction.o -g
