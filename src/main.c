@@ -607,7 +607,8 @@ int main(int argc, char** argv) {
            eng = generer("enigme.txt");
 
            afficherEnigme(eng, ecran);
-
+           SDL_Delay(2000);
+           while (SDL_PollEvent(&event)) {
            switch (event.type) { 
 
                 case SDL_KEYDOWN:
@@ -650,15 +651,16 @@ int main(int argc, char** argv) {
 		    SDL_Flip(ecran);
 
 		    SDL_Delay(2000); // Délai de 1 secondes avant de continuer
+		    player.vies--;
 
 	       }
 	       rep = -1;
            }
+          }
         //ENIGME CLOSING BRACKET
-	player.rect.x=200;
-	player.rect.y=200;
-	player.dir=0;
-	player.vies--;
+	player.rect.x += 100;
+	player.dir = 0;
+	
 	}
 	//e.pos.x += background.camera.x;
 	collbonus=collisionTri(player,b.pos);
