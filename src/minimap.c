@@ -23,16 +23,16 @@ m->bonhomme.camera.y = 0;
 
 m->animation.image[3]=IMG_Load("spritecolors.png");
    
-m->animation.camera.x = 250;
+m->animation.camera.x = 100;
 m->animation.camera.y = 60;
 m->animation.camera.h = 47;
 m->animation.camera.w = 30;
-m->animation.camera.x = 200;
-m->animation.camera.y = 50;
+m->animation.bg1.x = 200;
+m->animation.bg1.y = 50;
 
 }
 
-SDL_Color  GetPixel(SDL_Surface *pSurface,int x,int y)/// hethi besh itraja3 il caractere louun 
+SDL_Color  GetPixel(SDL_Surface *pSurface,int x,int y)
 {
 	SDL_Color color;
 	Uint32 col=0;
@@ -50,8 +50,8 @@ void afficherminimap(minimap m,SDL_Surface *ecran)
 {
  SDL_BlitSurface(m.minimap.image[3],NULL,ecran,&m.minimap.camera);
  SDL_BlitSurface(m.bonhomme.image[3],NULL,ecran,&m.bonhomme.camera);
+ 
  SDL_BlitSurface(m.animation.image[3],&m.animation.camera, ecran, &m.animation.camera);
-
 
 }
 void Liberer (minimap * m)
@@ -68,14 +68,14 @@ SDL_Rect posJoueurABS;
     m->bonhomme.camera.y = posJoueurABS.y * redimensionnement / 100;
 
 }
-void afficherpoint(SDL_Surface * img, int x,int y,SDL_Surface *screen) {
+void afficherpoint(SDL_Surface * img, int x,int y,SDL_Surface *ecran) {
 
 
     SDL_Rect destRect ;
 	destRect.x=x;
 	destRect.y=y;
 
-  SDL_BlitSurface(img,NULL, screen, &destRect);
+  SDL_BlitSurface(img,NULL, ecran, &destRect);
 
 }
 void animerMinimap(minimap *m) {
@@ -141,5 +141,45 @@ int collisionPP(Personne *p, SDL_Surface *Masque, Background bp)
 
     return 0;
 }
+void sauvgarder(Personne p,Background b,char *nomfichier) {
+
+//save the next value at the end of the file in this format value:value:value....;
+ FILE *file = fopen(nomfichier, "w"); // Open the file in append mode
+
+    // Check if file opened successfully
+    if (file == NULL) {
+        printf("Error opening file!\n");
+        return;
+    }
+
+    // Write the values to the file in the specified format
+    fprintf(file, "%d:%d:%d:%d:%d:%d\n",
+            b.camera.x, b.camera.y,
+            b.niveau,
+            p.cameraa.x, p.cameraa.y,
+            p.dir);
+
+    fclose(file); // Close the file
+};
+void charger(Personne *p,Background *b,char *nomfichier) {
+//the opposit of the save now ched read from the file and save in the variable
+     // Open the file in read mode
+    FILE *file = fopen(nomfichier, "r");
+
+    // Check if file opened successfully
+    if (file == NULL) {
+        printf("Error opening file!\n");
+        return;
+    }
+
+    // Read the values from the file in the specified format
+    fscanf(file, "%hd:%hd:%d:%hd:%hd:%d\n",
+           &b->camera.x, &b->camera.y,
+           &b->niveau,
+           &p->cameraa.x, &p->cameraa.y,
+           &p->dir);
+
+    fclose(file); // Close the file
+};
 
 

@@ -24,7 +24,7 @@ typedef struct{
     int dir;
     int niveau; //0: Menu  1:Settings  2:Main Game
     struct_img  mask;
-
+   
 }Background;
 
 typedef struct{
