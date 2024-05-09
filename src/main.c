@@ -70,7 +70,7 @@ int dirr;
         return 1;
     }
     SDL_Color textColor = {255, 255, 255};
-
+    
     //Animation
     SDL_Surface *backgroundImages[NUM_IMAGES];
     int currentImageIndex = 0;
@@ -541,8 +541,6 @@ int dirr;
 
 		  if (rep == eng.bonrep) {
 
-                    //player.vies--;
-
 		    eng.etat = 1;
 
 		    SDL_BlitSurface(img1, NULL, ecran, &pos1); 
@@ -566,95 +564,82 @@ int dirr;
 	       rep = -1;
             }
         }//ENIGME CLOSING BRACKET*/
-	//entitesecondaire
 
+
+	//entitesecondaire
 
 	AfficherEnnemi(e,ecran);
 	move(&e);
 	animerEntity(&e);
 	collennemi=collisionBB(e,player.rect);
-	if (collennemi==1){
-            
-           //ENIGME
-        
-           img1 = IMG_Load("img1.jpg");
-           if (img1 == NULL) {
-             printf("Erreur lors du chargement de l'image1 : %s\n", SDL_GetError());
-             return 1;
-           }
+        eng = generer("enigme.txt");
 
-           img2 = IMG_Load("img2.jpg");
-           if (img2 == NULL) {
-              printf("Erreur lors du chargement de l'image2 : %s\n", SDL_GetError());
-              return 1;
-           }
+        img1 = IMG_Load("img1.jpg");
+if (img1 == NULL) {
+    printf("Erreur lors du chargement de l'image1 : %s\n", SDL_GetError());
+    return 1;
+}
 
-           //Position de l'image de victoire 
-           pos1.x = (ecran->w - img1->w) / 2;
-           pos1.y = (ecran->w - img1->w) / 2;
+img2 = IMG_Load("img2.jpg");
+if (img2 == NULL) {
+    printf("Erreur lors du chargement de l'image2 : %s\n", SDL_GetError());
+    return 1;
+}
+
+//Position de l'image de victoire
+pos1.x = (ecran->w - img1->w) / 2;
+pos1.y = (ecran->h - img1->h) / 2; // Correction de la position y
+
+//Position de l'image de defaite
+pos2.x = (ecran->w - img2->w) / 2;
+pos2.y = (ecran->h - img2->h) / 2; // Correction de la position y
+
+if (collennemi == 1) {
+    //ENIGME
+    afficherEnigme(eng, ecran);
 
 
-           //Position de l'image de defaite
-           pos2.x = (ecran->w - img2->w) / 2;
-           pos2.y = (ecran->w - img2->w) / 2;
+    while (SDL_PollEvent(&event)) {
+        switch (event.type) {
+            case SDL_KEYDOWN:
+                switch (event.key.keysym.sym) {
+                    case SDLK_a:
+                        rep = 1;
+                        break;
+                    case SDLK_b:
+                        rep = 2;
+                        break;
+                    case SDLK_c:
+                        rep = 3;
+                        break;
+                }
+                break;
+        }
 
-           eng = generer("enigme.txt");
-
-           afficherEnigme(eng, ecran);
-
-           switch (event.type) { 
-
-                case SDL_KEYDOWN:
-                    // Gestion des touches du clavier
-                    switch (event.key.keysym.sym) {
-                        case SDLK_a:
-                            // L'utilisateur a appuyé sur la touche 'a'
-                            rep = 1; // Réponse 1S	
-                            break;
-                        case SDLK_b:
-                            // L'utilisateur a appuyé sur la touche 'b'
-                            rep = 2; // Réponse 2
-                            break;
-                        case SDLK_c:
-                            // L'utilisateur a appuyé sur la touche 'c'
-                            rep = 3; // Réponse 3
-                            break;
-                    }
+        // Vérification de la réponse correcte
+        if (rep != -1) {
+            if (rep == eng.bonrep) {
+                eng.etat = 1;
+                SDL_BlitSurface(img1, NULL, ecran, &pos1);
+                SDL_Flip(ecran);
+                SDL_Delay(1000); // Délai de 1 seconde avant de continuer
+            } else {
+                eng.etat = -1;
+                SDL_BlitSurface(img2, NULL, ecran, &pos2);
+                SDL_Flip(ecran);
+                SDL_Delay(1000); // Délai de 1 seconde avant de continuer
             }
-          // Vérification de la réponse correcte
-          if (rep != -1) {
-
-		  if (rep == eng.bonrep) {
-
-		    eng.etat = 1;
-
-		    SDL_BlitSurface(img1, NULL, ecran, &pos1); 
-
-		    SDL_Flip(ecran);
-
-		    SDL_Delay(2000); // Délai de 1 secondes avant de continuer
-
-		} 
-		else {
-
-		    eng.etat = -1;
-
-		    SDL_BlitSurface(img2, NULL, ecran, &pos2);
-
-		    SDL_Flip(ecran);
-
-		    SDL_Delay(2000); // Délai de 1 secondes avant de continuer
-
-	       }
-	       rep = -1;
-           }
-        //ENIGME CLOSING BRACKET
+           
+            rep = -1; // Réinitialiser rep pour la prochaine réponse
+        }
+    }
+ 
+        //ENIGME CLOSING
 	player.rect.x=200;
 	player.rect.y=200;
 	player.dir=0;
 	player.vies--;
 	}
-
 	collbonus=collisionTri(player,b.pos);
 	if (touchbonus==1){
 	Afficherbonus(b,ecran);
