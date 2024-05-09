@@ -9,6 +9,7 @@
 #include "player.h"
 #include "entite.h"
 #include"minimap.h"
+#include"tic.h"
 #define SCREEN_HEIGHT 700
 #define SCREEN_WIDTH 1600
 #define FULL_SCREEN_HEIGHT 1080
@@ -21,6 +22,14 @@ int main(int argc, char** argv) {
     SDL_Surface *ecran;
     
     //MENU VARIABLES
+    
+tic t; int coup=1;
+
+
+SDL_Event eventtictac;
+int continuer=1;
+int joueur; 
+int a,c;
     minimap m;
     int playing = 1;
     int buttonClicked = 0;
@@ -355,6 +364,7 @@ int main(int argc, char** argv) {
         printf("JUmpanimation=%d\n",jumpAnimation);
         //printf("player.dir = %d\n",player.dir);
         background.camera.y = 100;
+        
         //START , TRACK AND DISPLAY TIMER
         if(game != 1){
         	startTime = SDL_GetTicks();
@@ -495,7 +505,59 @@ int main(int argc, char** argv) {
             MAJMinimap(player.rect, &m, background.camera, 20);
             animerMinimap(&m);
 	//entitesecondaire
+        //tic tac toe(3eft 7yeti)
+        initialisation(&t);
 
+//affichage(t,ecran); 
+   
+    while(continuer)
+    {//
+printf("t=%d, j=%d", t.tour,t.joueur);
+affichage(t,ecran); 
+SDL_Flip(ecran);
+if( t.tour<9 &&atilganer(t.tabsuivi)==0)
+{//
+if((t.tour)%2==0)//tour du PC
+            {//
+ calcul_coup(t.tabsuivi);
+printf("\nhellooo before switch\n");
+ t.tour++;
+}///
+        else
+       {//
+        SDL_WaitEvent(&eventtictac);
+        switch(eventtictac.type)
+        {//
+printf("\nhellooo dans switch\n");
+        case SDL_QUIT:
+            continuer=0;
+            break;
+        case SDL_MOUSEBUTTONUP:
+ if (eventtictac.button.button == SDL_BUTTON_LEFT)
+                {
+            a=eventtictac.button.x/184;
+            c=eventtictac.button.y/180;
+            coup=3*c+a;
+            t.tour++;
+    t.tabsuivi[coup]=-1;
+          }
+            break;
+        }///
+printf("\nhellooo dans switch2\n");
+
+
+}///
+
+}///
+else
+{ 
+ Resultat(t,ecran);
+ continuer=0;   
+printf("%d", t.tour);
+
+}
+}
+ 
 
 	AfficherEnnemi(e,ecran);
 	move(&e);
@@ -552,6 +614,7 @@ int main(int argc, char** argv) {
     for (int i = 0; i < NUM_IMAGES; i++) {
         SDL_FreeSurface(backgroundImages[i]);
     }
+    liberationmemoire(&t);
     Liberer(&m);
     freePlayer(&player);
     FreeBackground(&background);
