@@ -271,52 +271,65 @@ void animerBackground(SDL_Surface *ecran,int index){
     
 }
 
+void savescore(scoreinfo s, char *filename)
+{
 
-/*void savescore(char *filename,int score){
-	FILE* f = open(filename, "a");
-	
-	if (f == NULL){
-		printf("error");
-	}
-	fprintf(f,"%d %d %s \n",s.score,s.temps,s.nom);
+    FILE *file = fopen(filename, "a");
 
-	fclose(f);
+
+    fprintf(file, "%d %d %s\n", s.score, s.temps, s.nom);
+
+
+    fclose(file);
 }
 
-void bestscore(char * filename , scoreinfo t[3]){
-	FILE *f = open(filename,"r");
-	if(f == NULL){
-		printf("errorr");	
-	}
-	int i = 0;
-	while (fscanf(f, "%d %d %s", &t[i].score, &t[i].temps, t[i].nom) != EOF) {
-        t[i].surface = NULL;
-        t[i].x = 0;
-        t[i].y = 0;
-        i++;
+void bestscore(char *filename, scoreinfo t[]) {
+
+    FILE *file = fopen(filename, "r");
+    int i = 0;
+    if (file != NULL) {
+        while (fscanf(file, "%d %d %s", &t[i].score, &t[i].temps, t[i].nom) != EOF) {
+            i++;
+        }
+        fclose(file);
+    } else {
+        printf("Erreur d'ouverture du fichier pour la lecture des scores.\n");
+        return;
     }
-    fclose(f);
 
 
-    for (int i = 0; i < 3; i++) {
-        for (int j = i + 1; j < 3; j++) {
-            if (t[i].score == t[j].score) {
-                if (t[i].temps > t[j].temps) {
-                    ScoreInfo temp = t[i];
-                    t[i] = t[j];
-                    t[j] = temp;
+    for (int j = 0; j < i - 1; j++) {
+        for (int k = j + 1; k < i; k++) {
+            if (t[j].score == t[k].score) {
+                if (t[j].temps > t[k].temps) {
+                    scoreinfo temp = t[j];
+                    t[j] = t[k];
+                    t[k] = temp;
                 }
+            } else if (t[j].score < t[k].score) {
+                scoreinfo temp = t[j];
+                t[j] = t[k];
+                t[k] = temp;
             }
         }
     }
-
-    char str[100];
-    for (int i = 0; i < 3; i++) {
-        sprintf(str, "%s %d %d", t[i].nom, t[i].score, t[i].temps);
-    }
-
+    file = fopen(filename, "w");
+    for (int j = 0; j < i - 1; j++){
+	fprintf(file, "%d %d %s\n", t[j].score, t[j].temps, t[j].nom);
+}
+fclose(file);
 }
 
-void afficherbest(SDL_Surface *ecran,scoreinfo t[]){
-	
-}*/
+void afficherbest(SDL_Surface *ecran, scoreinfo t[]) {
+  char Text[100];
+  TTF_Font *font2 = TTF_OpenFont("Ironmonger Black Regular.otf", 24);
+  SDL_Color textColor = {255, 255, 255};
+int ypos=25;
+  for (int i = 0; i < 3; i++) {
+    if (t[i].surface != NULL) {
+	sprintf(Text, "Score: %d %d %s",t[i].temps, t[i].score,t[i].nom);
+	renderText(ecran, font2, Text, textColor, 50, ypos);
+	ypos += 50;
+    }
+  }
+}
