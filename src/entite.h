@@ -8,7 +8,7 @@ typedef enum STATE STATE;
 enum STATE {waiting,following,attacking};
 
 typedef struct {
-SDL_Surface *image[3][5];
+SDL_Surface *image[4][5];
 SDL_Rect pos;
 int direction;
 int num;

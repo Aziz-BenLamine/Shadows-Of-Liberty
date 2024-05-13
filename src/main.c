@@ -33,8 +33,10 @@ int main(int argc, char** argv) {
     int previousButtonIndex = 0;
     int screenState = 0;
     Entity e;
+Entity e1;
     Entity b;
     int collennemi;
+int collennemi1;
     int collbonus;
     int touchbonus=1;
     int dirr;
@@ -160,6 +162,9 @@ int main(int argc, char** argv) {
 
 	
 	InitEnnemi(&e);
+	InitEnnemi(&e1);
+	e1.pos.x=850;
+	e1.pos.y=580;
 	Initbonus(&b);
 	initmap(&m);
     
@@ -462,6 +467,7 @@ int main(int argc, char** argv) {
 				if(background.camera.x < 1600){
 					b.pos.x -= pas;
 					e.pos.x -= pas;
+					e1.pos.x -= pas;
 				}
 			}
 			//e.pos.x += pas;
@@ -480,6 +486,7 @@ int main(int argc, char** argv) {
 					
 					b.pos.x += pas;
 					e.pos.x += pas;
+					e1.pos.x += pas;
 				}	
 			}
 			//e.pos.x -= pas;
@@ -576,8 +583,9 @@ int main(int argc, char** argv) {
 
 	
 	AfficherEnnemi(e,ecran);
-	//move(&e);
-	//animerEntity(&e);
+	AfficherEnnemi(e1,ecran);
+	move(&e1);
+	animerEntity(&e1);
 	collennemi=collisionBB(e,player.rect);
 		if (collennemi==1){
             
@@ -661,6 +669,14 @@ int main(int argc, char** argv) {
 	player.rect.x += 100;
 	player.dir = 0;
 	
+	}
+	//collision ennemi 2
+collennemi1=collisionBB(e1,player.rect);
+	if (collennemi1==1){
+	player.rect.x=200;
+	player.rect.y=510;
+	player.dir=0;
+	player.vies--;
 	}
 	//e.pos.x += background.camera.x;
 	collbonus=collisionTri(player,b.pos);

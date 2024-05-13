@@ -25,6 +25,11 @@ void InitEnnemi(Entity *e){
  e->image[2][2]=IMG_Load("../assets/ennemi/a2.png");
  e->image[2][3]=IMG_Load("../assets/ennemi/a1.png");
  e->image[2][4]=IMG_Load("../assets/ennemi/a0.png");
+ e->image[3][0]=IMG_Load("../assets/ennemi/a004.png");
+ e->image[3][1]=IMG_Load("../assets/ennemi/a003.png");
+ e->image[3][2]=IMG_Load("../assets/ennemi/a02.png");
+ e->image[3][3]=IMG_Load("../assets/ennemi/a001.png");
+ e->image[3][4]=IMG_Load("../assets/ennemi/a02.png");
 e->pos.x=1200;
 e->pos.y=580;
 e->pos.w=e->image[0][0]->w;
@@ -37,7 +42,7 @@ e->state=waiting;
 }
 
 void Initbonus(Entity *e){
-e->image[0][0]=IMG_Load("../assets/ennemi/enleftwalk0.png");
+e->image[0][0]=IMG_Load("../assets/bonuslevel3.png");
 /*e->image[0][1]=
 e->image[0][2]=
 e->image[0][3]=
@@ -70,17 +75,17 @@ e->num++;
 }
 }
 void move(Entity *e){
-if(e->pos.x>900){
+if(e->pos.x>850){
 e->direction=1;
 }
-if(e->pos.x<250){
+if(e->pos.x<610){
 e->direction=0;
 }
 if(e->direction==0){
-e->pos.x=e->pos.x+2;
+e->pos.x=e->pos.x+1;
 }
 else{
-e->pos.x=e->pos.x-2;
+e->pos.x=e->pos.x-1;
 }
 
 }
@@ -129,24 +134,46 @@ void Afficherbonus(Entity e, SDL_Surface *screen){
 
 
 void updateetat(Entity *e,int d){
+int ab;
+ab=abs(d);
 switch (e->state)
 {
 case waiting:
-if ((100<d) && (d<400)){
+if ((120<ab) && (ab<400)){
 e->state=following;
-e->direction=1;
+	if (d>0)
+	{
+	e->direction=1;
+	}
+	else{
+	e->direction=0;
+	}
+	
+
 }
 break;
 case following:
-if ((0<d) && (d<=100)){
+if ((0<ab) && (ab<=120)){
 e->state=attacking;
-e->direction=2;
+	if (d>0)
+	{
+	e->direction=2;
+	}
+	else{
+	e->direction=3;
+	}
 }
 break;
 case attacking:
-if (d<=0){
+if (ab>150){
 e->state=waiting;
-e->direction=0;
+	if (d>0)
+	{
+	e->direction=1;
+	}
+	else{
+	e->direction=0;
+	}
 }
 break;
 
@@ -168,11 +195,17 @@ animerEntity(e);
 if(posh.x<e->pos.x){
 e->pos.x=e->pos.x-2;
 }
+if(posh.x>e->pos.x){
+e->pos.x=e->pos.x+2;
+}
 break;
 case attacking:
 animerEntity(e);
 if(posh.x<e->pos.x){
 e->pos.x=e->pos.x-2;
+}
+if(posh.x>e->pos.x){
+e->pos.x=e->pos.x+2;
 }
 break;
 
