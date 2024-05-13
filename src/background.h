@@ -22,6 +22,8 @@ typedef struct{
     char nom[20];
     int score;
     int temps;
+    SDL_Surface *surface;
+    SDL_Rect position;
 }scoreinfo;
 
 typedef struct{
@@ -31,9 +33,9 @@ typedef struct{
     int soundLevel;
 } backgroundSound;
 
-/*void bestscore(char *filename ,scoreinfo t[]);
+void bestscore(char *filename ,scoreinfo t[]);
 void afficherbest(SDL_Surface *ecran,scoreinfo t[]);
-void savescore(char *filename,int score);*/
+void savescore(scoreinfo s,char *filename);
 void AfficherBackground(Background b, SDL_Surface *ecran,int lvl);
 void animerBackground(SDL_Surface *ecran,int index);
 void scrolling(Background *b,int pas,int dir,int player);
