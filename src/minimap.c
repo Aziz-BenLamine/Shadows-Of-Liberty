@@ -27,8 +27,8 @@ m->animation.camera.x = 250;
 m->animation.camera.y = 60;
 m->animation.camera.h = 47;
 m->animation.camera.w = 30;
-m->animation.camera.x = 200;
-m->animation.camera.y = 50;
+m->animation.bg1.x = 200;
+m->animation.bg1.y = 50;
 
 }
 
@@ -50,7 +50,7 @@ void afficherminimap(minimap m,SDL_Surface *ecran)
 {
  SDL_BlitSurface(m.minimap.image[3],NULL,ecran,&m.minimap.camera);
  SDL_BlitSurface(m.bonhomme.image[3],NULL,ecran,&m.bonhomme.camera);
- SDL_BlitSurface(m.animation.image[3],&m.animation.camera, ecran, &m.animation.camera);
+ SDL_BlitSurface(m.animation.image[3],&m.animation.camera, ecran, &m.animation.bg1);
 
 
 }
