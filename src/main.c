@@ -200,6 +200,7 @@ int main(int argc, char** argv) {
             		/*menuButtons[selectedButtonIndex].actif = 0;
                        	menuButtons[previousButtonIndex].actif = 0;*/
             		background.niveau = 0;
+			sauvgarder(player,background,"save");
         		}
         }
 
@@ -237,6 +238,7 @@ int main(int argc, char** argv) {
                             background.niveau = 1;
                             for (int i = 0; i < MENU_BUTTONS_COUNT; i++) {
                                 menuButtons[i].actif = 0;
+				    charger(&player,&background,"save");
                             }
                         } else if (point_in_rect(event.button.x, event.button.y, menuButtons[3].button_rect)) {
                             playing = 0;
