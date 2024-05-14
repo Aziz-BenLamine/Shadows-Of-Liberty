@@ -23,8 +23,8 @@ m->bonhomme.camera.y = 0;
 
 m->animation.image[3]=IMG_Load("spritecolors.png");
    
-m->animation.camera.x = 250;
-m->animation.camera.y = 60;
+m->animation.camera.x = 0;
+m->animation.camera.y = 0;
 m->animation.camera.h = 47;
 m->animation.camera.w = 30;
 m->animation.bg1.x = 200;
@@ -68,14 +68,14 @@ SDL_Rect posJoueurABS;
     m->bonhomme.camera.y = posJoueurABS.y * redimensionnement / 100;
 
 }
-void afficherpoint(SDL_Surface * img, int x,int y,SDL_Surface *screen) {
+void afficherpoint(SDL_Surface * img, int x,int y,SDL_Surface *ecran) {
 
 
     SDL_Rect destRect ;
 	destRect.x=x;
 	destRect.y=y;
 
-  SDL_BlitSurface(img,NULL, screen, &destRect);
+  SDL_BlitSurface(img,NULL, ecran, &destRect);
 
 }
 void animerMinimap(minimap *m) {
