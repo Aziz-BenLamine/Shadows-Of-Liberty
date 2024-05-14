@@ -28,7 +28,7 @@ m->animation.camera.y = 0;
 m->animation.camera.h = 47;
 m->animation.camera.w = 30;
 m->animation.bg1.x = 200;
-m->animation.bg1.y = 50;
+m->animation.bg1.y = 120;
 
 }
 
