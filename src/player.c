@@ -54,7 +54,7 @@ void init(Personne * p, int numperso, int multi){
     p->img[3][3] = IMG_Load("../assets/player/jump/leftjump3.png");
     p->img[3][4] = IMG_Load("../assets/player/jump/leftjump4.png");
     p->img[3][5] = IMG_Load("../assets/player/jump/leftjump5.png");
-    y = 510;
+    y = 430;
     printf("Images Loaded");
  } 
  else if(numperso == 1)
@@ -114,10 +114,9 @@ void init(Personne * p, int numperso, int multi){
         p->rect = (SDL_Rect){850, y, p->img[0][0]->w, p->img[0][0]->h};
      }
 
-        p->tab[0]=1;
-	p->tab[1]=1;
-	p->tab[2]=1;
-	p->tab[3]=1;
+	for (int i = 0; i < 4; i++) {
+		p->tab[i] = 1;
+	    }
 	
 	/*p->damage[0]=1;
 	p->damage[1]=1;
@@ -215,16 +214,22 @@ void sautParabolique(Personne *player, int *jumpDone, int *x0, int *y0, int *xIN
     }
 }
 
-void freePlayer(Personne * p){
-	for(int i = 0; i < playerImageColumns; i++){
-		for(int j = 0; j < playerImagerows; j++){
-			SDL_FreeSurface(p->img[i][j]);
-		}
-		SDL_FreeSurface(p->healthImage[i]);
-	}
+void freePlayer(Personne *p) {
+    for (int i = 0; i < playerImageColumns; i++) {
+        for (int j = 0; j < playerImagerows; j++) {
+            if (p->img[i][j]) {
+                printf("Freeing img[%d][%d]\n", i, j);
+                SDL_FreeSurface(p->img[i][j]);
+                p->img[i][j] = NULL; // Set to NULL after freeing
+            }
+        }
+    }
 
-
-
-
-
+    for (int i = 0; i < 4; i++) {
+        if (p->healthImage[i]) {
+            printf("Freeing healthImage[%d]\n", i);
+            SDL_FreeSurface(p->healthImage[i]);
+            p->healthImage[i] = NULL; // Set to NULL after freeing
+        }
+    }
 }

@@ -16,9 +16,10 @@ void InitBackground(Background *b){
     
     b->image[0] = IMG_Load("../assets/menuBackground.png");
     b->image[1] = IMG_Load("../assets/settingsMenu.png");
-    b->image[2] = IMG_Load("../assets/level 31.png");
+    b->image[2] = IMG_Load("../assets/level1.jpg");
+    b->image[3] = IMG_Load("../assets/level2.jpg");
     b->image[4] = IMG_Load("../assets/menuBackground.png");
-    
+    b->image[5] = IMG_Load("../assets/level3.jpg");
     if (b->image[0] == NULL || b->image[1] == NULL || b->image[2] == NULL) {
         printf("ERROR LOADING BACKGROUND IMAGE: %s\n", IMG_GetError());
         return;

@@ -171,7 +171,13 @@ int main(int argc, char** argv) {
     int lvl = 2;
     int dir,pl;
     int pas = 10;
-    SDL_Surface *surfM = IMG_Load("mask.png");
+
+    SDL_Surface *surfM = NULL;
+    SDL_Surface *surfM1 = IMG_Load("mask1.jpg");
+    SDL_Surface *surfM2 = IMG_Load("mask2.jpg");
+    SDL_Surface *surfM3 = IMG_Load("mask3.png");
+
+
     
     SDL_Event event;
     while (playing) {
@@ -387,10 +393,11 @@ int main(int argc, char** argv) {
             }
         }
         //MAIN GAME
-        else if (background.niveau == 2) {
+        else if (background.niveau == 2 || background.niveau == 3 || background.niveau == 5)  {
         if(multi == 1){
          AfficherBackgroundMulti(background, ecran);
          afficherPerso(player2, ecran);
+         collisionPP(&player2,surfM,background);
         }
         printf("camera.x: %d\n",background.camera.x);
         //animerBackground(ecran,currentImageIndex1);
@@ -651,12 +658,12 @@ int main(int argc, char** argv) {
 	    }
 	    //GRAVITE
 	        //PLAYER 1
-	  	if (player.rect.y < 510 && player.tab[3] != 1) {
+	  	if ((player.rect.y < (700 - player.rect.h) + 20) && player.tab[3] != 1) {
 		   player.rect.y += 8.5;
 	    
 	    	}
 	    	//PLAYER 2
-	    	if (player2.rect.y < 510 && player2.tab[3] != 1) {
+	    	if ((player.rect.y < (700 - player.rect.h)) && player2.tab[3] != 1) {
 		   player2.rect.y += 8.5;
 	    
 	    	}
@@ -674,16 +681,15 @@ int main(int argc, char** argv) {
             animerMinimap(&m);
             
             collisionPP(&player,surfM,background);
-            collisionPP(&player2,surfM,background);
             background.mask.positionfromimage =   background.camera;
 	//entitesecondaire
 
 	
-	AfficherEnnemi(e,ecran);
-	AfficherEnnemi(e1,ecran);
+	//AfficherEnnemi(e,ecran);
+	//AfficherEnnemi(e1,ecran);
 	move(&e1);
 	animerEntity(&e1);
-	collennemi=collisionBB(e,player.rect);
+	//collennemi=collisionBB(e,player.rect);
 		if (collennemi==1){
             
            //ENIGME
@@ -768,7 +774,7 @@ int main(int argc, char** argv) {
 	
 	}
 	//collision ennemi 2
-collennemi1=collisionBB(e1,player.rect);
+	//collennemi1=collisionBB(e1,player.rect);
 	if (collennemi1==1){
 	player.rect.x=200;
 	player.rect.y=510;
@@ -793,13 +799,27 @@ collennemi1=collisionBB(e1,player.rect);
 	}*/
 
 //move ia
-distheroennemi=e.pos.x-player.rect.x;
-updateetat(&e,distheroennemi);
-updateennemi(&e,player.rect);
+	distheroennemi=e.pos.x-player.rect.x;
+	updateetat(&e,distheroennemi);
+	updateennemi(&e,player.rect);
 
-
-
-
+	printf("player.rect.x = %d| player.y = %d |",player.rect.x, player.rect.y);
+	printf(" |background.niveau = %d",background.niveau);
+       //NEXT LEVEL BACKGROUND UPDATE
+	if(background.niveau == 2 && player.rect.x > 1550){
+	        surfM = surfM2;
+		player.rect.x = 213;
+		player.rect.y = 278;
+		background.camera.x = 0;
+		background.niveau = 3;
+	} else if(background.niveau == 3 && player.rect.x > 1550){
+	        surfM = surfM3;
+		player.rect.x = 200;
+		player.rect.y = 510;
+		background.camera.x = 0;
+		background.niveau = 5;
+	
+	} 
 
 
 
@@ -833,14 +853,17 @@ updateennemi(&e,player.rect);
                     if (event.button.button == SDL_BUTTON_LEFT) {
                         if (point_in_rect(event.button.x, event.button.y, newGameButtons[0].button_rect)) {
                             init(&player, numperso, multi);
+                            surfM = surfM1;
                             background.niveau = 2;
                             for (int i = 0; i < NEWGAME_BUTTONS_COUNT; i++) {
                                 newGameButtons[i].actif = 0;
                             }
                         } else if (point_in_rect(event.button.x, event.button.y, newGameButtons[1].button_rect)) {
                             background.niveau = 2;
-                            multi = 1;
-                            init(&player, numperso2, multi);
+		            multi = 1;
+                            init(&player, numperso, 0);
+                            init(&player2, numperso2, 1);
+                            surfM = surfM1;
                             for (int i = 0; i < NEWGAME_BUTTONS_COUNT; i++) {
                                 newGameButtons[i].actif = 0;
                             }
@@ -907,12 +930,14 @@ updateennemi(&e,player.rect);
                             newGameButtons[previousButtonIndex].actif = 0;
                             switch (selectedButtonIndex) {
                                 case 0:
+                                    surfM = surfM1;
                                     background.niveau = 2;
                                     init(&player, numperso, multi);
                                     selectedButtonIndex = 0;
                                     previousButtonIndex = 0;
                                     break;
                                 case 1:
+                                    surfM = surfM1;
                                     multi = 1;
                                     background.niveau = 2;
                                     init(&player, numperso, multi);
@@ -979,6 +1004,7 @@ updateennemi(&e,player.rect);
     Liberer(&m);
     liberer(eng);
     freePlayer(&player);
+    freePlayer(&player2);
     FreeBackground(&background);
     FreeBouton(menuButtons, MENU_BUTTONS_COUNT);
     FreeBouton(settingButtons, SETTING_BUTTONS_COUNT);
