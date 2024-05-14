@@ -113,10 +113,16 @@ void init(Personne * p, int numperso, int multi){
      }else if(multi == 1){
         p->rect = (SDL_Rect){850, y, p->img[0][0]->w, p->img[0][0]->h};
      }
+
         p->tab[0]=1;
 	p->tab[1]=1;
 	p->tab[2]=1;
 	p->tab[3]=1;
+	
+	/*p->damage[0]=1;
+	p->damage[1]=1;
+	p->damage[2]=1;
+	p->damage[3]=1;*/
 }
 
 void afficherPerso(Personne p, SDL_Surface *screen) {
@@ -171,7 +177,7 @@ void saut(Personne *P, int dt, int posinit) {
 
 }
 
-void sautParabolique(Personne *player, int *jumpDone, int *x0, int *y0, int *xINIT, int *yINIT) {
+void sautParabolique(Personne *player, int *jumpDone, int *x0, int *y0, int *xINIT, int *yINIT, SDL_Surface *Masque, Background bp) {
     if (!(*jumpDone)) {
     	//printf("PLAYER x0 = %d | x = %d PLAYER.UP = %d\n",x0,player.rect.x,player.up);
 	//printf("PLAYER y0 = %d | y = %d PLAYER.UP = %d\n",y0,player.rect.y,player.up);
@@ -182,7 +188,7 @@ void sautParabolique(Personne *player, int *jumpDone, int *x0, int *y0, int *xIN
             *y0 = 0;
             player->up = 1;
         }
-	//collisionPP(player,surfM,background);
+	//collisionPP(player,Masque,bp);
         if (player->up == 1) {
             *x0 += 10;
             *y0 = -0.04 * (*x0) * (*x0) + 100;

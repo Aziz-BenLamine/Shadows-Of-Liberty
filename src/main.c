@@ -36,7 +36,7 @@ int main(int argc, char** argv) {
     Entity e1;
     Entity b;
     int collennemi;
-int collennemi1;
+    int collennemi1;
     int collbonus;
     int touchbonus=1;
     int dirr;
@@ -402,6 +402,7 @@ int collennemi1;
         //Collision Check
         for (int i = 0; i < 4; i++) {
     	    //player.tab[i] = 0;
+    	    
 	    printf("tab[%d]=%d \n",i,player.tab[i]);
        }
        
@@ -537,7 +538,7 @@ int collennemi1;
 		    		jumpAnimation++;
 		    		//printf("player.num=%d, player.dir=%d\n",player.num,player.dir);
 		    	}
-			sautParabolique(&player, &jumpDone, &x0, &y0, &xINIT, &yINIT);
+			sautParabolique(&player, &jumpDone, &x0, &y0, &xINIT, &yINIT,surfM,background);
 			
 		    }if(multi == 1){
 		    if (event.key.keysym.sym == SDLK_d) {
@@ -615,13 +616,13 @@ int collennemi1;
 			    		jumpAnimation++;
 			    		//printf("player.num=%d, player.dir=%d\n",player.num,player.dir);
 			    	}
-				sautParabolique(&player2, &jumpDone, &x0, &y0, &xINIT, &yINIT);
+				sautParabolique(&player2, &jumpDone, &x0, &y0, &xINIT, &yINIT, surfM,background);
 		    
 		    
 		    }
 		    }  
 		    break;
-		    		    case SDL_KEYUP:
+		    case SDL_KEYUP:
 		    	if(event.key.keysym.sym ==  SDLK_SPACE || event.key.keysym.sym == SDLK_UP){
 		    		jumpDone = 0;
 		    		if(player.dir == 2){

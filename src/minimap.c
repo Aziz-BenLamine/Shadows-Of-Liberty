@@ -99,45 +99,78 @@ int collisionPP(Personne *p, SDL_Surface *Masque, Background bp)
     int y = p->rect.y + persoheight/2 + bp.camera.y;
 
     color = GetPixel(Masque, x, y);
-
+    
+    //OBSTACLE SOLIDE
     if (color.r == 0 && color.g == 0 && color.b == 0) {
         p->tab[0] = 1;
     } else {
         p->tab[0] = 0;
     }
+    
+    //OBSTACLE DAMAGE
+    /*if (color.r == 255 && color.g == 0 && color.b == 0) {
+        p->damage[0] = 1;
+    } else {
+        p->damage[0] = 0;
+    }*/
+    
 
     int x2 = p->rect.x + bp.camera.x;
     int y2 = p->rect.y + persoheight/2 + bp.camera.y;
 
     color = GetPixel(Masque, x2, y2);
 
+    //OBSTACLE SOLIDE
     if (color.r == 0 && color.g == 0 && color.b == 0) {
         p->tab[1] = 1;
     } else {
         p->tab[1] = 0;
     }
+    
+    //OBSTACLE DAMAGE
+    /*if (color.r == 255 && color.g == 0 && color.b == 0) {
+        p->damage[1] = 1;
+    } else {
+        p->damage[1] = 0;
+    }*/
 
     int x3 = p->rect.x + persowidth/2 + bp.camera.x;
     int y3 = p->rect.y + bp.camera.y - 5;
 
     color = GetPixel(Masque, x3, y3);
 
+    //OBSTACLE SOLIDE
     if (color.r == 0 && color.g == 0 && color.b == 0) {
         p->tab[2] = 1;
     } else {
         p->tab[2] = 0;
     }
+    
+    //OBSTACLE DAMAGE
+    /*if (color.r == 255 && color.g == 0 && color.b == 0) {
+        p->damage[2] = 1;
+    } else {
+        p->damage[2] = 0;
+    }*/
 
     int x4 = p->rect.x + persowidth/2 + bp.camera.x;
     int y4 = p->rect.y + persoheight + bp.camera.y - 5;
 
     color = GetPixel(Masque, x4, y4);
 
+    //OBSTACLE SOLIDE
     if (color.r == 0 && color.g == 0 && color.b == 0) {
         p->tab[3] = 1;
     } else {
         p->tab[3] = 0;
     }
+    
+    //OBSTACLE DAMAGE
+    /*if (color.r == 255 && color.g == 0 && color.b == 0) {
+        p->damage[3] = 1;
+    } else {
+        p->damage[3] = 0;
+    }*/
 
     return 0;
 }
