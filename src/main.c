@@ -490,17 +490,7 @@ int collennemi1;
 				}	
 			}
 			//e.pos.x -= pas;
-		    }else if (event.key.keysym.sym == SDLK_d) {
-			dir = 0;
-			pl = 2;
-			scrolling(&background,pas,dir,pl);
-
-		    }else if (event.key.keysym.sym == SDLK_q) {
-			dir = 1;
-			pl = 2;
-			scrolling(&background,pas,dir,pl);
-
-		    } else if(event.key.keysym.sym == SDLK_UP){
+		    }else if(event.key.keysym.sym == SDLK_UP){
 			if(player.dir == 0){
 		    		player.dir = 2;
 		    		player.num = 0;
@@ -549,9 +539,89 @@ int collennemi1;
 		    	}
 			sautParabolique(&player, &jumpDone, &x0, &y0, &xINIT, &yINIT);
 			
+		    }if(multi == 1){
+		    if (event.key.keysym.sym == SDLK_d) {
+		    	dt += timeIncrement;
+		        player2.dir = 0;
+		        if(player2.tab[0] != 1){
+				animerPerso(&player2);
+				movePerso(&player2, dt);
+				pl = 2;
+				dir = 0;
+				scrolling(&background,pas,dir,pl);
+				if(background.camera1.x < 1600){
+					b.pos.x -= pas;
+					e.pos.x -= pas;
+				}
+			}
+
+		    }else if (event.key.keysym.sym == SDLK_q) {
+			dt += timeIncrement;
+		        player2.dir = 1;
+		        if(player2.tab[1] != 1){
+		        	animerPerso(&player2);
+		        	movePerso(&player2, dt);
+		        	pl = 2;
+				dir = 1;
+				scrolling(&background,pas,dir,pl);
+				
+				if(background.camera1.x > 0){
+					
+					b.pos.x += pas;
+					e.pos.x += pas;
+				}	
+			}
+
+		    }else if (event.key.keysym.sym == SDLK_z){
+		    	if(player2.dir == 0){
+		    		player2.dir = 2;
+		    		player2.num = 0;
+		    	}else if(player.dir == 1){
+		    		player2.dir = 3;
+		    		player2.num = 0;
+		    	}
+			if(jumpAnimation < playerImagerows){
+		    		animerPerso(&player2);
+		    		jumpAnimation++;
+		    		//printf("player.num=%d, player.dir=%d\n",player.num,player.dir);
+		    	}
+		    	//SAUT HORIZONTAL
+		    	
+		    	if(!jumpDone){
+		    	
+				  	if(player2.up == 0){
+				  		yINIT = player2.rect.y;
+				  	}
+				    	dt += timeIncrement;
+				  	player2.up = 1;
+				  	saut(&player2, dt, yINIT);
+				  		if(player2.up == 0 || player2.tab[2] == 1){
+				  			jumpDone = 1;
+				  	}
+					}
+		    
+		    
+		    
+		    }else if (event.key.keysym.sym == SDLK_j){
+			    if(player2.dir == 0){
+			    		player2.dir = 2;
+			    		player2.num = 0;
+			    	}else if(player2.dir == 1){
+			    		player2.dir = 3;
+			    		player2.num = 0;
+			    	}
+				if(jumpAnimation < playerImagerows){
+			    		animerPerso(&player2);
+			    		jumpAnimation++;
+			    		//printf("player.num=%d, player.dir=%d\n",player.num,player.dir);
+			    	}
+				sautParabolique(&player2, &jumpDone, &x0, &y0, &xINIT, &yINIT);
+		    
+		    
 		    }
+		    }  
 		    break;
-		    case SDL_KEYUP:
+		    		    case SDL_KEYUP:
 		    	if(event.key.keysym.sym ==  SDLK_SPACE || event.key.keysym.sym == SDLK_UP){
 		    		jumpDone = 0;
 		    		if(player.dir == 2){
@@ -561,23 +631,49 @@ int collennemi1;
 		    		}
 
 		    	}
+		    	if(multi == 1){
+			    	if(/*event.key.keysym.sym ==  SDLK_SPACE ||*/ event.key.keysym.sym == SDLK_z){
+			    		jumpDone = 0;
+			    		if(player2.dir == 2){
+			    			player2.dir = 0;
+			    		}else if(player2.dir == 3){
+			    			player2.dir = 1;
+			    		}
+
+			    	}
+		    	
+		    	}
 		    	dt = 0;
 		    	jumpAnimation = 0;
 					break;
 		    
 	    }
 	    //GRAVITE
+	        //PLAYER 1
 	  	if (player.rect.y < 510 && player.tab[3] != 1) {
 		   player.rect.y += 8.5;
 	    
 	    	}
+	    	//PLAYER 2
+	    	if (player2.rect.y < 510 && player2.tab[3] != 1) {
+		   player2.rect.y += 8.5;
+	    
+	    	}
 	    	
+	    	
+	    //Player 2 out of border check    
+	        if (player2.rect.x < 800) {
+        		player2.rect.x = 800;
+    		} else if (player2.rect.x + player2.rect.w > SCREEN_WIDTH) {
+       			player2.rect.x = SCREEN_WIDTH - player2.rect.w;
+    		}	
 	    afficherPerso(player, ecran);
 	    afficherminimap(m,ecran);
             MAJMinimap(player.rect, &m, background.camera, 20);
             animerMinimap(&m);
             
             collisionPP(&player,surfM,background);
+            collisionPP(&player2,surfM,background);
             background.mask.positionfromimage =   background.camera;
 	//entitesecondaire
 
