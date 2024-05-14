@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
     int previousButtonIndex = 0;
     int screenState = 0;
     Entity e;
-Entity e1;
+    Entity e1;
     Entity b;
     int collennemi;
 int collennemi1;
@@ -265,7 +265,7 @@ int collennemi1;
                             menuButtons[previousButtonIndex].actif = 0;
                             switch (selectedButtonIndex) {
                                 case 0:
-                                    background.niveau = 2;
+                                    background.niveau = 4;
                                     selectedButtonIndex = 0;
                                     previousButtonIndex = 0;
                                     break;
