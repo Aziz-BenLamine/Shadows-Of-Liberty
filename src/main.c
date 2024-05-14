@@ -207,6 +207,7 @@ int main(int argc, char** argv) {
             		/*menuButtons[selectedButtonIndex].actif = 0;
                        	menuButtons[previousButtonIndex].actif = 0;*/
             		background.niveau = 0;
+			 sauvgarder(player,background,"save");
         		}
         }
 
