@@ -19,14 +19,18 @@
 #define NUM_IMAGES 7
 
 int main(int argc, char** argv) {
+    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+    {
+        printf("Failed to initialize SDL: %s\n", SDL_GetError());
+        exit(1);
+    }
     SDL_Surface *ecran;
     
     //MENU VARIABLES
     
 tic t; int coup=1;
 SDL_Surface *resultatSurface;
-TTF_Font *fontresultat ;
-fontresultat = TTF_OpenFont("arial.ttf", 24); // load font
+
 SDL_Event eventtictac;
 int continuer=1;
 int resultat[3] = {0, 0, 0}; 
@@ -63,7 +67,15 @@ int a,c;
     
     init(&player, 0);
     //Texte
+
     TTF_Init();
+TTF_Font *fontresultat ;
+fontresultat = TTF_OpenFont("arial.ttf", 24); // load font
+if (fontresultat == NULL)
+{
+    printf("Failed to load font: %s\n", TTF_GetError());
+    exit(1);
+}
     TTF_Font *font = TTF_OpenFont("Ironmonger Black Regular.otf", 20);
     TTF_Font *font2 = TTF_OpenFont("Ironmonger Black Regular.otf", 24);
     if (font == NULL) {
@@ -623,30 +635,36 @@ int a,c;
         }
     }
 
-    // display the result of the 3 games
-    int playerWin = 0;
-    int aiWin = 0;
-    for (int i = 0; i < 3; i++)
-    {
-        if (resultat[i] == 1)
-            playerWin++;
-        else if (resultat[i] == 2)
-            aiWin++;
-    }
+// display the result of the 3 games
+int playerWin = 0;
+int aiWin = 0;
+for (int i = 0; i < 3; i++)
+{
+    if (resultat[i] == 1)
+        playerWin++;
+    else if (resultat[i] == 2)
+        aiWin++;
+}
 
 char resultText[50];
-    if (playerWin > aiWin)
-        sprintf(resultText, "The player wins %d times and the AI wins %d times.", playerWin, aiWin);
-    else if (playerWin < aiWin)
-        sprintf(resultText, "The player wins %d times and the AI wins %d times.", playerWin, aiWin);
-    else
-        sprintf(resultText, "The player and the AI both win %d times.", playerWin);
+if (playerWin > aiWin)
+    sprintf(resultText, "The player wins %d times and the AI wins %d times.", playerWin, aiWin);
+else if (playerWin < aiWin)
+    sprintf(resultText, "The player wins %d times and the AI wins %d times.", playerWin, aiWin);
+else
+    sprintf(resultText, "The player and the AI both win %d times.", playerWin);
 
-    resultatSurface = TTF_RenderText_Solid(fontresultat, resultText, (SDL_Color){255, 255, 255}); // render text surface
-    SDL_Rect textRect = {600, 600, 0, 0}; 
-    SDL_BlitSurface(resultatSurface, NULL, ecran, &textRect);
-    SDL_Flip(ecran);
-    SDL_Delay(5000); // wait 5 seconds before quitting
+resultatSurface = TTF_RenderText_Solid(fontresultat, resultText, (SDL_Color){255, 255, 255}); // render text surface
+if (resultatSurface == NULL)
+{
+    printf("Failed to render text: %s\n", TTF_GetError());
+    return 1;
+}
+SDL_Rect textRect = {600, 600, 0, 0}; 
+SDL_BlitSurface(resultatSurface, NULL, ecran, &textRect);
+SDL_Flip(ecran);
+SDL_Delay(5000); // wait 5 seconds before quitting
+
 
   
  
