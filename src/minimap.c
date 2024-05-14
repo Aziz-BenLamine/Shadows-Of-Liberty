@@ -174,5 +174,48 @@ int collisionPP(Personne *p, SDL_Surface *Masque, Background bp)
 
     return 0;
 }
+void sauvgarder(Personne p, Background b, char *nomfichier) {
+    // Open the file in write mode
+    FILE *file = fopen(nomfichier, "w");
 
+    // Check if file opened successfully
+    if (file == NULL) {
+        printf("Error opening file!\n");
+        return;
+    }
+
+    // Write the values to the file in the specified format
+    fprintf(file, "%hd:%hd:%d:%hd:%hd:%d:%d:%d\n",
+            b.camera.x, b.camera.y,
+            b.niveau,
+            p.rect.x, p.rect.y,
+            p.dir,
+            p.score,
+            p.vies);
+
+    fclose(file); // Close the file
+}
+
+void charger(Personne *p, Background *b, char *nomfichier) {
+    // Open the file in read mode
+    FILE *file = fopen(nomfichier, "r");
+
+    // Check if file opened successfully
+    if (file == NULL) {
+        printf("Error opening file!\n");
+        return;
+    }
+
+    // Read the values from the file in the specified format
+    fscanf(file, "%hd:%hd:%d:%hd:%hd:%d:%d:%d\n",
+           &b->camera.x, &b->camera.y,
+           &b->niveau,
+           &p->rect.x, &p->rect.y,
+           &p->dir,
+           &p->score,
+
+           &p->vies);
+
+    fclose(file); // Close the file
+}
 
