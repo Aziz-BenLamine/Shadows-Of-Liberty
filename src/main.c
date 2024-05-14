@@ -24,10 +24,12 @@ int main(int argc, char** argv) {
     //MENU VARIABLES
     
 tic t; int coup=1;
-
-
+SDL_Surface *resultatSurface;
+TTF_Font *fontresultat ;
+fontresultat = TTF_OpenFont("arial.ttf", 24); // load font
 SDL_Event eventtictac;
 int continuer=1;
+int resultat[3] = {0, 0, 0}; 
 int joueur; 
 int a,c;
     minimap m;
@@ -505,58 +507,148 @@ int a,c;
             MAJMinimap(player.rect, &m, background.camera, 20);
             animerMinimap(&m);
 	//entitesecondaire
-        //tic tac toe(3eft 7yeti)
+        //tic tac toe
+ for (int i = 0; i < 3; i++)
+    {
+        
         initialisation(&t);
-
-//affichage(t,ecran); 
-   
-    while(continuer)
-    {//
-printf("t=%d, j=%d", t.tour,t.joueur);
-affichage(t,ecran); 
-SDL_Flip(ecran);
-if( t.tour<9 &&atilganer(t.tabsuivi)==0)
-{//
-if((t.tour)%2==0)//tour du PC
-            {//
- calcul_coup(t.tabsuivi);
-printf("\nhellooo before switch\n");
- t.tour++;
-}///
-        else
-       {//
-        SDL_WaitEvent(&eventtictac);
-        switch(eventtictac.type)
-        {//
-printf("\nhellooo dans switch\n");
-        case SDL_QUIT:
-            continuer=0;
-            break;
-        case SDL_MOUSEBUTTONUP:
- if (eventtictac.button.button == SDL_BUTTON_LEFT)
+        
+        int playerTurn = 1;
+        while(continuer)
+        {
+            printf("t=%d, j=%d", t.tour,t.joueur);
+            affichage(t,ecran); 
+            SDL_Flip(ecran);
+            if( t.tour<9 &&atilganer(t.tabsuivi)==0)
+            {
+                if(t.tour % 2 == (playerTurn % 2))
                 {
-            a=eventtictac.button.x/184;
-            c=eventtictac.button.y/180;
-            coup=3*c+a;
-            t.tour++;
-    t.tabsuivi[coup]=-1;
-          }
-            break;
-        }///
-printf("\nhellooo dans switch2\n");
+                    SDL_WaitEvent(&eventtictac);
+                    switch(eventtictac.type)
+                    {
+                        case SDL_QUIT:
+                            continuer=0;
+                            break;
+                        case SDL_MOUSEBUTTONUP:
+                            if (eventtictac.button.button == SDL_BUTTON_LEFT)
+                            {
+                                a=eventtictac.button.x/184;
+                                c=eventtictac.button.y/180;
+                                coup=3*c+a;
+                                t.tour++;
+                                t.tabsuivi[coup]=-1;
+                            }
+                            break;
+                        case SDL_KEYDOWN:
+                            switch(eventtictac.key.keysym.sym)
+                            {
+                                case SDLK_a:
+                                    if (t.tabsuivi[0] == 0)
+                                    {
+                                        t.tabsuivi[0] = -1;
+                                        t.tour++;
+                                    }
+                                    break;
+                                case SDLK_z:
+                                    if (t.tabsuivi[1] == 0)
+                                    {
+                                        t.tabsuivi[1] = -1;
+                                        t.tour++;
+                                    }
+                                    break;
+                                case SDLK_e:
+                                    if (t.tabsuivi[2] == 0)
+                                    {
+                                        t.tabsuivi[2] = -1;
+                                        t.tour++;
+                                    }
+                                    break;
+                                case SDLK_q:
+                                    if (t.tabsuivi[3] == 0)
+                                    {
+                                        t.tabsuivi[3] = -1;
+                                        t.tour++;
+                                    }
+                                    break;
+                                case SDLK_s:
+                                    if (t.tabsuivi[4] == 0)
+                                    {
+                                        t.tabsuivi[4] = -1;
+                                        t.tour++;
+                                    }
+                                    break;
+                                case SDLK_d:
+                                    if (t.tabsuivi[5] == 0)
+                                    {
+                                        t.tabsuivi[5] = -1;
+                                        t.tour++;
+                                    }
+                                    break;
+                                case SDLK_w:
+                                    if (t.tabsuivi[6] == 0)
+                                    {
+                                        t.tabsuivi[6] = -1;
+                                        t.tour++;
+                                    }
+                                    break;
+                                case SDLK_x:
+                                    if (t.tabsuivi[7] == 0)
+                                    {
+                                        t.tabsuivi[7] = -1;
+                                        t.tour++; 
+                                    } 
+                                    break; 
+                                case SDLK_c: 
+                                    if (t.tabsuivi[8] == 0) 
+                                    { 
+                                        t.tabsuivi[8] = -1; 
+                                        t.tour++; 
+                                    } 
+                                    break; 
+                            } 
+                            break; 
+                    } 
+                } 
+                else 
+                {   
+                    calcul_coup(t.tabsuivi);
+                    t.tour++;
+                }
+            }
+            else 
+            {   Resultat(t,ecran);
+                resultat[i] = (atilganer(t.tabsuivi) == 1) ? 1 : 2;
+                break;
+            }
+        }
+    }
 
+    // display the result of the 3 games
+    int playerWin = 0;
+    int aiWin = 0;
+    for (int i = 0; i < 3; i++)
+    {
+        if (resultat[i] == 1)
+            playerWin++;
+        else if (resultat[i] == 2)
+            aiWin++;
+    }
 
-}///
+char resultText[50];
+    if (playerWin > aiWin)
+        sprintf(resultText, "The player wins %d times and the AI wins %d times.", playerWin, aiWin);
+    else if (playerWin < aiWin)
+        sprintf(resultText, "The player wins %d times and the AI wins %d times.", playerWin, aiWin);
+    else
+        sprintf(resultText, "The player and the AI both win %d times.", playerWin);
 
-}///
-else
-{ 
- Resultat(t,ecran);
- continuer=0;   
-printf("%d", t.tour);
+    resultatSurface = TTF_RenderText_Solid(fontresultat, resultText, (SDL_Color){255, 255, 255}); // render text surface
+    SDL_Rect textRect = {600, 600, 0, 0}; 
+    SDL_BlitSurface(resultatSurface, NULL, ecran, &textRect);
+    SDL_Flip(ecran);
+    SDL_Delay(5000); // wait 5 seconds before quitting
 
-}
-}
+  
  
 
 	AfficherEnnemi(e,ecran);
@@ -615,13 +707,16 @@ printf("%d", t.tour);
         SDL_FreeSurface(backgroundImages[i]);
     }
     liberationmemoire(&t);
+
     Liberer(&m);
     freePlayer(&player);
     FreeBackground(&background);
     FreeBouton(menuButtons, MENU_BUTTONS_COUNT);
     FreeBouton(settingButtons, SETTING_BUTTONS_COUNT);
+    
     Mix_FreeChunk(menuHoverSound);
     Mix_FreeMusic(BS.music);
+    
     TTF_CloseFont(font);
     TTF_Quit();
     SDL_Quit();
