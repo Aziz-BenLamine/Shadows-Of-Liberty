@@ -24,7 +24,8 @@ void Liberer (minimap *m);
 void MAJMinimap(SDL_Rect posJoueur, minimap *m, SDL_Rect cameraa, int redimensionnement);
 void animerMinimap(minimap *m);
 SDL_Color  GetPixel(SDL_Surface *pSurface,int x,int y);
-
+void sauvgarder(Personne p,Background b,char *nomfichier);
+void charger(Personne *p,Background *b,char *nomfichier);
 
 #endif
 

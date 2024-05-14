@@ -23,12 +23,12 @@ m->bonhomme.camera.y = 0;
 
 m->animation.image[3]=IMG_Load("spritecolors.png");
    
-m->animation.camera.x = 250;
-m->animation.camera.y = 60;
+m->animation.camera.x = 0;
+m->animation.camera.y = 0;
 m->animation.camera.h = 47;
 m->animation.camera.w = 30;
 m->animation.bg1.x = 200;
-m->animation.bg1.y = 50;
+m->animation.bg1.y = 120;
 
 }
 
@@ -68,14 +68,14 @@ SDL_Rect posJoueurABS;
     m->bonhomme.camera.y = posJoueurABS.y * redimensionnement / 100;
 
 }
-void afficherpoint(SDL_Surface * img, int x,int y,SDL_Surface *screen) {
+void afficherpoint(SDL_Surface * img, int x,int y,SDL_Surface *ecran) {
 
 
     SDL_Rect destRect ;
 	destRect.x=x;
 	destRect.y=y;
 
-  SDL_BlitSurface(img,NULL, screen, &destRect);
+  SDL_BlitSurface(img,NULL, ecran, &destRect);
 
 }
 void animerMinimap(minimap *m) {
@@ -174,5 +174,48 @@ int collisionPP(Personne *p, SDL_Surface *Masque, Background bp)
 
     return 0;
 }
+void sauvgarder(Personne p, Background b, char *nomfichier) {
+    // Open the file in write mode
+    FILE *file = fopen(nomfichier, "w");
 
+    // Check if file opened successfully
+    if (file == NULL) {
+        printf("Error opening file!\n");
+        return;
+    }
+
+    // Write the values to the file in the specified format
+    fprintf(file, "%hd:%hd:%d:%hd:%hd:%d:%d:%d\n",
+            b.camera.x, b.camera.y,
+            b.niveau,
+            p.rect.x, p.rect.y,
+            p.dir,
+            p.score,
+            p.vies);
+
+    fclose(file); // Close the file
+}
+
+void charger(Personne *p, Background *b, char *nomfichier) {
+    // Open the file in read mode
+    FILE *file = fopen(nomfichier, "r");
+
+    // Check if file opened successfully
+    if (file == NULL) {
+        printf("Error opening file!\n");
+        return;
+    }
+
+    // Read the values from the file in the specified format
+    fscanf(file, "%hd:%hd:%d:%hd:%hd:%d:%d:%d\n",
+           &b->camera.x, &b->camera.y,
+           &b->niveau,
+           &p->rect.x, &p->rect.y,
+           &p->dir,
+           &p->score,
+
+           &p->vies);
+
+    fclose(file); // Close the file
+}
 
