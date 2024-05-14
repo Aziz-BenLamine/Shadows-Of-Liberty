@@ -167,7 +167,7 @@ int main(int argc, char** argv) {
 	e1.pos.y=580;
 	Initbonus(&b);
 	initmap(&m);
-    
+        background.image[3]=IMG_Load("point.png");
     int lvl = 2;
     int dir,pl;
     int pas = 10;
