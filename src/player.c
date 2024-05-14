@@ -180,6 +180,12 @@ void sautParabolique(Personne *player, int *jumpDone, int *x0, int *y0, int *xIN
     if (!(*jumpDone)) {
     	//printf("PLAYER x0 = %d | x = %d PLAYER.UP = %d\n",x0,player.rect.x,player.up);
 	//printf("PLAYER y0 = %d | y = %d PLAYER.UP = %d\n",y0,player.rect.y,player.up);
+	/*player->tab[0] == 1 collision a droite
+	  player->tab[1] == 1 collision a gauche
+	  player->tab[2] == 1 collision en haut
+	  player->tab[3] == 1 collision en bas
+	*/
+	player->rect.y -= 20;
         if (player->up == 0) {
             *xINIT = player->rect.x;
             *yINIT = player->rect.y;
@@ -187,19 +193,24 @@ void sautParabolique(Personne *player, int *jumpDone, int *x0, int *y0, int *xIN
             *y0 = 0;
             player->up = 1;
         }
-	//collisionPP(player,Masque,bp);
+        
+        
+	collisionPP(player,Masque,bp);
+	
+	
         if (player->up == 1) {
             *x0 += 10;
             *y0 = -0.04 * (*x0) * (*x0) + 100;
-            if(player->tab[0] != 1 && player->tab[1] != 1){
+            if(player->tab[0] != 1 && player->tab[1] != 1 && player->tab[2] != 1 && player->tab[3] != 1){
 		    if (player->dir == 0 || player->dir == 2) {
 		        player->rect.x += 10;
 		    } else {
 		        player->rect.x -= 10;
 		    }
+	    player->rect.y = *yINIT - *y0;
 	    }
 	    
-            player->rect.y = *yINIT - *y0;
+            
             
             if (player->rect.x < 0) {
         	player->rect.x = 0;

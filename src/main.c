@@ -48,6 +48,7 @@ int main(int argc, char** argv) {
     int multi = 0;
     int numperso = 0;
     int numperso2 = 0;
+    int sol;
     //MAIN LOOP VARIABLES
     Uint32 dt, t_prev;
     Uint32 startTime, currentTime, minutes,seconds;
@@ -167,7 +168,7 @@ int main(int argc, char** argv) {
 	e1.pos.y=580;
 	Initbonus(&b);
 	initmap(&m);
-        background.image[3]=IMG_Load("point.png");
+    
     int lvl = 2;
     int dir,pl;
     int pas = 10;
@@ -206,7 +207,6 @@ int main(int argc, char** argv) {
             		/*menuButtons[selectedButtonIndex].actif = 0;
                        	menuButtons[previousButtonIndex].actif = 0;*/
             		background.niveau = 0;
-			sauvgarder(player,background,"save");
         		}
         }
 
@@ -244,7 +244,6 @@ int main(int argc, char** argv) {
                             background.niveau = 1;
                             for (int i = 0; i < MENU_BUTTONS_COUNT; i++) {
                                 menuButtons[i].actif = 0;
-				    charger(&player,&background,"save");
                             }
                         } else if (point_in_rect(event.button.x, event.button.y, menuButtons[3].button_rect)) {
                             playing = 0;
@@ -660,7 +659,13 @@ int main(int argc, char** argv) {
 	    }
 	    //GRAVITE
 	        //PLAYER 1
-	  	if ((player.rect.y < (700 - player.rect.h) + 20) && player.tab[3] != 1) {
+	        if(player.tab[3] == 1){
+	           sol = player.rect.y;
+	        }else{
+	           sol = 700 - player.rect.h;
+	        
+	        }
+	  	if (player.rect.y < sol) {
 		   player.rect.y += 8.5;
 	    
 	    	}
@@ -777,12 +782,12 @@ int main(int argc, char** argv) {
 	}
 	//collision ennemi 2
 	//collennemi1=collisionBB(e1,player.rect);
-	if (collennemi1==1){
+	/*if (collennemi1==1){
 	player.rect.x=200;
 	player.rect.y=510;
 	player.dir=0;
 	player.vies--;
-	}
+	}*/
 	//e.pos.x += background.camera.x;
 	collbonus=collisionTri(player,b.pos);
 	if (touchbonus==1){
