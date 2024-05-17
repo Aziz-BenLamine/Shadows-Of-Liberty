@@ -51,7 +51,7 @@ int main(int argc, char** argv) {
     int sol;
     int sol2;
     int innitennemy = 0;
-
+    
     //MAIN LOOP VARIABLES
     Uint32 dt, t_prev;
     Uint32 startTime, currentTime, minutes,seconds;
@@ -165,15 +165,20 @@ int main(int argc, char** argv) {
     displayImageWithFade("../assets/intro/gameIntro.png", ecran); 
 
 	
-	
+	InitEnnemi(&e);
+	InitEnnemi(&e1);
+	e1.pos.x=850;
+	e1.pos.y=580;
+	Initbonus(&b);
+	initmap(&m);
     
     int lvl = 2;
     int dir,pl;
     int pas = 10;
 
     SDL_Surface *surfM = NULL;
-    SDL_Surface *surfM1 = IMG_Load("mask1.jpg");
-    SDL_Surface *surfM2 = IMG_Load("mask2.jpg");
+    SDL_Surface *surfM1 = IMG_Load("mask1.png");
+    SDL_Surface *surfM2 = IMG_Load("mask2.png");
     SDL_Surface *surfM3 = IMG_Load("mask3.png");
 
 
@@ -411,10 +416,7 @@ int main(int argc, char** argv) {
     	    //player.tab[i] = 0;
     	    
 	    printf("tab[%d]=%d \n",i,player.tab[i]);
-	    //printf("dam[%d]= %d \n",i,player.dam[i]);
-      
        }
-       //printf("dam[%d]= %d \n",3,player.dam[3]);
        
         //START , TRACK AND DISPLAY TIMER
         if(game != 1){
@@ -676,13 +678,11 @@ int main(int argc, char** argv) {
 	           sol2 = player2.rect.y;
 	        }else{
 	           sol2 = 700 - player.rect.h;
-	        
+
 	        }
 	  	if (player2.rect.y < sol2) {
 		   player2.rect.y += 8.5;
-	    
 	    	}
-	    	
 	    	
 	    //Player 2 out of border check    
 	        if (player2.rect.x < 800) {
@@ -700,11 +700,128 @@ int main(int argc, char** argv) {
 	//entitesecondaire
 
 	
-	/*
+	//AfficherEnnemi(e,ecran);
+	//AfficherEnnemi(e1,ecran);
+	move(&e1);
+	animerEntity(&e1);
+	//collennemi=collisionBB(e,player.rect);
+		if (collennemi==1){
+            
+           //ENIGME
+        
+           img1 = IMG_Load("img1.jpg");
+           if (img1 == NULL) {
+             printf("Erreur lors du chargement de l'image1 : %s\n", SDL_GetError());
+             return 1;
+           }
 
-	//printf("player.rect.x = %d| player.y = %d |",player.rect.x, player.rect.y);
-	//printf(" |background.niveau = %d",background.niveau);*/
+           img2 = IMG_Load("img2.jpg");
+           if (img2 == NULL) {
+              printf("Erreur lors du chargement de l'image2 : %s\n", SDL_GetError());
+              return 1;
+           }
+
+           //Position de l'image de victoire 
+           pos1.x = (ecran->w - img1->w) / 2;
+           pos1.y = (ecran->w - img1->w) / 2;
+
+
+           //Position de l'image de defaite
+           pos2.x = (ecran->w - img2->w) / 2;
+           pos2.y = (ecran->w - img2->w) / 2;
+
+           eng = generer("enigme.txt");
+
+           afficherEnigme(eng, ecran);
+           SDL_Delay(2000);
+           while (SDL_PollEvent(&event)) {
+           switch (event.type) { 
+
+                case SDL_KEYDOWN:
+                    // Gestion des touches du clavier
+                    switch (event.key.keysym.sym) {
+                        case SDLK_a:
+                            // L'utilisateur a appuyé sur la touche 'a'
+                            rep = 1; // Réponse 1S	
+                            break;
+                        case SDLK_b:
+                            // L'utilisateur a appuyé sur la touche 'b'
+                            rep = 2; // Réponse 2
+                            break;
+                        case SDLK_c:
+                            // L'utilisateur a appuyé sur la touche 'c'
+                            rep = 3; // Réponse 3
+                            break;
+                    }
+            }
+          // Vérification de la réponse correcte
+          if (rep != -1) {
+
+		  if (rep == eng.bonrep) {
+
+		    eng.etat = 1;
+
+		    SDL_BlitSurface(img1, NULL, ecran, &pos1); 
+
+		    SDL_Flip(ecran);
+
+		    SDL_Delay(2000); // Délai de 1 secondes avant de continuer
+
+		} 
+		else {
+
+		    eng.etat = -1;
+
+		    SDL_BlitSurface(img2, NULL, ecran, &pos2);
+
+		    SDL_Flip(ecran);
+
+		    SDL_Delay(2000); // Délai de 1 secondes avant de continuer
+		    player.vies--;
+
+	       }
+	       rep = -1;
+           }
+          }
+        //ENIGME CLOSING BRACKET
+	player.rect.x += 100;
+	player.dir = 0;
+	
+	}
+	//collision ennemi 2
+	//collennemi1=collisionBB(e1,player.rect);
+	/*if (collennemi1==1){
+	player.rect.x=200;
+	player.rect.y=510;
+	player.dir=0;
+	player.vies--;
+	}*/
+	//e.pos.x += background.camera.x;
+	collbonus=collisionTri(player,b.pos);
+	if (touchbonus==1){
+		Afficherbonus(b,ecran);
+	}
+	if (collbonus==1){
+		touchbonus=0;
+	}
+
+	/*if(e.pos.x-(player.rect.x+player.rect.w)<20){
+		dirr=e.direction;
+		e.direction=2;
+
+		
+
+	}*/
+
+//move ia
+	distheroennemi=e.pos.x-player.rect.x;
+	updateetat(&e,distheroennemi);
+	updateennemi(&e,player.rect);
+
+	printf("player.rect.x = %d| player.y = %d |",player.rect.x, player.rect.y);
+	printf(" |background.niveau = %d",background.niveau);
        //NEXT LEVEL BACKGROUND UPDATE
+	//NEXT LEVEL BACKGROUND UPDATE
 	if(background.niveau == 2 && player.rect.x > 1500){
 	        surfM = surfM2;
 		player.rect.x = 213;
@@ -717,10 +834,10 @@ int main(int argc, char** argv) {
 		player.rect.y = 510;
 		background.camera.x = 0;
 		background.niveau = 5;
-	
+
 	}
-	
-	if(background.niveau == 5){
+
+        	if(background.niveau == 5){
 	if(innitennemy == 0){
 	InitEnnemi(&e);
 	InitEnnemi(&e1);
@@ -854,8 +971,6 @@ int main(int argc, char** argv) {
 
 
 
-
-
 	}         
 	//NEW GAME SUB-MENU
 	else if (background.niveau == 4) {
@@ -971,8 +1086,7 @@ int main(int argc, char** argv) {
                                     surfM = surfM1;
                                     multi = 1;
                                     background.niveau = 2;
-                                    init(&player, numperso, 0);
-                                    init(&player2, numperso, 1);
+                                    init(&player, numperso, multi);
                                     selectedButtonIndex = 0;
                                     previousButtonIndex = 0;
                                     break;
