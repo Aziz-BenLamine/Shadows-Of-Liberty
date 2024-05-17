@@ -108,11 +108,11 @@ int collisionPP(Personne *p, SDL_Surface *Masque, Background bp)
     }
     
     //OBSTACLE DAMAGE
-    /*if (color.r == 255 && color.g == 0 && color.b == 0) {
-        p->damage[0] = 1;
+    if (color.r == 255 && color.g == 0 && color.b == 1) {
+        p->dam[0] = 1;
     } else {
-        p->damage[0] = 0;
-    }*/
+        p->dam[0] = 0;
+    }
     
 
     int x2 = p->rect.x + bp.camera.x;
@@ -128,11 +128,11 @@ int collisionPP(Personne *p, SDL_Surface *Masque, Background bp)
     }
     
     //OBSTACLE DAMAGE
-    /*if (color.r == 255 && color.g == 0 && color.b == 0) {
-        p->damage[1] = 1;
+    if (color.r == 255 && color.g == 0 && color.b == 1) {
+        p->dam[1] = 1;
     } else {
-        p->damage[1] = 0;
-    }*/
+        p->dam[1] = 0;
+    }
 
     int x3 = p->rect.x + persowidth/2 + bp.camera.x;
     int y3 = p->rect.y + bp.camera.y - 5;
@@ -147,11 +147,11 @@ int collisionPP(Personne *p, SDL_Surface *Masque, Background bp)
     }
     
     //OBSTACLE DAMAGE
-    /*if (color.r == 255 && color.g == 0 && color.b == 0) {
-        p->damage[2] = 1;
+    if (color.r == 255 && color.g == 0 && color.b == 1) {
+        p->dam[2] = 1;
     } else {
-        p->damage[2] = 0;
-    }*/
+        p->dam[2] = 0;
+    }
 
     int x4 = p->rect.x + persowidth/2 + bp.camera.x;
     int y4 = p->rect.y + persoheight + bp.camera.y - 5;
@@ -166,12 +166,21 @@ int collisionPP(Personne *p, SDL_Surface *Masque, Background bp)
     }
     
     //OBSTACLE DAMAGE
-    /*if (color.r == 255 && color.g == 0 && color.b == 0) {
-        p->damage[3] = 1;
+    if (color.r == 255 && color.g == 0 && color.b == 1) {
+        p->dam[3] = 1;
     } else {
-        p->damage[3] = 0;
+        p->dam[3] = 0;
+    }
+    /*int x5 = p->rect.x + persowidth / 2 + bp.camera.x;
+    int y5 = p->rect.y + persoheight + bp.camera.y;
+    
+    color = GetPixel(Masque, x5, y5);
+    
+    if (color.r == 255 && color.g == 0 && color.b == 0) {
+        p->dam[3] = 1;
+    } else {
+        p->dam[3] = 0;
     }*/
-
     return 0;
 }
 void sauvgarder(Personne p, Background b, char *nomfichier) {

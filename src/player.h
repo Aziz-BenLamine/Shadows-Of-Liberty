@@ -5,7 +5,7 @@
 #define playerImagerows 6
 #define playerImageColumns 4
 typedef struct{
-
+    int dam[4];
   SDL_Surface *img[playerImageColumns][playerImagerows];
   SDL_Rect rect;
   SDL_Surface *healthImage[4];
@@ -19,7 +19,7 @@ typedef struct{
   double acceleration;
   SDL_Rect cameraa;
   int tab[4];
-  //int damage[4];
+
 }Personne;
 
 void init(Personne * p, int numperso, int multi);

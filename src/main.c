@@ -49,6 +49,9 @@ int main(int argc, char** argv) {
     int numperso = 0;
     int numperso2 = 0;
     int sol;
+    int sol2;
+    int innitennemy = 0;
+
     //MAIN LOOP VARIABLES
     Uint32 dt, t_prev;
     Uint32 startTime, currentTime, minutes,seconds;
@@ -162,12 +165,7 @@ int main(int argc, char** argv) {
     displayImageWithFade("../assets/intro/gameIntro.png", ecran); 
 
 	
-	InitEnnemi(&e);
-	InitEnnemi(&e1);
-	e1.pos.x=850;
-	e1.pos.y=580;
-	Initbonus(&b);
-	initmap(&m);
+	
     
     int lvl = 2;
     int dir,pl;
@@ -400,7 +398,7 @@ int main(int argc, char** argv) {
          afficherPerso(player2, ecran);
          collisionPP(&player2,surfM,background);
         }
-        printf("camera.x: %d\n",background.camera.x);
+        //printf("camera.x: %d\n",background.camera.x);
         //animerBackground(ecran,currentImageIndex1);
 	//currentImageIndex1 = (currentImageIndex1 + 1) % NUM_IMAGES;
         //printf("JUmpanimation=%d\n",jumpAnimation);
@@ -412,7 +410,10 @@ int main(int argc, char** argv) {
     	    //player.tab[i] = 0;
     	    
 	    printf("tab[%d]=%d \n",i,player.tab[i]);
+	    //printf("dam[%d]= %d \n",i,player.dam[i]);
+      
        }
+       //printf("dam[%d]= %d \n",3,player.dam[3]);
        
         //START , TRACK AND DISPLAY TIMER
         if(game != 1){
@@ -670,7 +671,13 @@ int main(int argc, char** argv) {
 	    
 	    	}
 	    	//PLAYER 2
-	    	if ((player.rect.y < (700 - player.rect.h)) && player2.tab[3] != 1) {
+	    	if(player2.tab[3] == 1){
+	           sol2 = player2.rect.y;
+	        }else{
+	           sol2 = 700 - player.rect.h;
+	        
+	        }
+	  	if (player2.rect.y < sol2) {
 		   player2.rect.y += 8.5;
 	    
 	    	}
@@ -692,8 +699,37 @@ int main(int argc, char** argv) {
 	//entitesecondaire
 
 	
-	//AfficherEnnemi(e,ecran);
-	//AfficherEnnemi(e1,ecran);
+	/*
+
+	//printf("player.rect.x = %d| player.y = %d |",player.rect.x, player.rect.y);
+	//printf(" |background.niveau = %d",background.niveau);*/
+       //NEXT LEVEL BACKGROUND UPDATE
+	if(background.niveau == 2 && player.rect.x > 1500){
+	        surfM = surfM2;
+		player.rect.x = 213;
+		player.rect.y = 278;
+		background.camera.x = 0;
+		background.niveau = 3;
+	} else if(background.niveau == 3 && player.rect.x > 1550){
+	        surfM = surfM3;
+		player.rect.x = 200;
+		player.rect.y = 510;
+		background.camera.x = 0;
+		background.niveau = 5;
+	
+	}
+	
+	if(background.niveau == 5){
+	if(innitennemy == 0){
+	InitEnnemi(&e);
+	InitEnnemi(&e1);
+	
+	Initbonus(&b);
+	initmap(&m);
+	innitennemy = 1;
+	}
+	AfficherEnnemi(e,ecran);
+	AfficherEnnemi(e1,ecran);
 	move(&e1);
 	animerEntity(&e1);
 	//collennemi=collisionBB(e,player.rect);
@@ -781,14 +817,14 @@ int main(int argc, char** argv) {
 	
 	}
 	//collision ennemi 2
-	//collennemi1=collisionBB(e1,player.rect);
-	/*if (collennemi1==1){
+	collennemi1=collisionBB(e1,player.rect);
+	if (collennemi1==1){
 	player.rect.x=200;
 	player.rect.y=510;
 	player.dir=0;
 	player.vies--;
-	}*/
-	//e.pos.x += background.camera.x;
+	}
+	e.pos.x += background.camera.x;
 	collbonus=collisionTri(player,b.pos);
 	if (touchbonus==1){
 		Afficherbonus(b,ecran);
@@ -797,36 +833,23 @@ int main(int argc, char** argv) {
 		touchbonus=0;
 	}
 
-	/*if(e.pos.x-(player.rect.x+player.rect.w)<20){
+	if(e.pos.x-(player.rect.x+player.rect.w)<20){
 		dirr=e.direction;
 		e.direction=2;
 
 		
 
-	}*/
+	}
 
 //move ia
 	distheroennemi=e.pos.x-player.rect.x;
 	updateetat(&e,distheroennemi);
 	updateennemi(&e,player.rect);
-
-	printf("player.rect.x = %d| player.y = %d |",player.rect.x, player.rect.y);
-	printf(" |background.niveau = %d",background.niveau);
-       //NEXT LEVEL BACKGROUND UPDATE
-	if(background.niveau == 2 && player.rect.x > 1550){
-	        surfM = surfM2;
-		player.rect.x = 213;
-		player.rect.y = 278;
-		background.camera.x = 0;
-		background.niveau = 3;
-	} else if(background.niveau == 3 && player.rect.x > 1550){
-	        surfM = surfM3;
-		player.rect.x = 200;
-		player.rect.y = 510;
-		background.camera.x = 0;
-		background.niveau = 5;
 	
-	} 
+	
+	
+	
+	}
 
 
 
@@ -947,7 +970,8 @@ int main(int argc, char** argv) {
                                     surfM = surfM1;
                                     multi = 1;
                                     background.niveau = 2;
-                                    init(&player, numperso, multi);
+                                    init(&player, numperso, 0);
+                                    init(&player2, numperso, 1);
                                     selectedButtonIndex = 0;
                                     previousButtonIndex = 0;
                                     break;

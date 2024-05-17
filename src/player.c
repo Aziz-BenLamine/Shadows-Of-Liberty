@@ -116,12 +116,9 @@ void init(Personne * p, int numperso, int multi){
 
 	for (int i = 0; i < 4; i++) {
 		p->tab[i] = 1;
+		p->dam[i] = 1;
 	    }
 	
-	/*p->damage[0]=1;
-	p->damage[1]=1;
-	p->damage[2]=1;
-	p->damage[3]=1;*/
 }
 
 void afficherPerso(Personne p, SDL_Surface *screen) {
@@ -200,7 +197,7 @@ void sautParabolique(Personne *player, int *jumpDone, int *x0, int *y0, int *xIN
 	
         if (player->up == 1) {
             *x0 += 10;
-            *y0 = -0.04 * (*x0) * (*x0) + 100;
+            *y0 = -0.01 * (*x0) * (*x0) + 200;
             if(player->tab[0] != 1 && player->tab[1] != 1 && player->tab[2] != 1 && player->tab[3] != 1){
 		    if (player->dir == 0 || player->dir == 2) {
 		        player->rect.x += 10;
