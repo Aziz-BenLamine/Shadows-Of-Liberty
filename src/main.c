@@ -45,6 +45,8 @@ int main(int argc, char** argv) {
     //SINGLE PLAYER || MULTIPLAYER VARIABLES
     Personne player;
     Personne player2;
+    Personne player3;
+    Personne player4;
     int multi = 0;
     int numperso = 0;
     int numperso2 = 0;
@@ -75,7 +77,11 @@ int main(int argc, char** argv) {
     eng.etat = 0;
     
     init(&player, 0, 0);
-    init(&player2, 0, 1);
+    init(&player2, 1, 1);
+    
+    //FOR SKINS
+    //init(&player3, 0, 0);
+    //init(&player4, 1, 1);
     //Texte
     TTF_Init();
     TTF_Font *font = TTF_OpenFont("Ironmonger Black Regular.otf", 20);
@@ -439,7 +445,7 @@ int main(int argc, char** argv) {
         }
         char scoreText[100];
         sprintf(scoreText, "Score: %d", score);
-        renderText(ecran, font2, scoreText, textColor, 700, 75);
+        renderText(ecran, font2, scoreText, textColor, 1000, 25);
         
         //DISPLAY HEALTH
         SDL_BlitSurface(player.healthImage[player.vies], NULL, ecran, &(player.healthRect));
@@ -951,13 +957,7 @@ int main(int argc, char** argv) {
 		touchbonus=0;
 	}
 
-	if(e.pos.x-(player.rect.x+player.rect.w)<20){
-		dirr=e.direction;
-		e.direction=2;
 
-		
-
-	}
 
 //move ia
 	distheroennemi=e.pos.x-player.rect.x;
@@ -977,6 +977,23 @@ int main(int argc, char** argv) {
             background.camera.y = 0;
             background.camera.x = 0;
             AfficherBouton(newGameButtons, ecran, 4);
+            if(numperso == 0){
+                player.rect.x = 500;
+            	afficherPerso(player, ecran);
+            }else if(numperso == 1){
+               player2.rect.x = 500;
+               afficherPerso(player2, ecran);
+            }
+            
+            if(numperso2 == 0){
+                player.rect.x =700;
+            	afficherPerso(player, ecran);
+            }else if(numperso2 == 1){
+               player2.rect.x = 700;
+               afficherPerso(player2, ecran);
+            }
+            
+
             //SDL_BlitSurface(backgroundImages[currentImageIndex], NULL, ecran, &posAnim);
             renderText(ecran, font, "Ares Forge Games", textColor, 1300, 660);
             switch (event.type) {
@@ -1033,8 +1050,8 @@ int main(int argc, char** argv) {
                         }
                          else if (point_in_rect(event.button.x, event.button.y, newGameButtons[4].button_rect)) {
                             numperso2--;
-                            if(numperso < 0){
-				numperso = 0;
+                            if(numperso2 < 0){
+				numperso2 = 0;
                             }
                             for (int i = 0; i < NEWGAME_BUTTONS_COUNT; i++) {
                                 newGameButtons[i].actif = 0;
@@ -1086,7 +1103,8 @@ int main(int argc, char** argv) {
                                     surfM = surfM1;
                                     multi = 1;
                                     background.niveau = 2;
-                                    init(&player, numperso, multi);
+                            	    init(&player, numperso, 0);
+                                    init(&player2, numperso2, 1);
                                     selectedButtonIndex = 0;
                                     previousButtonIndex = 0;
                                     break;

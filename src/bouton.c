@@ -201,12 +201,12 @@ int InitNewGameMenuButtons(button b[]){
     b[6].button_rect = (SDL_Rect){500 , 590, b[6].button_images[0]->w, b[6].button_images[0]->h};
     
     //DISPLAY PLAYER 1 SKIN RECT
-    b[2].button_rect = (SDL_Rect){490 , 454, b[2].button_images[0]->w, b[2].button_images[0]->h};
-    b[3].button_rect = (SDL_Rect){680 , 454, b[3].button_images[0]->w, b[3].button_images[0]->h};
+    b[2].button_rect = (SDL_Rect){430 , 454, b[2].button_images[0]->w, b[2].button_images[0]->h};
+    b[3].button_rect = (SDL_Rect){540 , 454, b[3].button_images[0]->w, b[3].button_images[0]->h};
     
     //DISPLAY PLAYER 2 SKIN RECT
-    b[4].button_rect = (SDL_Rect){490 , 524, b[4].button_images[0]->w, b[4].button_images[0]->h};
-    b[5].button_rect = (SDL_Rect){680 , 524, b[5].button_images[0]->w, b[5].button_images[0]->h};
+    b[4].button_rect = (SDL_Rect){640 , 454, b[4].button_images[0]->w, b[4].button_images[0]->h};
+    b[5].button_rect = (SDL_Rect){750 , 454, b[5].button_images[0]->w, b[5].button_images[0]->h};
 
 
     return 0;
