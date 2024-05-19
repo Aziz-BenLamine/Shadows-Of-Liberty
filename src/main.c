@@ -301,13 +301,14 @@ int main(int argc, char** argv) {
                             for (int i = 0; i < MENU_BUTTONS_COUNT; i++) {
                                 menuButtons[i].actif = 0;
                             }
-			    else if (point_in_rect(event.button.x, event.button.y, menuButtons[1].button_rect)) {
-                                   charger(&player,&background,"save");
-			            background.niveau = 2;
+                        }
+			else if (point_in_rect(event.button.x, event.button.y, menuButtons[1].button_rect)) {
+                            charger(&player,&background,"save");
+			background.niveau = 2;
 
                             for (int i = 0; i < MENU_BUTTONS_COUNT; i++) {
                                 menuButtons[i].actif = 0;
-				    
+                            }
                         } else if (point_in_rect(event.button.x, event.button.y, menuButtons[2].button_rect)) {
                             background.niveau = 1;
                             for (int i = 0; i < MENU_BUTTONS_COUNT; i++) {
