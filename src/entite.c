@@ -10,28 +10,28 @@
 
 
 void InitEnnemi(Entity *e){
- e->image[0][0]=IMG_Load("../assets/ennemi/enwalk4.png");
- e->image[0][1]=IMG_Load("../assets/ennemi/enwalk3.png");
- e->image[0][2]=IMG_Load("../assets/ennemi/enwalk2.png");
- e->image[0][3]=IMG_Load("../assets/ennemi/enwalk1.png");
- e->image[0][4]=IMG_Load("../assets/ennemi/enwalk0.png");
- e->image[1][0]=IMG_Load("../assets/ennemi/enleftwalk4.png");
- e->image[1][1]=IMG_Load("../assets/ennemi/enleftwalk3.png");
- e->image[1][2]=IMG_Load("../assets/ennemi/enleftwalk2.png");
- e->image[1][3]=IMG_Load("../assets/ennemi/enleftwalk1.png");
- e->image[1][4]=IMG_Load("../assets/ennemi/enleftwalk0.png");
- e->image[2][0]=IMG_Load("../assets/ennemi/a4.png");
- e->image[2][1]=IMG_Load("../assets/ennemi/a3.png");
- e->image[2][2]=IMG_Load("../assets/ennemi/a2.png");
- e->image[2][3]=IMG_Load("../assets/ennemi/a1.png");
- e->image[2][4]=IMG_Load("../assets/ennemi/a0.png");
- e->image[3][0]=IMG_Load("../assets/ennemi/a004.png");
- e->image[3][1]=IMG_Load("../assets/ennemi/a003.png");
- e->image[3][2]=IMG_Load("../assets/ennemi/a02.png");
- e->image[3][3]=IMG_Load("../assets/ennemi/a001.png");
- e->image[3][4]=IMG_Load("../assets/ennemi/a02.png");
+ e->image[0][0]=IMG_Load("../assets/ennemi/walk4g.png");
+ e->image[0][1]=IMG_Load("../assets/ennemi/walk3g.png");
+ e->image[0][2]=IMG_Load("../assets/ennemi/walk2g.png");
+ e->image[0][3]=IMG_Load("../assets/ennemi/walk1g.png");
+ e->image[0][4]=IMG_Load("../assets/ennemi/we9efg.png");
+ e->image[1][0]=IMG_Load("../assets/ennemi/walk4.png");
+ e->image[1][1]=IMG_Load("../assets/ennemi/walk3.png");
+ e->image[1][2]=IMG_Load("../assets/ennemi/walk2.png");
+ e->image[1][3]=IMG_Load("../assets/ennemi/walk1.png");
+ e->image[1][4]=IMG_Load("../assets/ennemi/we9ef.png");
+ e->image[2][0]=IMG_Load("../assets/ennemi/punch4.png");
+ e->image[2][1]=IMG_Load("../assets/ennemi/punch3.png");
+ e->image[2][2]=IMG_Load("../assets/ennemi/punch2.png");
+ e->image[2][3]=IMG_Load("../assets/ennemi/punch1.png");
+ e->image[2][4]=IMG_Load("../assets/ennemi/guard.png");
+ e->image[3][0]=IMG_Load("../assets/ennemi/punch4g.png");
+ e->image[3][1]=IMG_Load("../assets/ennemi/punch3g.png");
+ e->image[3][2]=IMG_Load("../assets/ennemi/punch2g.png");
+ e->image[3][3]=IMG_Load("../assets/ennemi/punch1g.png");
+ e->image[3][4]=IMG_Load("../assets/ennemi/guardg.png");
 e->pos.x=1200;
-e->pos.y=580;
+e->pos.y=505;
 e->pos.w=e->image[0][0]->w;
 e->pos.h=e->image[0][0]->h;
 

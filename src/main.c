@@ -24,7 +24,6 @@
 #define SERIAL_PORT "/dev/ttyACM0" 
 #define BAUD_RATE 9600
 
-
 void handle_input(char input) {
     switch (input) {
         case 'a':
@@ -54,6 +53,7 @@ void handle_input(char input) {
         /*default:
             printf("Unknown input: %c\n", input);
             break;*/
+
     }
 }
 
@@ -61,14 +61,14 @@ void handle_input(char input) {
 int main(int argc, char** argv) {
     
     //INIT SERIAL PORT
-    int fd = serialport_init(SERIAL_PORT, BAUD_RATE);
+  /*  int fd = serialport_init(SERIAL_PORT, BAUD_RATE);
     if (fd == -1) {
         fprintf(stderr, "Error opening serial port\n");
         return -1;
     }
 
     char buf[256];
-    int timeout = 10;
+    int timeout = 10;*/
 
 
     SDL_Surface *ecran;
@@ -91,7 +91,7 @@ int main(int argc, char** argv) {
     int collbonus;
     int touchbonus=1;
     int dirr;
-    int distheroennemi;
+    int distheroennemi=0;
     
     //SINGLE PLAYER || MULTIPLAYER VARIABLES
     Personne player;
@@ -225,7 +225,7 @@ int main(int argc, char** argv) {
 	InitEnnemi(&e);
 	InitEnnemi(&e1);
 	e1.pos.x=850;
-	e1.pos.y=580;
+	e1.pos.y=505;
 	Initbonus(&b);
 	initmap(&m);
     
@@ -951,6 +951,11 @@ int main(int argc, char** argv) {
 	AfficherEnnemi(e1,ecran);
 	move(&e1);
 	animerEntity(&e1);
+	
+//move ia try
+distheroennemi=e.pos.x-player.rect.x;
+	updateetat(&e,distheroennemi);
+	updateennemi(&e,player.rect);
 	collennemi=collisionBB(e,player.rect);
 		if (collennemi==1){
             
@@ -1055,9 +1060,7 @@ int main(int argc, char** argv) {
 
 
 //move ia
-	distheroennemi=e.pos.x-player.rect.x;
-	updateetat(&e,distheroennemi);
-	updateennemi(&e,player.rect);
+	
 	
 	
 	
