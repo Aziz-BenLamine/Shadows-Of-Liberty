@@ -918,123 +918,6 @@ int main(int argc, char** argv) {
 	//entitesecondaire
 
 	
-	//AfficherEnnemi(e,ecran);
-	//AfficherEnnemi(e1,ecran);
-	move(&e1);
-	animerEntity(&e1);
-	//collennemi=collisionBB(e,player.rect);
-		if (collennemi==1){
-            
-           //ENIGME
-        
-           img1 = IMG_Load("img1.jpg");
-           if (img1 == NULL) {
-             printf("Erreur lors du chargement de l'image1 : %s\n", SDL_GetError());
-             return 1;
-           }
-
-           img2 = IMG_Load("img2.jpg");
-           if (img2 == NULL) {
-              printf("Erreur lors du chargement de l'image2 : %s\n", SDL_GetError());
-              return 1;
-           }
-
-           //Position de l'image de victoire 
-           pos1.x = (ecran->w - img1->w) / 2;
-           pos1.y = (ecran->w - img1->w) / 2;
-
-
-           //Position de l'image de defaite
-           pos2.x = (ecran->w - img2->w) / 2;
-           pos2.y = (ecran->w - img2->w) / 2;
-
-           eng = generer("enigme.txt");
-
-           afficherEnigme(eng, ecran);
-           SDL_Delay(2000);
-           while (SDL_PollEvent(&event)) {
-           switch (event.type) { 
-
-                case SDL_KEYDOWN:
-                    // Gestion des touches du clavier
-                    switch (event.key.keysym.sym) {
-                        case SDLK_a:
-                            // L'utilisateur a appuyé sur la touche 'a'
-                            rep = 1; // Réponse 1S	
-                            break;
-                        case SDLK_b:
-                            // L'utilisateur a appuyé sur la touche 'b'
-                            rep = 2; // Réponse 2
-                            break;
-                        case SDLK_c:
-                            // L'utilisateur a appuyé sur la touche 'c'
-                            rep = 3; // Réponse 3
-                            break;
-                    }
-            }
-          // Vérification de la réponse correcte
-          if (rep != -1) {
-
-		  if (rep == eng.bonrep) {
-
-		    eng.etat = 1;
-
-		    SDL_BlitSurface(img1, NULL, ecran, &pos1); 
-
-		    SDL_Flip(ecran);
-
-		    SDL_Delay(2000); // Délai de 1 secondes avant de continuer
-
-		} 
-		else {
-
-		    eng.etat = -1;
-
-		    SDL_BlitSurface(img2, NULL, ecran, &pos2);
-
-		    SDL_Flip(ecran);
-
-		    SDL_Delay(2000); // Délai de 1 secondes avant de continuer
-		    player.vies--;
-
-	       }
-	       rep = -1;
-           }
-          }
-        //ENIGME CLOSING BRACKET
-	player.rect.x += 100;
-	player.dir = 0;
-	
-	}
-	//collision ennemi 2
-	//collennemi1=collisionBB(e1,player.rect);
-	/*if (collennemi1==1){
-	player.rect.x=200;
-	player.rect.y=510;
-	player.dir=0;
-	player.vies--;
-	}*/
-	//e.pos.x += background.camera.x;
-	collbonus=collisionTri(player,b.pos);
-	if (touchbonus==1){
-		Afficherbonus(b,ecran);
-	}
-	if (collbonus==1){
-		touchbonus=0;
-	}
-
-	/*if(e.pos.x-(player.rect.x+player.rect.w)<20){
-		dirr=e.direction;
-		e.direction=2;
-
-		
-
-	}*/
-
-//move ia
-	distheroennemi=e.pos.x-player.rect.x;
-	updateetat(&e,distheroennemi);
-	updateennemi(&e,player.rect);
 
 	printf("player.rect.x = %d| player.y = %d |",player.rect.x, player.rect.y);
 	printf(" |background.niveau = %d",background.niveau);
@@ -1068,7 +951,7 @@ int main(int argc, char** argv) {
 	AfficherEnnemi(e1,ecran);
 	move(&e1);
 	animerEntity(&e1);
-	//collennemi=collisionBB(e,player.rect);
+	collennemi=collisionBB(e,player.rect);
 		if (collennemi==1){
             
            //ENIGME
