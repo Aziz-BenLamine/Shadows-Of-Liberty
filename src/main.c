@@ -9,7 +9,8 @@
 #include "player.h"
 #include "entite.h"
 #include "enigme.h"
-#include"minimap.h"
+#include "minimap.h"
+#include "serie.h"
 #define SCREEN_HEIGHT 700
 #define SCREEN_WIDTH 1600
 #define FULL_SCREEN_HEIGHT 1080
@@ -19,7 +20,57 @@
 #define NEWGAME_BUTTONS_COUNT 7
 #define NUM_IMAGES 7
 #define NUM_PERSO 2
+
+#define SERIAL_PORT "/dev/ttyACM0" 
+#define BAUD_RATE 9600
+
+
+void handle_input(char input) {
+    switch (input) {
+        case 'a':
+            printf("Joystick moved left\n");
+            break;
+        case 'b':
+            printf("Joystick moved right\n");
+            break;
+        case 'c':
+            printf("Joystick moved down\n");
+            break;
+        case 'e':
+            printf("Joystick moved up\n");
+            break;
+        case 'r':
+            printf("Button A pressed\n");
+            break;
+        case 'l':
+            printf("Button left pressed\n");
+            break;
+        case 'u':
+            printf("Button up pressed\n");
+            break;
+        case 'd':
+            printf("Button E pressed\n");
+            break;
+        /*default:
+            printf("Unknown input: %c\n", input);
+            break;*/
+    }
+}
+
+
 int main(int argc, char** argv) {
+    
+    //INIT SERIAL PORT
+    int fd = serialport_init(SERIAL_PORT, BAUD_RATE);
+    if (fd == -1) {
+        fprintf(stderr, "Error opening serial port\n");
+        return -1;
+    }
+
+    char buf[256];
+    int timeout = 10;
+
+
     SDL_Surface *ecran;
     
     //MENU VARIABLES
@@ -405,6 +456,167 @@ int main(int argc, char** argv) {
         }
         //MAIN GAME
         else if (background.niveau == 2 || background.niveau == 3 || background.niveau == 5)  {
+        
+        //ARDUINO CONTROLLER INIT
+        /*int result = serialport_read_until(fd, buf, '\n', 256, 1);
+        if (result == 0) {
+            switch (buf[0]) {
+        case 'a':
+            printf("Joystick moved down\n");
+            break;
+        case 'b':
+            printf("Joystick moved up\n");
+            if(player.dir == 0){
+		    		player.dir = 2;
+		    		player.num = 0;
+		    	}else if(player.dir == 1){
+		    		player.dir = 3;
+		    		player.num = 0;
+		    	}
+			if(jumpAnimation < playerImagerows){
+		    		animerPerso(&player);
+		    		jumpAnimation++;
+		    		//printf("player.num=%d, player.dir=%d\n",player.num,player.dir);
+		    	}
+		    	//SAUT HORIZONTAL
+		    	
+		    	if(!jumpDone){
+		    	
+				  	if(player.up == 0){
+				  		yINIT = player.rect.y;
+				  	}
+				  	//printf("yINIT = %d| y = %d | player.up = %d\n",yINIT, player.rect.y ,player.up);
+				  	printf("player.up = %d |",player.up);
+				    	dt += timeIncrement;
+				  	player.up = 1;
+				  	saut(&player, dt, yINIT);
+				  		if(player.up == 0 || player.tab[2] == 1){
+				  			jumpDone = 1;
+				  	}
+					}
+		    	
+		    
+		    
+            break;
+        case 'c':
+            printf("Joystick moved right\n");
+	    	dt += timeIncrement;
+		player.dir = 0;
+		if(player.tab[0] != 1){
+			animerPerso(&player);
+			movePerso(&player, dt);
+			pl = 1;
+			dir = 0;
+			scrolling(&background,pas,dir,pl);
+			if(background.camera.x < 1600){
+				b.pos.x -= pas;
+				e.pos.x -= pas;
+				e1.pos.x -= pas;
+			}
+		}
+            break;
+        case 'e':
+            printf("Joystick moved left\n");
+            //MOUVEMENT A GAUCHE
+		    	dt += timeIncrement;
+		        player.dir = 1;
+		        if(player.tab[1] != 1){
+		        	animerPerso(&player);
+		        	movePerso(&player, dt);
+		        	pl = 1;
+				dir = 1;
+				scrolling(&background,pas,dir,pl);
+				
+				if(background.camera.x > 0){
+					
+					b.pos.x += pas;
+					e.pos.x += pas;
+					e1.pos.x += pas;
+				}	
+			}
+            break;
+        case 'r':
+            printf("Button right pressed\n");
+                        printf("Joystick moved right\n");
+	    	dt += timeIncrement;
+		player.dir = 0;
+		if(player.tab[0] != 1){
+			animerPerso(&player);
+			movePerso(&player, dt);
+			pl = 1;
+			dir = 0;
+			scrolling(&background,pas,dir,pl);
+			if(background.camera.x < 1600){
+				b.pos.x -= pas;
+				e.pos.x -= pas;
+				e1.pos.x -= pas;
+			}
+		}
+            break;
+        case 'l':
+            printf("Button left pressed\n");
+                       //MOUVEMENT A GAUCHE
+		    	dt += timeIncrement;
+		        player.dir = 1;
+		        if(player.tab[1] != 1){
+		        	animerPerso(&player);
+		        	movePerso(&player, dt);
+		        	pl = 1;
+				dir = 1;
+				scrolling(&background,pas,dir,pl);
+				
+				if(background.camera.x > 0){
+					
+					b.pos.x += pas;
+					e.pos.x += pas;
+					e1.pos.x += pas;
+				}	
+			}
+            break;
+        case 'u':
+            printf("Button up pressed\n");
+            if(player.dir == 0){
+		    		player.dir = 2;
+		    		player.num = 0;
+		    	}else if(player.dir == 1){
+		    		player.dir = 3;
+		    		player.num = 0;
+		    	}
+			if(jumpAnimation < playerImagerows){
+		    		animerPerso(&player);
+		    		jumpAnimation++;
+		    		//printf("player.num=%d, player.dir=%d\n",player.num,player.dir);
+		    	}
+		    	//SAUT HORIZONTAL
+		    	
+		    	if(!jumpDone){
+		    	
+				  	if(player.up == 0){
+				  		yINIT = player.rect.y;
+				  	}
+				  	//printf("yINIT = %d| y = %d | player.up = %d\n",yINIT, player.rect.y ,player.up);
+				  	printf("player.up = %d |",player.up);
+				    	dt += timeIncrement;
+				  	player.up = 1;
+				  	saut(&player, dt, yINIT);
+				  		if(player.up == 0 || player.tab[2] == 1){
+				  			jumpDone = 1;
+				  	}
+					}
+		    	
+		    
+		    
+            break;
+        case 'd':
+            printf("Button down pressed\n");
+            break;
+
+    }
+        } else if (result == -2) {
+            printf("Read timeout occurred\n");
+        } else {
+            printf("Error reading from serial port\n");
+        }*/
         if(multi == 1){
          AfficherBackgroundMulti(background, ecran);
          afficherPerso(player2, ecran);
